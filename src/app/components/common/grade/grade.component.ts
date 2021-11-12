@@ -6,6 +6,7 @@ import { MatDialogRef, MatDialog, MatOption } from '@angular/material';
 import { PopupImagemComponent } from '../popup-imagem/popup-imagem.component';
 import { AppInformationService } from '../../../../app/services/dialogs/app-information/app-information.service';
 import { CampoBusca } from 'app/models/base/negocio/CampoBusca';
+import { AttachmentsDownloadComponent } from 'app/views/business/requirements/attachments-download/attachments-download.component';
 
 @Component({
   selector: 'app-grade',
@@ -15,6 +16,7 @@ import { CampoBusca } from 'app/models/base/negocio/CampoBusca';
 export class GradeComponent implements OnInit {
   @Input() Colunas: Array<Coluna>;
   @Input() BtnResponsible: Boolean;
+  @Input() BtnAttachment: Boolean = false;
   @Input() BtnAction: Boolean;
   @Input() BtnEditar: Boolean;
   @Input() BtnDeletar: Boolean;
@@ -31,6 +33,7 @@ export class GradeComponent implements OnInit {
   @Input() ActionButtonStatus: boolean = false;
   @Input() actionButtonCaption: String;
   @Input() syncOnInit: boolean = false;
+  @Input() initFilterOpened: boolean = false;
   @Output() actionButtonEvent: EventEmitter<any> = new EventEmitter();
   @Output() PesquisarRegistro: EventEmitter<any> = new EventEmitter();
   @Output() IncluirRegistro: EventEmitter<any> = new EventEmitter();
@@ -38,6 +41,7 @@ export class GradeComponent implements OnInit {
   @Output() ExcluirRegistro: EventEmitter<any> = new EventEmitter();
   @Output() ResponsibleRegistro: EventEmitter<any> = new EventEmitter();
   @Output() ActionRegistro: EventEmitter<any> = new EventEmitter();
+  @Output() AttachementRegistro: EventEmitter<any> = new EventEmitter();
   @Output() CheckRegistro: EventEmitter<any> = new EventEmitter();
   @Output() filterValueChange: EventEmitter<any> = new EventEmitter();
 
@@ -56,7 +60,7 @@ export class GradeComponent implements OnInit {
     private eRef: ElementRef) { }
 
   ngOnInit() {    
-    this.finderPanel = false;
+    this.finderPanel = this.initFilterOpened;
     if (this.BtnIncluir == undefined) {
       this.BtnIncluir = true;
     }    
@@ -67,9 +71,11 @@ export class GradeComponent implements OnInit {
     this.buscarForm = new FormGroup({});    
 
     for (let i = 0; i < this.CamposBusca.length; i++) {
-      console.log(this.CamposBusca[i].fieldValue);
+      console.log(`${this.CamposBusca[i].fieldText}: ${this.CamposBusca[i].fieldValue}`);
       
-      this.buscarForm.addControl(this.CamposBusca[i].nomeCampo, new FormControl(this.CamposBusca[i].tipoCampo === "LIST" && this.CamposBusca[i].fieldValue === this.CamposBusca[i].nomeCampo ? "" : this.CamposBusca[i].fieldValue));
+      this.buscarForm.addControl(this.CamposBusca[i].nomeCampo, new FormControl(
+        this.CamposBusca[i].tipoCampo === "LIST" && this.CamposBusca[i].fieldValue === this.CamposBusca[i].nomeCampo ? "" : this.CamposBusca[i].fieldValue
+      ));
       this.buscarForm.controls[this.CamposBusca[i].nomeCampo].valueChanges.subscribe(res => {
         this.filterValueChange.emit({
           type: this.CamposBusca[i].nomeCampo,
@@ -135,6 +141,10 @@ export class GradeComponent implements OnInit {
     this.ActionRegistro.emit({ registro: registro });
   }
 
+  onAttachment(registro) {
+    this.AttachementRegistro.emit({ registro: registro });
+  }
+
   onCheck(registro: any, event) {    
     this.CheckRegistro.emit({ registro: registro, status: event.checked })
   }
@@ -145,7 +155,7 @@ export class GradeComponent implements OnInit {
 
   Pesquisar() {
     const formulario = this.buscarForm.value;
-    console.log(formulario);
+    //console.log(formulario);
     
     this.finderPanel = false;    
     this.showFilter = this.showFilters();
@@ -196,7 +206,7 @@ export class GradeComponent implements OnInit {
     if ((imagem === undefined) || (imagem === "")) {
       this.mensagem.information("Informações", "Não foi feito registro fotográfico.");
     } else {
-      let dialogRef: MatDialogRef<any> = this.dialog.open(PopupImagemComponent, {
+      let dialogRef: MatDialogRef<any> = this.dialog.open(AttachmentsDownloadComponent, {
         width: '95%;',
         disableClose: true,
         data: { title: "Imagem", payload: imagem }
@@ -227,5 +237,13 @@ export class GradeComponent implements OnInit {
     this.finderPanel = false;
   }
 
+  getValue(field) {
+    if (!field || !field.value)
+      return;
+    if (field.tipoCampo == "LIST")
+      return field.lista.find(p => p[field.nomeCampo] == field.value)[field.fieldText]
+    else
+      return field.value;
+  }
 
 }

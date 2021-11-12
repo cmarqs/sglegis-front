@@ -50,6 +50,10 @@ export class UsersFormComponent implements OnInit {
     
     if (this.user.value.user_role !== roles.admin) {
       this.user.controls.customer_id.setValidators([Validators.required]);
+      this.getCustomers(this.currentUser.customer_id);
+    }
+    else {
+      this.getCustomers(undefined);
     }
 
     this.user.controls.user_role.valueChanges.subscribe(res => {      
@@ -61,19 +65,23 @@ export class UsersFormComponent implements OnInit {
       this.user.controls.customer_id.updateValueAndValidity();      
     })
     
-    this.getCustomers();
   }
 
-  getCustomers() {
-    const params: [CampoBusca] = [
-      new CampoBusca("customers", "Customers", 50, "", "string", null, null, null)
-    ]
+  getCustomers(customer_id) {
+    let p: any = new Object();
+    p.orderby = "customer_business_name";
+    p.direction = "asc";
 
-    this.crudService.GetParamsSearch(params, "/customer").subscribe(res => {     
+    if (customer_id) {
+      p.fields = "customer_id";
+      p.ops = "eq";
+      p.values = customer_id;
+    }
+    this.crudService.GetParams(p, "/customer/query").subscribe(res => {
       this.customers = [];
       this.customers = res.body;
     })
-  }
+  };
 
   saveUser() {
     let user = this.user.value;
@@ -109,15 +117,15 @@ export class UsersFormComponent implements OnInit {
 
   resetPassword() {
     let user = this.user.value;
-    this.confirm.confirm("Password Reset", "A new password will be sent into " + user.user_email).subscribe(result => {
+    this.confirm.confirm("Criar nova senha", "Uma nova senha será gerada e enviada para " + user.user_email).subscribe(result => {
       if (result === true) {
-        this.loader.open("Sending email");
+        this.loader.open("Enviando email");
         this.crudService.Save(user, this.data.new, "/users/reset-password", user.user_id).subscribe(res => {
           this.loader.close()
-          this.snackBar.open("A new email sent successfully!", "", { duration: 5000 });
+          this.snackBar.open("A nova senha foi enviada por email!", "", { duration: 5000 });
         }, err => {
           this.loader.close();
-          this.snackBar.open("An error in sending email: " + err, "", { duration: 5000 });
+          this.snackBar.open("Ocorreu um erro ao enviar email: " + err, "", { duration: 5000 });
         })
       }
     })
@@ -128,16 +136,16 @@ export class UsersFormComponent implements OnInit {
     console.log(user);
     
     user.is_disabled = user.is_disabled == 1 ? 0 : 1;
-    this.confirm.confirm("Diable User", (user.is_disabled == 1 ? ("Will you disable this user : ") : ("Will you active this user : ")) + user.user_name).subscribe(result => {
+    this.confirm.confirm("Desabilitar usuário", (user.is_disabled == 1 ? ("Desabilitar usuário ") : ("Ativar usuário ")) + user.user_name + "?").subscribe(result => {
       if (result === true) {
         this.loader.open();
         this.crudService.Save(user, this.data.new, "/users", user.user_id).subscribe(res => {
           this.loader.close();
           this.user.value.is_disabled = user.is_disabled;
-          this.snackBar.open("An user has been disabled successfully", "", { duration: 5000 });
+          this.snackBar.open("Usuário desabilitado com sucesso", "", { duration: 5000 });
         }, err => {
           this.loader.close();
-          this.snackBar.open("An error in disabling user!" + err, "", { duration: 5000 });
+          this.snackBar.open("Ocorreu um erro ao tentar desabilitar o usuário!" + err, "", { duration: 5000 });
         })
       }
     })    

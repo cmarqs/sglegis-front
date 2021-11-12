@@ -67,7 +67,6 @@ export class DocumentsFormComponent implements OnInit {
       document_summary: new FormControl(record.document_summary, [Validators.required]),
       document_state_id: new FormControl(record.document_state_id),
       document_city_id: new FormControl(record.document_city_id),
-      document_file: new FormControl()
     });
     
     this.documentForm.controls.document_date.setValue(
@@ -120,7 +119,7 @@ export class DocumentsFormComponent implements OnInit {
   showStates() {
     this.showState = true;
     this.documentForm.controls.document_state_id.setValidators([Validators.required]);
-    this.crudService.GetParams({ "orderby": "state_name" }, "/state").subscribe(res => {
+    this.crudService.GetParams({ "orderby": "state_name", "direction": "asc" }, "/state").subscribe(res => {
       if (res.status == 200) {
         this.states = [];
         this.states = res.body;
@@ -185,7 +184,9 @@ export class DocumentsFormComponent implements OnInit {
 
   saveDocument() {
     let form = this.documentForm.value;
-    form.document_date = form.document_date.substr(0, 10).split('/').reverse().join('-');
+    form.document_date = this.convertData(form.document_date);
+    //form.document_date = form.document_date.substr(0, 10).split('/').reverse().join('-');
+
     this.loader.open();
     this.crudService.Save(form, this.data.new, "/document", form.document_id).subscribe(res => {
       if (res.status == 200) {
@@ -234,12 +235,18 @@ export class DocumentsFormComponent implements OnInit {
   }
 
   getItems(documentId) {
+
+    let params = {
+      "orderby": ["document_item_order", "document_item_number"],
+      "direction": "asc"
+    };
+
     if (documentId)
-    this.crudService.GetParams({ "orderby": "document_item_order", "direction": "asc" }, "/documentitem/items/" + documentId).subscribe(res => {
-      if (res.status == 200) {
-        this.documentsItem = [];
-        this.documentsItem = res.body;
-      }
+      this.crudService.GetParams(params, "/documentitem/items/" + documentId).subscribe(res => {
+        if (res.status == 200) {
+          this.documentsItem = [];
+          this.documentsItem = res.body;
+        }
 
     });
   }
@@ -248,7 +255,7 @@ export class DocumentsFormComponent implements OnInit {
     let dialogRef: MatDialogRef<any> = this.dialog.open(DocumentsAttachementFormComponent, {
       width: dialog.small,
       disableClose: true,
-      data: { title: "New Attachment to document", payload: this.documentForm.value, new: true }
+      data: { title: "Anexar PDF", payload: this.documentForm.value, new: true }
     });
 
     dialogRef.afterClosed().subscribe(res => {
@@ -276,16 +283,16 @@ export class DocumentsFormComponent implements OnInit {
   removeAttachment(attachment) {
     let attachmentData = attachment.attachment_id;
     
-    this.confirm.confirm("Delete Attachment", "Are you sure to delete an Attachment? " + attachmentData).subscribe(result => {
+    this.confirm.confirm("Apagar anexo", "Tem certeza que deseja remover o anexo? " + attachmentData).subscribe(result => {
       if (result === true) {
         this.loader.open();
         this.crudService.DeleteParams(attachmentData, "/document-attachment").subscribe(res => {
-          this.snackBar.open("An attachment has been deleted successfully!", "", { duration: 3000 });
+          this.snackBar.open("O documento anexado foi removido com sucesso!", "", { duration: 3000 });
           this.getAttachments(this.documentForm.value.document_id);
           this.loader.close();
         }, err => {
           this.loader.close();
-          this.snackBar.open("Error in deleting attachment: " + err, "", { duration: 5000 });
+          this.snackBar.open("Erro ao remover anexo: " + err, "", { duration: 5000 });
         })
       }
     })
@@ -313,4 +320,15 @@ export class DocumentsFormComponent implements OnInit {
     window.open(`${environment.fileURL}/${data.attachment_src}`);
   }
 
+  convertData (strData) {
+    if (strData.includes('-'))
+      return strData;
+    if (strData.includes('/'))
+      strData = strData.replaceAll('/', '');
+    let dia = strData.substring(0, 2);
+    let mes = strData.substring(2, 4);
+    let ano = strData.substring(4, 8);
+    const newData = `${ano}-${mes}-${dia}`
+    return newData;
+}
 }

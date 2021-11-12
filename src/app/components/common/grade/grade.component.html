@@ -1,7 +1,7 @@
 <div>
   <mat-toolbar color="primary" style="height: 40px;">
     <div fxFlex class="search-bar" style="height: 80%" *ngIf="(MostrarBarraBusca===true)">
-      <form class="top-search-form" [formGroup]="buscarForm" autocomplete="off" #buscadorForm>
+      <form class="top-search-form" [formGroup]="buscarForm" autocomplete="on" #buscadorForm>
         <mat-icon role="img" style="cursor:pointer;" (click)="showFinderToggle()">search</mat-icon>
         <input autofocus="true" placeholder="Procurar" type="text" style="height: 95%; padding: 0 0 0 10px;"
           (click)="showFinderToggle()" class="txtFinder" #txtFinder readonly>
@@ -9,11 +9,17 @@
           <div *ngIf="(formReady)">
             <div [ngClass]="finderPanel? 'dropdown-content show': 'dropdown-content'">
               <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap" style="padding: 10px; font-size: 13px">
-                <div fxFlex="50" class="pr-1" *ngFor='let campo of CamposBusca'>
+                <div fxFlex="33" class="pr-1" *ngFor='let campo of CamposBusca'>
                   <mat-form-field class="full-width" *ngIf="(campo.tipoCampo =='string')">
-                    <input matInput name="campo.nomeCampo" [placeholder]="campo.labelCampo"
-                      [maxLength]="campo.maxLengthCampo" [mask]="campo.maskCampo" upperCase type="text"
-                      [formControl]="buscarForm.controls[campo.nomeCampo]" [readonly]="campo.disabled">
+                    <input matInput 
+                        name="campo.nomeCampo" 
+                        [placeholder]="campo.labelCampo"
+                        [maxLength]="campo.maxLengthCampo" 
+                        [mask]="campo.maskCampo" 
+                        upperCase 
+                        type="text"
+                        [formControl]="buscarForm.controls[campo.nomeCampo]" 
+                        [readonly]="campo.disabled">
                     <button mat-button *ngIf="buscarForm.controls[campo.nomeCampo]" matSuffix mat-icon-button
                       aria-label="Limpar" (click)="buscarForm.controls[campo.nomeCampo].setValue('')" [disabled]="campo.disabled">
                       <mat-icon>close</mat-icon>
@@ -58,7 +64,6 @@
         </mat-dialog-content>
       </form>
     </div>
-    <span fxFlex *ngIf="(MostrarBarraBusca===false)">Pedidos liberados</span>
     <button mat-icon-button [matMenuTriggerFor]="ColunasMenu">
       <mat-icon>filter_list</mat-icon>
     </button>
@@ -79,7 +84,7 @@
 
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap" style="padding-left: 20px;margin-top: 10px;" *ngIf="(showFilter)">
       <mat-chip-list aria-label="Fish selection" *ngFor='let campo of CamposBusca'>
-        <mat-chip *ngIf="(buscarForm.controls[campo.nomeCampo].value)">{{campo.labelCampo}} : {{buscarForm.controls[campo.nomeCampo].value}}</mat-chip>        
+        <mat-chip *ngIf="(buscarForm.controls[campo.nomeCampo].value)">{{campo.labelCampo}} : {{ getValue(campo) }}</mat-chip>        
       </mat-chip-list>
   </div>
 
@@ -91,9 +96,16 @@
   </div>
 
   <div style="margin-top: 10px;">
-    <ngx-datatable class="material striped" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
-      [rowHeight]="'auto'" [limit]="10" [rows]="Linhas" [messages]="{emptyMessage: 'Nenhuma informação encontrada'}"
-      [scrollbarH]="true" #myTable>
+    <ngx-datatable class="material fullscreen" 
+      [columnMode]="'force'" 
+      [headerHeight]="50" 
+      [footerHeight]=""
+      [rowHeight]="'auto'" 
+      [limit]="" 
+      [rows]="Linhas" 
+      [messages]="{emptyMessage: 'Nenhuma informação encontrada'}"
+      [scrollbarH]="true"
+       #myTable>
 
       <!-- Row Detail Template -->
       <ngx-datatable-row-detail [rowHeight]="'auto'" #myDetailRow>
@@ -111,8 +123,13 @@
       </ngx-datatable-row-detail>
 
       <!-- Column Templates -->
-      <ngx-datatable-column [width]="50" [resizeable]="false" [sortable]="false" [draggable]="false"
-        [canAutoResize]="false" *ngIf="(Expansible)">
+      <ngx-datatable-column 
+        [width]="50" 
+        [resizeable]="false" 
+        [sortable]="false" 
+        [draggable]="false"
+        [canAutoResize]="false" 
+        *ngIf="(Expansible)">
         <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
           <a href="javascript:void(0)" [class.datatable-icon-right]="!expanded" [class.datatable-icon-down]="expanded"
             title="Expand/Collapse Row" (click)="toggleExpandRow(row)">
@@ -128,29 +145,40 @@
 
       <!-- [prop]="coluna.Propriedade" -->
       <!-- <div > -->
-      <ngx-datatable-column [name]="coluna.Titulo" [prop]="coluna.Propriedade" [width]="coluna.Largura"
-        *ngFor="let coluna of Colunas">
+        <ngx-datatable-column [name]="coluna.Titulo" [prop]="coluna.Propriedade" [width]="coluna.Largura" *ngFor="let coluna of Colunas">
         <ng-template let-row="row" ngx-datatable-cell-template
           *ngIf="(coluna.Imagem == null || coluna.Imagem == false)">
-          {{ coluna.Tipo =="DATA" ?
-          (row[coluna.Propriedade]|date:"dd/MM/yyyy"): (coluna.Render ? (
-            coluna.Render(row[coluna.Propriedade]) 
-          ) : (
-            row[coluna.Propriedade] ? row[coluna.Propriedade].toString().substring(0,50) : ""
-          )) }}
+          {{ coluna.Tipo =="DATA" ? (row[coluna.Propriedade]|date:"dd/MM/yyyy"): 
+            (coluna.Render ? (coluna.Render(row[coluna.Propriedade])) : 
+              (row[coluna.Propriedade] ? row[coluna.Propriedade].toString() : "")
+            ) 
+          }}
 
         </ng-template>
 
         <ng-template let-row="row" ngx-datatable-cell-template *ngIf="coluna.Imagem==true">
           <div style="text-align: center;">
-            <mat-icon (click)="openPopup(row[coluna.Propriedade])">image</mat-icon>
+            <mat-icon  (click)="openPopup(row[coluna.Propriedade])">image</mat-icon>
           </div>
         </ng-template>
+
       </ngx-datatable-column>
       <!-- </div> -->
 
       <!-- <div > -->
-        <ngx-datatable-column name="Plano de ação" [flexGrow]="0" [width]="200" *ngIf="(BtnAction)">
+      <ngx-datatable-column name="Arquivos" [flexGrow]="0" [width]="50" *ngIf="(BtnAttachment)">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <button *ngIf="(BtnAttachment)" mat-icon-button mat-sm-button color="primary" class="mr-1"
+            (click)="onAttachment(row)">
+            <mat-icon>cloud_download</mat-icon>
+          </button>
+        </ng-template>
+      </ngx-datatable-column>
+      <!-- </div> -->
+
+
+      <!-- <div > -->
+        <ngx-datatable-column name="Plano de ação" [flexGrow]="0" [width]="100" *ngIf="(BtnAction)">
           <ng-template let-row="row" ngx-datatable-cell-template>
             <button *ngIf="(BtnAction)" mat-raised-button mat-sm-button color="primary" class="mr-1"
               (click)="onAction(row)">
@@ -161,7 +189,7 @@
         <!-- </div> -->
 
       <!-- <div > -->
-      <ngx-datatable-column name="Responsible" [flexGrow]="0" [width]="50" *ngIf="(BtnResponsible)">
+      <ngx-datatable-column name="Responsável (Aspecto)" [flexGrow]="0" [width]="50" *ngIf="(BtnResponsible)">
         <ng-template let-row="row" ngx-datatable-cell-template>
           <button *ngIf="(BtnResponsible)" mat-icon-button mat-sm-button color="primary" class="mr-1"
             (click)="onResponsible(row)">

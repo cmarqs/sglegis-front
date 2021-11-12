@@ -12,8 +12,9 @@
               <mat-form-field class="full-width">
                 <input
                   matInput
+                  upperCase
                   placeholder="Nome completo"
-                  [formControl]="responsibleForm.controls['unity_aspect_responsible_name']"
+                  [formControl]="responsibleForm.controls['unit_aspect_responsible_name']"
                 >
               </mat-form-field>
             </div>
@@ -21,17 +22,18 @@
               <mat-form-field class="full-width">
                 <input
                   matInput
+                  upperCase
                   placeholder="E-mail"
-                  [formControl]="responsibleForm.controls['unity_aspect_responsible_email']"
+                  [formControl]="responsibleForm.controls['unit_aspect_responsible_email']"
                 >
               </mat-form-field>
             </div>
             
 
             <!-- system managment and aspects panel  -->
-            <mat-card class="mat-card-background">
+            <mat-card class="mat-card-background" fxFlex="100">
               <mat-card-header class="mat-card-titulo2">
-                <span class="mat-card-titulo">Sistemas de gestão associados</span><span class="mat-card-titulo" fxFlex></span>
+                <span class="mat-card-titulo">Sistemas de gestão e Aspectos</span><span class="mat-card-titulo" fxFlex></span>
               </mat-card-header>
         
               <mat-card-content class="mat-card-body">
@@ -48,14 +50,14 @@
         
                         </mat-expansion-panel-header>
                         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
-                          <div fxFlex="25" class="pr-1">
+                          <div fxFlex="50" class="pr-1">
                             <mat-checkbox color="primary" (change)="toggleAll(areaWithAspect, $event)">
-                              TODOS
+                              SELECIONAR TODOS
                             </mat-checkbox>
                           </div>
         
-                          <div fxFlex="25" class="pr-1" *ngFor="let aspect of areaWithAspect.aspects">
-                            <mat-checkbox color="primary" [checked]="isCheckedAspect(aspect)" (change)="toggleAspect(aspect, $event)">
+                          <div fxFlex="50" class="pr-1" *ngFor="let aspect of areaWithAspect.aspects">
+                            <mat-checkbox color="primary" [checked]="aspect.checked=='S'" (change)="toggleAspect(aspect, $event)">
                               {{aspect.area_aspect_name}}
                             </mat-checkbox>
                           </div>
@@ -85,13 +87,13 @@
 
             <ngx-datatable-column name="NOME" [flexGrow]="0" >
               <ng-template let-row="row" ngx-datatable-cell-template>
-                {{ row['unity_aspect_responsible_name'] }}
+                {{ row['unit_aspect_responsible_name'] }}
               </ng-template>
             </ngx-datatable-column>
 
             <ngx-datatable-column name="EMAIL" [flexGrow]="0" >
               <ng-template let-row="row" ngx-datatable-cell-template>
-                {{ row['unity_aspect_responsible_email'] }}
+                {{ row['unit_aspect_responsible_email'] }}
               </ng-template>
             </ngx-datatable-column>
 

@@ -6,10 +6,13 @@
   [BtnDeletar]="false"
   [CamposBusca]="configSearch"
   [Expansible]="true"
-  [check]="true"
   PropertyToExpanse="document_summary"
   (IncluirRegistro)="openForm('', true)"
   (EditarRegistro)="openForm($event.registro, false)"
   (PesquisarRegistro)="getDocuments($event.parametro)"  
-  [MostrarBarraBusca]="true">  
+  [MostrarBarraBusca]="true"
+  [syncOnInit]="syncInit"
+  (filterValueChange)="onFilterValueChange($event.type, $event.value)"
+  initFilterOpened="true"
+  >  
 </app-grade>

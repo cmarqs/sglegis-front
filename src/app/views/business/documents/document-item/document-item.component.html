@@ -5,21 +5,14 @@
   <mat-dialog-content>
     <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
 
-      <div fxFlex="20" class="pr-1">
+      <div fxFlex="30" class="pr-1">
         <mat-form-field class="full-width">
           <input matInput name="item" placeholder="Item*" maxlength="10" upperCase
             [formControl]="documentItemForm.controls['document_item_number']" />
         </mat-form-field>
       </div>
 
-      <div fxFlex="80" class="pr-1">
-        <mat-form-field class="full-width">
-          <input matInput name="assunto" placeholder="Assunto do item*" maxlength="100" upperCase
-            [formControl]="documentItemForm.controls['document_item_subject']" />
-        </mat-form-field>
-      </div>
-
-      <div fxFlex="30" class="pr-1">
+      <div fxFlex="50" class="pr-1">
         <mat-form-field class="full-width">
           <mat-select placeholder="Status *" [formControl]="documentItemForm.controls['document_item_status_id']">
             <mat-option *ngFor="let status of documentsStatus" [value]="status.status_id">
@@ -44,7 +37,7 @@
 
       <div fxFlex="100" class="pr-1">
         <mat-form-field class="full-width">
-          <textarea matInput upperCase placeholder="Observação *" name="observation" maxlength="2000"
+          <textarea matInput upperCase placeholder="Observação" name="observation" maxlength="2000"
             [formControl]="documentItemForm.controls['document_item_observation']"></textarea>
         </mat-form-field>
       </div>
@@ -70,13 +63,13 @@
 
                 </mat-expansion-panel-header>
                 <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
-                  <div fxFlex="20" class="pr-1">
+                  <div fxFlex="50" class="pr-1">
                     <mat-checkbox color="primary" (change)="toggleAll(areaWithAspect, $event)">
-                      TODOS
+                      SELECIONAR TODOS
                     </mat-checkbox>
                   </div>
 
-                  <div fxFlex="20" class="pr-1" *ngFor="let aspect of areaWithAspect.aspects">
+                  <div fxFlex="50" class="pr-1" *ngFor="let aspect of areaWithAspect.aspects">
                     <mat-checkbox color="primary" [checked]="aspect.checked=='S'" (change)="toggle(aspect, $event)">
                       {{aspect.area_aspect_name}}
                     </mat-checkbox>

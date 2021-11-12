@@ -40,7 +40,7 @@ export class ActionPlanFormComponent implements OnInit {
       deadline: new FormControl('', [Validators.required]),
     });
 
-    this.activity.controls['deadline'].setValue(dateFormat(new Date(), "MM/DD/yyyy"));
+    this.activity.controls['deadline'].setValue(dateFormat(new Date(), "DD/MM/yyyy"));
     this.getActionPlans(record);
   }
 
@@ -68,10 +68,10 @@ export class ActionPlanFormComponent implements OnInit {
           ...this.activities
         ],
         activityChanges: {
-          unity_name: this.actionPlan.customer_unity_name,
+          unit_name: this.actionPlan.customer_unit_name,
           aspect_name: this.actionPlan.area_aspect_name,
           customer_name,
-          actionplan_items: [...this.activityChanges.map(a => ({ ...a, deadline: dateFormat(a.deadline, "MM/DD/yyyy") }))]
+          actionplan_items: [...this.activityChanges.map(a => ({ ...a, deadline: dateFormat(a.deadline, "DD/MM/yyyy") }))]
         }
       };  
   
@@ -79,11 +79,11 @@ export class ActionPlanFormComponent implements OnInit {
       this.curdService.Save(newActionPlan, true, "/action-plan", null).subscribe(res => {
         this.loader.close();
         this.dialogRef.close("OK");
-        this.snackBar.open("Successfully saved action plan", "", { duration: 3000 });
+        this.snackBar.open("Sucesso ao salvar plano de ação", "", { duration: 3000 });
       }, err => {
         this.loader.close();
         this.dialogRef.close("NOK");
-        this.snackBar.open("Error in saving action plan: " + err, "", { duration: 5000 });
+        this.snackBar.open("Ocorreu um erro: " + err, "", { duration: 5000 });
       })
     })    
   }
@@ -94,7 +94,7 @@ export class ActionPlanFormComponent implements OnInit {
     
     const newActivity = {
       ...activity,
-      deadline: dateFormat(activity.deadline, "MM/DD/YY"),
+      deadline: activity.deadline,
       status: 0,
       actionplan_id: this.actionPlan.actionplan_id,
       fake_id: this.activities.length
