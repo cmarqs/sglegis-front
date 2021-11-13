@@ -31,8 +31,8 @@ export class DashboardComponent implements OnInit {
 
   chartTitles: string[] = [
     "AVALIAÇÃO DE CONFORMIDADE LEGAL DOS REQUISITOS DE ORDEM PRÁTICA",
-    "NÃO CONFORMIDADE POR ÁREAS",
-    "REQUISITOS LEGAIS TOTAIS POR ÁREA",
+    "NÃO CONFORMIDADE POR RESPONSÁVEL",
+    "REQUISITOS LEGAIS TOTAIS POR RESPONSÁVEL",
     "RELATÓRIO DE NÃO CONFORMIDADES POR ASPECTO"
   ]
   chartData: Array<any> = [];
@@ -66,8 +66,8 @@ export class DashboardComponent implements OnInit {
 
     this.chartData = [
       chart1,
-      chart2,
       chart3,
+      chart2,
       chart4
     ]
   }
