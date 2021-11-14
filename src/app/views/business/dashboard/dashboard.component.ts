@@ -219,7 +219,7 @@ export class DashboardComponent implements OnInit {
 
   // get chart data...
   getDataChart1(params: object) {
-    const colors = [ "#218e23", "#ff0100", "#ffb219" ];
+    const colors = [ "#ff0100", "#ffb219", "#218e23" ];
     return new Promise(async (resolve, reject) => {
       const data: Array<any> = await this.crud.GetParams(params, "/dashboard/pratical_order_compliance").toPromise().then(res => res.body);      
       const chartData = {
