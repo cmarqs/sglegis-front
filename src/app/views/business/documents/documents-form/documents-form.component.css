@@ -1,3 +1,6 @@
 textarea{
     text-transform: uppercase;
 }
+div.hidden{
+    display: none !important;
+}
