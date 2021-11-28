@@ -111,6 +111,10 @@ export class AuditFormComponent implements OnInit {
     const datas = this.data.payload;
     const user = this.data.user;
     let audit = this.auditForm.value;
+
+    audit.audit_evidnece_compliance = audit.audit_evidnece_compliance.toUpperCase();
+    audit.audit_control_action = audit.audit_control_action.toUpperCase();
+
     this.loader.open();
     datas.forEach(d => {
       let newAudit = {
