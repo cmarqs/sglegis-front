@@ -184,8 +184,8 @@ export class DocumentsFormComponent implements OnInit {
 
   saveDocument() {
     let form = this.documentForm.value;
+    form.document_summary = form.document_summary.toUpperCase();
     form.document_date = this.convertData(form.document_date);
-    //form.document_date = form.document_date.substr(0, 10).split('/').reverse().join('-');
 
     this.loader.open();
     this.crudService.Save(form, this.data.new, "/document", form.document_id).subscribe(res => {
@@ -195,13 +195,13 @@ export class DocumentsFormComponent implements OnInit {
         
         this.loader.close();
         this.snackBar.open("Registro gravado com sucesso", "", { duration: 3000 });
-        //this.dialogRef.close('OK');
         this.documentForm.controls.document_id.setValue(res.body.document_id);
+        this.dialogRef.close('OK');
       } else {
         this.loader.close();
         this.snackBar.open("Erro ao gravar registro:" + res.Message, "", { duration: 5000 });
         this.documentForm.controls.document_id.setValue(res.body.document_id);
-        //this.dialogRef.close('NOK');
+        this.dialogRef.close('NOK');
       }
     });
   }

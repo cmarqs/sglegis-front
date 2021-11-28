@@ -76,6 +76,9 @@ export class DocumentItemComponent implements OnInit {
 
   saveDocumentItem() {
     let form = this.documentItemForm.value;
+    form.document_item_description = form.document_item_description.toUpperCase();
+    form.document_item_observation = form.document_item_observation.toUpperCase();
+
     this.loader.open();
     this.crudService.Save(form, this.data.new, "/documentitem", form.document_item_id).subscribe(res => {
       if (res.status == 200) {
