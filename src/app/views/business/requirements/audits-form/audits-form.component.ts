@@ -80,8 +80,8 @@ export class AuditFormComponent implements OnInit {
           audit_item_id: new FormControl(this.featuredHistory.audit_item_id || 0),
           audit_practical_order: new FormControl(this.featuredHistory.audit_practical_order || '', [Validators.required]),
           audit_conformity: new FormControl(this.featuredHistory.audit_conformity || '', [Validators.required]),
-          audit_evidnece_compliance: new FormControl(this.featuredHistory.audit_evidnece_compliance || '', [Validators.required]),
-          audit_control_action: new FormControl(this.featuredHistory.audit_control_action || '', [Validators.required])
+          audit_evidnece_compliance: new FormControl(this.featuredHistory.audit_evidnece_compliance.toUpperCase() || '', [Validators.required]),
+          audit_control_action: new FormControl(this.featuredHistory.audit_control_action.toUpperCase() || '', [Validators.required])
         })
       }
     });
@@ -126,7 +126,7 @@ export class AuditFormComponent implements OnInit {
 
       this.crudService.Save(newAudit, this.data.new, "/audits", newAudit.audit_id).subscribe(res => {
         if (this.notify) {
-          this.snackBar.open("Audit saved successfully", "", { duration: 3000 });
+          this.snackBar.open("Registro salvo com sucesso", "", { duration: 3000 });
           this.notifyResponsibles(datas.map(d => d.area_aspect_id), [
             {
               label: 'Ordem prática',
@@ -147,18 +147,18 @@ export class AuditFormComponent implements OnInit {
           ]).then(res => {
             const data = res.body;
             if (data.success === true) {
-              this.snackBar.open("Notification has been sent to Responsibles successfully", "", { duration: 3000 });
+              this.snackBar.open("Responsável notificado com sucesso!", "", { duration: 3000 });
               this.loader.close();
               this.dialogRef.close("OK");
             } else {
               this.loader.close();
-              this.snackBar.open("Error in sending notification to Responsibles: " + data.error, "", { duration: 7000 });
+              this.snackBar.open("Falha ao enviar notificação ao responsável: " + data.error, "", { duration: 7000 });
               this.dialogRef.close("OK");
             }
             
           }).catch(err => {
             this.loader.close();
-            this.snackBar.open("Error in sending notification to Responsibles: " + err, "", { duration: 5000 });
+            this.snackBar.open("Falha ao enviar notificação ao responsável: " + err, "", { duration: 5000 });
             this.dialogRef.close("NOK");
           })
         } else {
@@ -167,7 +167,7 @@ export class AuditFormComponent implements OnInit {
         }
       }, err => {
         this.loader.close();
-        this.snackBar.open("Error in saving Audit: " + err, "", { duration: 5000 });
+        this.snackBar.open("Erro ao salvar auditoria: " + err, "", { duration: 5000 });
         this.dialogRef.close("NOK");
       });
     }); 

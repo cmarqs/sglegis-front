@@ -290,10 +290,6 @@ export class RequirementsComponent implements OnInit {
     })
 }
 
-getAttachments(document_id){
-  return [{'document_src': 'teste'},{'document_src': 'teste2'} ]
-  }
-
   getPraticName(id) {
     let p = this.pratics.find(p => p.audit_practical_order_id === id);
     if (p)
