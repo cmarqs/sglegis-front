@@ -309,7 +309,7 @@ export class AuditFormComponent implements OnInit {
   }
 
   downloadAttachment(data) {
-    window.open(`${environment.fileURL}/${data.attachment_src}`);
+    window.open(`${environment.fileURL}/${data.audit_attachment_src}`);
   }
 
   convertData (strData) {

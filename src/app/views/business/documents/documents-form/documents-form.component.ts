@@ -318,7 +318,7 @@ export class DocumentsFormComponent implements OnInit {
 
   downloadAttachment(data) {
     window.open(`${environment.fileURL}/${data.attachment_src}`);
-  }
+  };
 
   convertData (strData) {
     if (strData.includes('-'))
