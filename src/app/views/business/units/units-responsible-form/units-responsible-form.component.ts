@@ -9,181 +9,221 @@ import { AppLoaderService } from 'app/services/dialogs/app-loader/app-loader.ser
 import { CRUDService } from 'app/services/negocio/CRUDService/CRUDService';
 
 @Component({
-  selector: 'app-units-responsible-form',
-  templateUrl: './units-responsible-form.component.html',
-  styleUrls: ['./units-responsible-form.component.css']
+	selector: 'app-units-responsible-form',
+	templateUrl: './units-responsible-form.component.html',
+	styleUrls: ['./units-responsible-form.component.css']
 })
 export class unitsResponsibleFormComponent implements OnInit {
-  responsibleForm: FormGroup;
-  selectedAspects = [];
-  aspectInvalid = true;
-  aspects = [];
-  areasWithAspects = [];
-  responsibles = [];
-  deletedResponsibles = [];
+	responsibleForm: FormGroup;
+	selectedAspects = [];
+	aspectInvalid = true;
+	aspects = [];
+	areasWithAspects = [];
+	responsibles = [];
+	deletedResponsibles = [];
 
-  currentUser:any;
-  profile = profile;
-  roles = roles;
+	editmode = false;
+	editValue = [];
+	customer_unit_id = 0;
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<unitsResponsibleFormComponent>,
-    private loader: AppLoaderService,
-    private crudService: CRUDService,
-    private snackBar: MatSnackBar,
-    private confirm: AppConfirmService,
-    private auth: AuthGuard,
-  ) { }
+	currentUser: any;
+	profile = profile;
+	roles = roles;
 
-  ngOnInit() {
-    this.currentUser = this.auth.getUser();
-    this.prepareScreen(this.data.payload);
-  }
+	constructor(
+		@Inject(MAT_DIALOG_DATA) public data: any,
+		public dialogRef: MatDialogRef<unitsResponsibleFormComponent>,
+		private loader: AppLoaderService,
+		private crudService: CRUDService,
+		private snackBar: MatSnackBar,
+		private confirm: AppConfirmService,
+		private auth: AuthGuard,
+	) { }
 
-  ngDoCheck() {
-    this
-  }
+	ngOnInit() {
+		this.currentUser = this.auth.getUser();
+		this.prepareScreen(this.data.payload);
+	}
 
-  prepareScreen(record) {    
-    this.responsibleForm = new FormGroup({
-      unit_aspect_responsible_name: new FormControl('', [Validators.required]),
-      unit_aspect_responsible_email: new FormControl('', [Validators.required, Validators.email]),
-    });
+	ngDoCheck() {
+		this
+	}
 
-    this.getAreasWithAspects(record.customer_unit_id);
-    this.getResponsiblesAspects(record.customer_unit_id);
-  }
+	prepareScreen(record) {
+		this.responsibleForm = new FormGroup({
+			unit_aspect_responsible_name: new FormControl('', [Validators.required]),
+			unit_aspect_responsible_email: new FormControl('', [Validators.required, Validators.email]),
+		});
 
-  getAreasWithAspects(unit_id) {
-    this.crudService.GetParams(undefined, `/customerunit/${unit_id||"0"}/aspectsonly`).subscribe(res => {
-      if (res.status == 200) {
-        this.areasWithAspects = [];
-        this.areasWithAspects = res.body;
-      }
-    });
-  }
+		this.getAreasWithAspects(record.customer_unit_id);
+		this.getResponsiblesAspects(record.customer_unit_id);
+	}
 
-  getResponsiblesAspects(unit_id) {
-    this.crudService.GetParams(undefined, `/customerunit/${unit_id || 0}/responsibles`).subscribe(res => {
-      if (res.status == 200) {
-        this.responsibles = [];
-        this.responsibles = res.body.map(responsible => {
-          return {
-            ...responsible,
-            tooltip: responsible.aspects.map(as => `${as.area_aspect_name}`).join(", "),
-          }
-        });        
-      }      
-    })
-  }
+	prepareScreenEdit(record) {
+		this.editmode = true;
 
-  unToggleAll() {
-    this.areasWithAspects.forEach(area => {
-      this.toggleAll(area, { checked: false });
-    });
-  }
+		this.responsibleForm = new FormGroup({
+			unit_aspect_responsible_name: new FormControl(record.unit_aspect_responsible_name, [Validators.required]),
+			unit_aspect_responsible_email: new FormControl(record.unit_aspect_responsible_email, [Validators.required, Validators.email]),
+		});
 
-  toggleAll(arearWithAspect, evento) {
-    for (let i = 0; i < arearWithAspect.aspects.length; i++) {
-      this.toggle(arearWithAspect.aspects[i], evento);
-    }
-  }
+		if (this.areasWithAspects && this.areasWithAspects.length > 0) {
 
-  toggle(aspect, evento) {
-    aspect.checked = (evento.checked) ? "S" : "N";
-    this.toggleAspect(aspect, evento);
-  }
+			this.areasWithAspects.forEach(area => {
+				area.aspects.forEach(aspect => {
+					var aspectChecked = record.aspects.find(e => e.area_aspect_id === aspect.area_aspect_id);
+					if (aspectChecked) {
+						aspect.checked = 'S';
+						this.selectedAspects.push(aspect);
+					}
+				});
+			});
+		}
+	}
 
-  addResponsible() {
-    let newResponsible = this.responsibleForm.value;    
-    this.responsibles = [...this.responsibles, {
-      unit_aspect_responsible_id: this.responsibles.length + 1,
-      ...newResponsible,
-      aspects: [
-        ...this.selectedAspects
-      ],
-      tooltip: this.selectedAspects.map(aspect => aspect.area_aspect_name).join(', '),
-      isNew: true
-    }];    
-    this.responsibleForm.reset();
-    this.unToggleAll();
-    this.selectedAspects = [];
-    this.aspectInvalid = true;
-  }
+	getAreasWithAspects(unit_id) {
+		this.crudService.GetParams(undefined, `/customerunit/${unit_id || "0"}/aspectsonly`).subscribe(res => {
+			if (res.status == 200) {
+				this.areasWithAspects = [];
+				this.areasWithAspects = res.body;
+			}
+		});
+	}
 
-  removeResponsible(info: any) {
-        this.responsibles = this.responsibles.filter(res => res.unit_aspect_responsible_id !== info.unit_aspect_responsible_id);
-        if (!info.isNew) {
-          this.deletedResponsibles.push(info.unit_aspect_responsible_id);
-        }
-  }
+	getResponsiblesAspects(unit_id) {
+		this.crudService.GetParams(undefined, `/customerunit/${unit_id || 0}/responsibles`).subscribe(res => {
+			if (res.status == 200) {
+				this.responsibles = [];
+				this.responsibles = res.body.map(responsible => {
+					return {
+						...responsible,
+						tooltip: responsible.aspects.map(as => `${as.area_aspect_name}`).join(", "),
+					}
+				});
+			}
+		})
+	}
 
-  editResponsible(info: any) {
-    this.responsibles = this.responsibles.filter(res => res.unit_aspect_responsible_id !== info.unit_aspect_responsible_id);
-    // if (!info.isNew) {
-    //  this.deletedResponsibles.push(info.unit_aspect_responsible_id);
-    // }
-}
+	unToggleAll() {
+		this.areasWithAspects.forEach(area => {
+			for (let i = 0; i < area.aspects.length; i++) {
+				this.toggle(area.aspects[i], { checked: false });
+			}
+		});
+	};
+
+	toggleAll(arearWithAspect, evento) {
+		for (let i = 0; i < arearWithAspect.aspects.length; i++) {
+			this.toggle(arearWithAspect.aspects[i], evento);
+		}
+	}
+
+	toggle(aspect, evento) {
+		aspect.checked = (evento.checked) ? "S" : "N";
+		this.toggleAspect(aspect, evento);
+	}
+
+	addResponsible() {
+		let newResponsible = this.responsibleForm.value;
+		this.responsibles = [...this.responsibles, {
+			unit_aspect_responsible_id: this.responsibles.length + 1,
+			...newResponsible,
+			aspects: [
+				...this.selectedAspects
+			],
+			tooltip: this.selectedAspects.map(aspect => aspect.area_aspect_name).join(', '),
+			isNew: true
+		}];
+		this.responsibleForm.reset();
+		this.unToggleAll();
+		this.selectedAspects = [];
+		this.aspectInvalid = true;
+	}
+
+	removeResponsible(info: any) {
+		this.responsibles = this.responsibles.filter(res => res.unit_aspect_responsible_id !== info.unit_aspect_responsible_id);
+		if (!info.isNew) {
+			this.deletedResponsibles.push(info.unit_aspect_responsible_id);
+		}
+	}
+
+	cancelEdit() {
+		if (this.editmode && this.editValue) {
+
+			let newResponsible = this.editValue;
+			this.responsibles = [...this.responsibles, newResponsible ];
+			
+			this.editValue = [];
+			this.editmode = false;
+
+		}
+		this.responsibleForm.reset();
+		this.unToggleAll();
+		this.selectedAspects = [];
+		this.aspectInvalid = true;
+	}
+
+	editResponsible(info: any) {
+		this.editValue = info;
+		this.removeResponsible(info);
+		this.prepareScreenEdit(info);
+	}
 
   
 
-  isCheckedAspect(info: any) {
-    return this.selectedAspects.find(aspect => aspect.area_aspect_id === info.area_aspect_id);
-  }
-  toggleAspect(info: any = {}, ev: any) {    
-    if (ev.checked) {
-      this.selectedAspects = [ ...this.selectedAspects, info ];
-    } else {
-      this.selectedAspects = this.selectedAspects.filter(aspect => aspect.area_aspect_id !== info.area_aspect_id);
-    }
-    if (this.selectedAspects.length === 0) this.aspectInvalid = true;
-    else this.aspectInvalid = false;
-  }
+	isCheckedAspect(info: any) {
+		return this.selectedAspects.find(aspect => aspect.area_aspect_id === info.area_aspect_id);
+	}
+	toggleAspect(info: any = {}, ev: any) {
+		if (ev.checked) {
+			this.selectedAspects = [...this.selectedAspects, info];
+		} else {
+			this.selectedAspects = this.selectedAspects.filter(aspect => aspect.area_aspect_id !== info.area_aspect_id);
+		}
+		if (this.selectedAspects.length === 0) this.aspectInvalid = true;
+		else this.aspectInvalid = false;
+	}
   
-  save() {
-    this.loader.open();
-    try {
-      this.saveResponsible(this.data.payload.customer_unit_id).then(async () => {
-        await this.deleteResponsibles();
-        this.loader.close();
-        this.snackBar.open("Responsáveis gravados com sucesso", "", { duration: 3000 });
-        this.dialogRef.close();
-      })
-    } catch (error) {
-      this.loader.close();
-      this.snackBar.open("Erro ao gravar responsáveis: "+ error, "", { duration: 5000 })      
-    }
-  }
+	save() {
+		this.loader.open();
+		try {
+			this.saveResponsible(this.data.payload.customer_unit_id).then(async () => {
+				await this.deleteResponsibles();
+				this.loader.close();
+				this.snackBar.open("Responsáveis gravados com sucesso", "", { duration: 3000 });
+				this.dialogRef.close();
+			})
+		} catch (error) {
+			this.loader.close();
+			this.snackBar.open("Erro ao gravar responsáveis: " + error, "", { duration: 5000 })
+		}
+	}
 
-  async deleteResponsibles() {
-    for (let i = 0; i < this.deletedResponsibles.length; i ++) {
-      await this.crudService.DeleteParams(this.deletedResponsibles[i], '/customerunit/responsibles').toPromise();
-    }
-  }
+	async deleteResponsibles() {
+		for (let i = 0; i < this.deletedResponsibles.length; i++) {
+			await this.crudService.DeleteParams(this.deletedResponsibles[i], '/customerunit/responsibles').toPromise();
+		}
+	}
 
-  async saveResponsible(customer_unit_id) {
-    for (let i = 0; i < this.responsibles.length; i ++) {
-      if (this.responsibles[i].isNew) {
-        const newResponsible = {
-          customer_unit_id,
-          unit_aspect_responsible_name: this.responsibles[i].unit_aspect_responsible_name,
-          unit_aspect_responsible_email: this.responsibles[i].unit_aspect_responsible_email
-        } 
-        const resResponsible = await this.crudService.Save(newResponsible, true, `/customerunit/responsibles`, null).toPromise();
-        const { unit_aspect_responsible_id } = resResponsible.body;
+	async saveResponsible(customer_unit_id) {
+		for (let i = 0; i < this.responsibles.length; i++) {
+			if (this.responsibles[i].isNew) {
+				const newResponsible = {
+					customer_unit_id,
+					unit_aspect_responsible_name: this.responsibles[i].unit_aspect_responsible_name,
+					unit_aspect_responsible_email: this.responsibles[i].unit_aspect_responsible_email
+				}
+				const resResponsible = await this.crudService.Save(newResponsible, true, `/customerunit/responsibles`, null).toPromise();
+				const { unit_aspect_responsible_id } = resResponsible.body;
         
-        for (let j = 0; j < this.responsibles[i].aspects.length; j ++) {
-          const newResAspect = {
-            area_aspect_id: this.responsibles[i].aspects[j].area_aspect_id,
-            unit_aspect_responsible_id
-          }
-          await this.crudService.Save(newResAspect, true, '/customerunit/responsibleaspects', null).toPromise();
-        }
-      }
-    }
-  }
-
-    
-
+				for (let j = 0; j < this.responsibles[i].aspects.length; j++) {
+					const newResAspect = {
+						area_aspect_id: this.responsibles[i].aspects[j].area_aspect_id,
+						unit_aspect_responsible_id
+					}
+					await this.crudService.Save(newResAspect, true, '/customerunit/responsibleaspects', null).toPromise();
+				}
+			}
+		}
+	}
 }

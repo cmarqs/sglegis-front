@@ -73,7 +73,11 @@
 
             <div fxFlex="100" class="mt-2">
               <button mat-raised-button class="mat-primary" type="button" (click)="addResponsible()" [disabled]="responsibleForm.invalid || aspectInvalid" >
-                Add to List
+                Adicionar à lista
+              </button>
+              &nbsp;&nbsp;
+              <button mat-raised-button class="mat-warning" type="button" (click)="cancelEdit()" [disabled]="!editmode" >
+                Cancelar
               </button>
             </div>
           </div>        
