@@ -113,15 +113,20 @@ export class unitsResponsibleFormComponent implements OnInit {
   }
 
   removeResponsible(info: any) {
-    // this.confirm.confirm("Delete - Responsible", "Are you sure to delete a Responsible: " + info.unit_aspect_responsible_name).subscribe(res => {
-      // if (res === true) {
         this.responsibles = this.responsibles.filter(res => res.unit_aspect_responsible_id !== info.unit_aspect_responsible_id);
         if (!info.isNew) {
           this.deletedResponsibles.push(info.unit_aspect_responsible_id);
         }
-    //   }
-    // })
   }
+
+  editResponsible(info: any) {
+    this.responsibles = this.responsibles.filter(res => res.unit_aspect_responsible_id !== info.unit_aspect_responsible_id);
+    // if (!info.isNew) {
+    //  this.deletedResponsibles.push(info.unit_aspect_responsible_id);
+    // }
+}
+
+  
 
   isCheckedAspect(info: any) {
     return this.selectedAspects.find(aspect => aspect.area_aspect_id === info.area_aspect_id);

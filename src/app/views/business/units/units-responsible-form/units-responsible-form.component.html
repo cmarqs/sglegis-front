@@ -82,28 +82,36 @@
 
       <mat-card class="mat-card-background" fxFlex="100">     
         <mat-card-content class="mat-card-body p-3">
-          <ngx-datatable class="material full-width" [rows]="responsibles" [columnMode]="'standard'" [headerHeight]="35" [footerHeight]="0"
-            [rowHeight]="'35'" [scrollbarH]="true" [messages]="{ emptyMessage: '' }" >
+          <ngx-datatable class="material full-width" [rows]="responsibles" [columnMode]="'force'" [headerHeight]="35" [footerHeight]="0"
+            [rowHeight]="'55'" [scrollbarH]="true" [messages]="{ emptyMessage: '' }" >
 
-            <ngx-datatable-column name="NOME" [flexGrow]="0" >
+            <ngx-datatable-column name="NOME" [flexGrow]="100" >
               <ng-template let-row="row" ngx-datatable-cell-template>
                 {{ row['unit_aspect_responsible_name'] }}
               </ng-template>
             </ngx-datatable-column>
 
-            <ngx-datatable-column name="EMAIL" [flexGrow]="0" >
+            <ngx-datatable-column name="EMAIL" [flexGrow]="250" >
               <ng-template let-row="row" ngx-datatable-cell-template>
                 {{ row['unit_aspect_responsible_email'] }}
               </ng-template>
             </ngx-datatable-column>
 
-            <ngx-datatable-column name="AREA" [flexGrow]="0" >
+            <ngx-datatable-column name="ASPECTOS" [flexGrow]="1" >
               <ng-template let-row="row" ngx-datatable-cell-template>
                 <mat-icon [matTooltip]="row.tooltip" matTooltipPosition="after" class="cursor-pointer tooltip-msg" >info</mat-icon>
               </ng-template>
             </ngx-datatable-column>
 
-            <ngx-datatable-column name="DELETE" [flexGrow]="0">
+            <ngx-datatable-column name="EDIT" [flexGrow]="1">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                <button mat-icon-button mat-sm-button color="info" (click)="editResponsible(row)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="DELETE" [flexGrow]="1">
               <ng-template let-row="row" ngx-datatable-cell-template>
                 <button mat-icon-button mat-sm-button color="warn" (click)="removeResponsible(row)">
                   <mat-icon>delete</mat-icon>
