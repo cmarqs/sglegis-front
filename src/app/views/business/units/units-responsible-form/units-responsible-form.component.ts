@@ -148,11 +148,20 @@ export class unitsResponsibleFormComponent implements OnInit {
 	}
 
 	cancelEdit() {
+
+		function removeItemOnce(arr, value) {
+			var index = arr.indexOf(value);
+			if (index > -1) {
+			  arr.splice(index, 1);
+			}
+			return arr;
+		  }
+		  
 		if (this.editmode && this.editValue) {
 
 			let newResponsible = this.editValue;
 			this.responsibles = [...this.responsibles, newResponsible ];
-			
+			removeItemOnce(this.deletedResponsibles, newResponsible.unit_aspect_responsible_id);
 			this.editValue = [];
 			this.editmode = false;
 
