@@ -159,9 +159,8 @@ export class unitsResponsibleFormComponent implements OnInit {
 		  
 		if (this.editmode && this.editValue) {
 
-			let newResponsible = this.editValue;
-			this.responsibles = [...this.responsibles, newResponsible ];
-			removeItemOnce(this.deletedResponsibles, newResponsible.unit_aspect_responsible_id);
+			this.responsibles = [...this.responsibles, this.editValue ];
+			removeItemOnce(this.deletedResponsibles, this.editValue["unit_aspect_responsible_id"]);
 			this.editValue = [];
 			this.editmode = false;
 
