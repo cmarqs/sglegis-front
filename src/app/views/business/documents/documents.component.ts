@@ -22,7 +22,7 @@ export class DocumentsComponent implements OnInit  {
   columns = [
     { Propriedade: 'document_type',Titulo: 'Documento',Visivel: true,Largura:100 },    
     { Propriedade: 'document_number', Titulo: 'Número', Visivel: true, Largura: 100 },
-    { Propriedade: 'document_scope_id',Titulo: 'Escopo',Visivel: false,Largura:100 },  
+    // { Propriedade: 'document_scope_id',Titulo: 'Escopo',Visivel: true,Largura:100 },  
     { Propriedade: 'document_date',Titulo: 'Data',Visivel: true,Largura: 80,Tipo: "DATA" },
     { Propriedade: 'document_summary',Titulo: 'Ementa',Visivel: true,Largura: 300 },
     { Propriedade: 'status_description',Titulo: 'Status',Visivel: true,Largura:10 },
