@@ -24,17 +24,17 @@ export class CustomersComponent implements OnInit {
       Largura:100
     },    
     {
-      Propriedade: 'customer_cnpj',
-      Titulo: 'CNPJ',
-      Visivel: true,
-      Largura:100
-    },
-    {
       Propriedade: 'customer_business_name',
       Titulo: 'Razão Social',
       Visivel: true,
       Largura:200
-    }    
+    },
+    {
+      Propriedade: 'customer_cnpj',
+      Titulo: 'CNPJ',
+      Visivel: true,
+      Largura:100
+    }
   ]
 
   configSearch = [
