@@ -184,7 +184,7 @@ export class DocumentsFormComponent implements OnInit {
 
   saveDocument() {
     let form = this.documentForm.value;
-    form.document_summary = form.document_summary.toUpperCase();
+    form.document_summary = form.document_summary ? form.document_summary.toUpperCase() : '';
     form.document_date = this.convertData(form.document_date);
 
     this.loader.open();

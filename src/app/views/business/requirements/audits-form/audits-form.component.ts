@@ -153,7 +153,7 @@ export class AuditFormComponent implements OnInit {
 					},
 					{
 						label: 'Descrição do item do requisito',
-						desc: d.document_item_description.toUpperCase(),
+						desc: d.document_item_description ? d.document_item_description.toUpperCase() : '',
 					},
 					{
 						label: 'Ordem prática',
