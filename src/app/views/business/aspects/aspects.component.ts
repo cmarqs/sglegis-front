@@ -77,10 +77,7 @@ export class AspectsComponent implements OnInit {
   }
   
   getAspects(parameter: any) {    
-    let p: any = new Object();
-    p.orderby = "area_aspect_name";
-    p.direction = "asc";
-    this.lastSearch = p;
+    this.lastSearch = parameter;
     this.crud.GetParams(this.lastSearch, "/areaaspect").subscribe(res => {
       this.rows = [];
       this.rows = res.body;

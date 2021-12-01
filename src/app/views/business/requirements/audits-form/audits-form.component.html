@@ -44,7 +44,7 @@
 
 
       <!-- attach audit -->
-    <div *ngIf="showAttachment" fxFlex="100" class="pr-1">
+    <div fxFlex="100" class="pr-1">
         <mat-card class="mat-card-background full-width">
           <!-- <mat-card-header class="mat-card-titulo2">
             <span class="mat-card-titulo">Documentos associados</span><span class="mat-card-titulo" fxFlex></span>
@@ -54,7 +54,7 @@
             <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
     
               <div fxFlex="100" class="mt-1">            
-                <button mat-raised-button color="primary" type="button" [disabled]="showAttachment === false" (click)="newAttachment()">Anexar documento</button>
+                <button mat-raised-button color="primary" type="button" [disabled]="auditForm.invalid" (click)="newAttachment()">Anexar documento</button>
                 <span fxFlex></span>
               </div>
               

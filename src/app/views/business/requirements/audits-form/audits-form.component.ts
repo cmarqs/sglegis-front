@@ -30,7 +30,7 @@ export class AuditFormComponent implements OnInit {
 	public featuredHistory = null;
 	public conforms = []
 	public pratics = []
-	showAttachment: Boolean = false;
+	confirmedSave: boolean = false;
 
 	columns2 = [{ prop: 'name', name: 'Nome do documento' }, { prop: 'dt', name: 'Data de upload' }];
 
@@ -88,8 +88,6 @@ export class AuditFormComponent implements OnInit {
 		this.initItems(record);
     
 		if (record && record.length === 1) {
-			if (record[0].audit_id)
-				this.showAttachment = true;
 			this.getAttachments(record);
 		}
 	}
@@ -107,13 +105,13 @@ export class AuditFormComponent implements OnInit {
 		});
 	};
 
-	saveAudit() {
+	saveAudit(close:boolean = true) {
 		const datas = this.data.payload;
 		const user = this.data.user;
 		let audit = this.auditForm.value;
 
-		audit.audit_evidnece_compliance = audit.audit_evidnece_compliance.toUpperCase();
-		audit.audit_control_action = audit.audit_control_action.toUpperCase();
+		audit.audit_evidnece_compliance = (audit.audit_evidnece_compliance ? audit.audit_evidnece_compliance.toUpperCase() : '');
+		audit.audit_control_action = (audit.audit_control_action ? audit.audit_control_action.toUpperCase() : '');
 
 		this.loader.open();
 		datas.forEach(d => {
@@ -129,13 +127,18 @@ export class AuditFormComponent implements OnInit {
 			};
 
 			this.crudService.Save(newAudit, this.data.new, "/audits", newAudit.audit_id).subscribe(res => {
+				this.data.new = false;
+				this.auditForm.controls.audit_id.setValue(res.body.audits_audit_id);
+				this.auditForm.controls.audit_item_id.setValue(res.body.audit_item_id);
 				this.loader.close();
 				this.snackBar.open("Conformidade atualizada com sucesso!", "", { duration: 3000 });
-				this.dialogRef.close("OK");
+				if (close)
+					this.dialogRef.close(res.body.audit_item_id);
 			}, err => {
 				this.loader.close();
 				this.snackBar.open("Erro ao salvar auditoria: " + err, "", { duration: 5000 });
-				this.dialogRef.close("NOK");
+				if (close)
+					this.dialogRef.close('NOK');
 			});
 
 			if (this.notify)
@@ -237,18 +240,29 @@ export class AuditFormComponent implements OnInit {
 
   //#region attachment stuff
 
-  newAttachment() {
-    let dialogRef: MatDialogRef<any> = this.dialog.open(AuditsAttachmentFormComponent, {
-      width: dialog.small,
-      disableClose: true,
-      data: { title: "Anexar PDF", payload: this.auditForm.value, new: true }
-    });
+	newAttachment() {
+		if (this.auditForm && !this.auditForm.value.audit_id) {
+			this.confirm.openDialog("Salvar o registro?", "Salvar este registro antes de incluir novo item?").then((result) => {
+				if (result === true) {
+					this.data.new = true;
+					this.saveAudit(false);
+				}
+			});
+		}
+		if (this.auditForm.value.audit_id) {
+			let dialogRef: MatDialogRef<any> = this.dialog.open(AuditsAttachmentFormComponent, {
+				width: dialog.small,
+				disableClose: true,
+				data: { title: "Anexar PDF", payload: this.auditForm.value, new: true }
+			});
 
-    dialogRef.afterClosed().subscribe(res => {
-      this.getAttachments(this.data.payload);
-      return;
-    })
-  }
+			dialogRef.afterClosed().subscribe(res => {
+				this.data.payload[0].audit_id = this.auditForm.value.audit_id;
+				this.getAttachments(this.data.payload);
+				return;
+			})
+		}
+	}
 
   getAttachments(record) {
     if (record && record.length > 0)
