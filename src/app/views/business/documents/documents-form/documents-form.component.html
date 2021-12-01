@@ -84,7 +84,7 @@
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
 
           <div fxFlex="100" class="mt-1">            
-            <button mat-raised-button color="primary" type="button" (click)="newAttachment()" [disabled]="documentForm.invalid || (currentUser.role !== roles.admin || currentUser.user_profile_type !== profile.gestor)" [disabled]="!documentForm.value.document_id">Importar novo documento.</button>
+            <button mat-raised-button color="primary" type="button" (click)="newAttachment()" [disabled]="documentForm.invalid || (currentUser.role !== roles.admin || currentUser.user_profile_type !== profile.gestor)" [disabled]="!documentForm.value.document_id">Importar documento</button>
             <span fxFlex></span>
           </div>
           

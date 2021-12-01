@@ -17,4 +17,20 @@ export class AppConfirmService {
     });
     return dialogRef.afterClosed();
   }
+
+  async openDialog(title: string, message: string): Promise<boolean> {
+    let dialogRef: MatDialogRef<AppComfirmComponent>;
+    dialogRef = this.dialog.open(AppComfirmComponent, {
+      width: '380px',
+      disableClose: true,
+      data: {title, message}
+    });
+   
+    return dialogRef.afterClosed()
+      .toPromise() // here you have a Promise instead an Observable
+      .then(result => {
+         console.log("The dialog was closed " + result);
+         return Promise.resolve(result); // will return a Promise here
+      });
+   }
 }
