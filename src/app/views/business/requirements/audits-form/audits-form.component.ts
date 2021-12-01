@@ -80,8 +80,8 @@ export class AuditFormComponent implements OnInit {
 					audit_item_id: new FormControl(this.featuredHistory.audit_item_id || 0),
 					audit_practical_order: new FormControl(this.featuredHistory.audit_practical_order || '', [Validators.required]),
 					audit_conformity: new FormControl(this.featuredHistory.audit_conformity || '', [Validators.required]),
-					audit_evidnece_compliance: new FormControl(this.featuredHistory.audit_evidnece_compliance.toUpperCase() || '', [Validators.required]),
-					audit_control_action: new FormControl(this.featuredHistory.audit_control_action.toUpperCase() || '', [Validators.required])
+					audit_evidnece_compliance: new FormControl((this.featuredHistory.audit_evidnece_compliance ? this.featuredHistory.audit_evidnece_compliance.toUpperCase() : '') || '', [Validators.required]),
+					audit_control_action: new FormControl((this.featuredHistory.audit_control_action ? this.featuredHistory.audit_control_action.toUpperCase() : '') || '', [Validators.required])
 				})
 			}
 		});
