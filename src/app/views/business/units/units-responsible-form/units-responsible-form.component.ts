@@ -14,7 +14,7 @@ import { CRUDService } from 'app/services/negocio/CRUDService/CRUDService';
 	styleUrls: ['./units-responsible-form.component.css']
 })
 export class unitsResponsibleFormComponent implements OnInit {
-	responsibleForm: FormGroup;
+	public responsibleForm: FormGroup;
 	selectedAspects = [];
 	aspectInvalid = true;
 	aspects = [];
@@ -22,7 +22,7 @@ export class unitsResponsibleFormComponent implements OnInit {
 	responsibles = [];
 	deletedResponsibles = [];
 
-	editmode = false;
+	public editmode:boolean = false;
 	editValue = [];
 	customer_unit_id = 0;
 
@@ -50,6 +50,8 @@ export class unitsResponsibleFormComponent implements OnInit {
 	}
 
 	prepareScreen(record) {
+		this.editmode = false;
+
 		this.responsibleForm = new FormGroup({
 			unit_aspect_responsible_name: new FormControl('', [Validators.required]),
 			unit_aspect_responsible_email: new FormControl('', [Validators.required, Validators.email]),
@@ -66,7 +68,7 @@ export class unitsResponsibleFormComponent implements OnInit {
 			unit_aspect_responsible_name: new FormControl(record.unit_aspect_responsible_name, [Validators.required]),
 			unit_aspect_responsible_email: new FormControl(record.unit_aspect_responsible_email, [Validators.required, Validators.email]),
 		});
-
+		this.responsibles = [...this.responsibles];
 		if (this.areasWithAspects && this.areasWithAspects.length > 0) {
 
 			this.areasWithAspects.forEach(area => {

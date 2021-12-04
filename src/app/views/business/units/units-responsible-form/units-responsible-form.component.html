@@ -72,11 +72,11 @@
 
 
             <div fxFlex="100" class="mt-2">
-              <button mat-raised-button class="mat-primary" type="button" (click)="addResponsible()" [disabled]="responsibleForm.invalid || aspectInvalid" >
+              <button mat-raised-button class="mat-primary" type="button" (click)="addResponsible()" [disabled]="responsibleForm.invalid" >
                 Adicionar à lista
               </button>
               &nbsp;&nbsp;
-              <button mat-raised-button class="mat-warning" type="button" (click)="cancelEdit()" [disabled]="!editmode" >
+              <button mat-raised-button color="warn" type="button" (click)="cancelEdit()" [disabled]="!editmode" >
                 Cancelar
               </button>
             </div>
@@ -135,7 +135,7 @@
       <button mat-raised-button color="warn" type="button" (click)="dialogRef.close('NOK')">Cancelar</button>
       <span fxFlex></span>
       <button mat-raised-button class="mat-primary" type="button" (click)="save()"
-      [disabled]="(responsibles.length === 0 && deletedResponsibles.length === 0) || (currentUser.role !== roles.admin || currentUser.user_profile_type !== profile.gestor)"
+      [disabled]="editmode || (currentUser.role !== roles.admin || currentUser.user_profile_type !== profile.gestor)"
         >Gravar</button>
       <span fxFlex></span>
     </div>
