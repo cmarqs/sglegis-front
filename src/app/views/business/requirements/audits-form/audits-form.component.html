@@ -24,7 +24,7 @@
 
       <div fxFlex="100" class="pr-1">
         <mat-form-field class="full-width">
-          <textarea matInput upperCase placeholder="Evidência de cumprimento" name="evidencia" maxlength="2000"
+          <textarea matInput uppercase placeholder="Evidência de cumprimento" name="evidencia" maxlength="2000"
             rows="3" [formControl]="auditForm?.controls['audit_evidnece_compliance']"></textarea>
         </mat-form-field>
       </div>
@@ -44,7 +44,7 @@
 
 
       <!-- attach audit -->
-    <div *ngIf="showAttachment" fxFlex="100" class="pr-1">
+    <div fxFlex="100" class="pr-1" [ngStyle]="{'display':isDivVisible ? 'visible' : 'none'}">
         <mat-card class="mat-card-background full-width">
           <!-- <mat-card-header class="mat-card-titulo2">
             <span class="mat-card-titulo">Documentos associados</span><span class="mat-card-titulo" fxFlex></span>
@@ -54,7 +54,7 @@
             <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
     
               <div fxFlex="100" class="mt-1">            
-                <button mat-raised-button color="primary" type="button" [disabled]="showAttachment === false" (click)="newAttachment()">Anexar documento</button>
+                <button mat-raised-button color="primary" type="button" [disabled]="auditForm.invalid" (click)="newAttachment()">Anexar documento</button>
                 <span fxFlex></span>
               </div>
               
@@ -105,22 +105,22 @@
         <ngx-datatable class="material" [rows]="historicals" columnMode="'force'" [headerHeight]="35" [footerHeight]="0" [rowHeight]="'auto'" [messages]="{ emptyMessage: '' }">
           <ngx-datatable-column name="Ordem prática" [flexGrow]="0" [width]="">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              {{ getPraticName(row["auditForm_practical_order"]) }}
+              {{ getPraticName(row["audit_practical_order"]) }}
             </ng-template>
           </ngx-datatable-column>
           <ngx-datatable-column name="Conformidade" [flexGrow]="0" [width]="">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              {{ getConformityName(row["auditForm_conformity"]) }}
+              {{ getConformityName(row["audit_conformity"]) }}
             </ng-template>
           </ngx-datatable-column>
           <ngx-datatable-column name="Evidência de cumprimento" [flexGrow]="0" [width]="">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              {{ row["auditForm_evidnece_compliance"] }}
+              {{ row["audit_evidnece_compliance"] }}
             </ng-template>
           </ngx-datatable-column>
           <ngx-datatable-column name="Ação de controle" [flexGrow]="0" [width]="">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              {{ row["auditForm_control_action"] }}
+              {{ row["audit_control_action"] }}
             </ng-template>
           </ngx-datatable-column>
           <ngx-datatable-column name="Alterado em" [flexGrow]="0" [width]="">

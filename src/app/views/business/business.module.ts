@@ -25,7 +25,9 @@ import {
   MatTabsModule,
   MatExpansionModule,
   MatProgressBarModule,
-  MatGridListModule
+  MatGridListModule,
+  MatBadgeModule,
+  MatBadge
 
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -65,6 +67,9 @@ import { ActionPlanFormComponent } from './requirements/action-plan-form/action-
 import { AttachmentsDownloadComponent } from './requirements/attachments-download/attachments-download.component';
 import { AuditsAttachmentFormComponent } from './requirements/audits-attachment-form/audits-attachment-form.component';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { ChartComponent } from 'app/components/common/chart/chart.component';
+import { HighchartsChartModule } from "highcharts-angular";
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
   align: "right",
@@ -113,8 +118,10 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     BusinessRoutingModule,
     ChartsModule,
     MatProgressBarModule,
-    MatGridListModule
-    // MaterialFileInputModule
+    MatGridListModule,
+    // MaterialFileInputModule,
+    HighchartsChartModule,
+    MatBadgeModule,
   ],
   declarations: [
     GradeComponent,
@@ -128,9 +135,10 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     DocumentItemComponent,
     RequirementsComponent,
     AuditFormComponent,
-    UsersComponent, UsersFormComponent, FileFieldComponent, DocumentsAttachementFormComponent, unitsResponsibleFormComponent, ActionPlanFormComponent, AttachmentsDownloadComponent, AuditsAttachmentFormComponent
+    UsersComponent, UsersFormComponent, FileFieldComponent, DocumentsAttachementFormComponent, unitsResponsibleFormComponent, ActionPlanFormComponent, AttachmentsDownloadComponent, AuditsAttachmentFormComponent, DashboardComponent,
+    ChartComponent
   ],
-  exports: [MatAutocompleteModule],
+  exports: [MatAutocompleteModule, MatBadgeModule],
   entryComponents: [CustomerGroupFormComponent,
     CustomersFormsComponent, unitsFormComponent, AreasFormComponent, AspectsFormComponent, DocumentsFormComponent, DocumentsAttachementFormComponent,
     DocumentItemComponent, AuditFormComponent, UsersFormComponent, unitsResponsibleFormComponent, ActionPlanFormComponent,AttachmentsDownloadComponent, AuditsAttachmentFormComponent

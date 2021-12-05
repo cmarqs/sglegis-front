@@ -7,6 +7,13 @@
   <mat-dialog-content>
     <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
       <div fxFlex="100">
+        <input 
+        type="file"
+        accept=".pdf"
+        (change)="fileChange($event)"
+      >
+      </div>
+      <div fxFlex="100">
         <mat-form-field class="full-width">
           <input 
             matInput
@@ -15,13 +22,6 @@
             upperCase
           >
         </mat-form-field>
-      </div>
-      <div fxFlex="100">
-        <input 
-          type="file"
-          accept=".pdf"
-          (change)="fileChange($event)"
-        >
       </div>
     </div>
   </mat-dialog-content>

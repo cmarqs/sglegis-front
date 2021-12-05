@@ -50,13 +50,13 @@
         
                         </mat-expansion-panel-header>
                         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
-                          <div fxFlex="50" class="pr-1">
+                          <div fxFlex="100" class="pr-1">
                             <mat-checkbox color="primary" (change)="toggleAll(areaWithAspect, $event)">
                               SELECIONAR TODOS
                             </mat-checkbox>
                           </div>
         
-                          <div fxFlex="50" class="pr-1" *ngFor="let aspect of areaWithAspect.aspects">
+                          <div fxFlex="100" class="pr-1" *ngFor="let aspect of areaWithAspect.aspects">
                             <mat-checkbox color="primary" [checked]="aspect.checked=='S'" (change)="toggleAspect(aspect, $event)">
                               {{aspect.area_aspect_name}}
                             </mat-checkbox>
@@ -72,8 +72,12 @@
 
 
             <div fxFlex="100" class="mt-2">
-              <button mat-raised-button class="mat-primary" type="button" (click)="addResponsible()" [disabled]="responsibleForm.invalid || aspectInvalid" >
-                Add to List
+              <button mat-raised-button class="mat-primary" type="button" (click)="addResponsible()" [disabled]="responsibleForm.invalid" >
+                Adicionar à lista
+              </button>
+              &nbsp;&nbsp;
+              <button mat-raised-button color="warn" type="button" (click)="cancelEdit()" [disabled]="!editmode" >
+                Cancelar
               </button>
             </div>
           </div>        
@@ -82,28 +86,36 @@
 
       <mat-card class="mat-card-background" fxFlex="100">     
         <mat-card-content class="mat-card-body p-3">
-          <ngx-datatable class="material full-width" [rows]="responsibles" [columnMode]="'standard'" [headerHeight]="35" [footerHeight]="0"
-            [rowHeight]="'35'" [scrollbarH]="true" [messages]="{ emptyMessage: '' }" >
+          <ngx-datatable class="material full-width" [rows]="responsibles" [columnMode]="'force'" [headerHeight]="35" [footerHeight]="0"
+            [rowHeight]="'55'" [scrollbarH]="true" [messages]="{ emptyMessage: '' }" >
 
-            <ngx-datatable-column name="NOME" [flexGrow]="0" >
+            <ngx-datatable-column name="NOME" [flexGrow]="100" >
               <ng-template let-row="row" ngx-datatable-cell-template>
                 {{ row['unit_aspect_responsible_name'] }}
               </ng-template>
             </ngx-datatable-column>
 
-            <ngx-datatable-column name="EMAIL" [flexGrow]="0" >
+            <ngx-datatable-column name="EMAIL" [flexGrow]="250" >
               <ng-template let-row="row" ngx-datatable-cell-template>
                 {{ row['unit_aspect_responsible_email'] }}
               </ng-template>
             </ngx-datatable-column>
 
-            <ngx-datatable-column name="AREA" [flexGrow]="0" >
+            <ngx-datatable-column name="ASPECTOS" [flexGrow]="1" >
               <ng-template let-row="row" ngx-datatable-cell-template>
                 <mat-icon [matTooltip]="row.tooltip" matTooltipPosition="after" class="cursor-pointer tooltip-msg" >info</mat-icon>
               </ng-template>
             </ngx-datatable-column>
 
-            <ngx-datatable-column name="DELETE" [flexGrow]="0">
+            <ngx-datatable-column name="EDIT" [flexGrow]="1">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                <button mat-icon-button mat-sm-button color="info" (click)="editResponsible(row)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="DELETE" [flexGrow]="1">
               <ng-template let-row="row" ngx-datatable-cell-template>
                 <button mat-icon-button mat-sm-button color="warn" (click)="removeResponsible(row)">
                   <mat-icon>delete</mat-icon>
@@ -123,7 +135,7 @@
       <button mat-raised-button color="warn" type="button" (click)="dialogRef.close('NOK')">Cancelar</button>
       <span fxFlex></span>
       <button mat-raised-button class="mat-primary" type="button" (click)="save()"
-      [disabled]="(responsibles.length === 0 && deletedResponsibles.length === 0) || (currentUser.role !== roles.admin || currentUser.user_profile_type !== profile.gestor)"
+      [disabled]="editmode || (currentUser.role !== roles.admin || currentUser.user_profile_type !== profile.gestor)"
         >Gravar</button>
       <span fxFlex></span>
     </div>

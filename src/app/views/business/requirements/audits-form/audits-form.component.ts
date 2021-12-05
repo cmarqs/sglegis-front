@@ -17,163 +17,171 @@ import { profile } from 'app/models/auth/profile.types';
 import { environment } from "environments/environment";
 
 @Component({
-  selector: 'app-audits-form',
-  templateUrl: './audits-form.component.html',
-  styleUrls: ['./audits-form.component.css']
+	selector: 'app-audits-form',
+	templateUrl: './audits-form.component.html',
+	styleUrls: ['./audits-form.component.css']
 })
 export class AuditFormComponent implements OnInit {
-  document_items: any[];
-  audit_items: any[];
-  notify: Boolean = false;
-  public auditForm: FormGroup;
-  public historicals: any[] = [];
-  public featuredHistory = null;
-  public conforms = []
-  public pratics = []
-  showAttachment: Boolean = false;
+	document_items: any[];
+	audit_items: any[];
+	notify: Boolean = false;
+	public auditForm: FormGroup;
+	public historicals: any[] = [];
+	public featuredHistory = null;
+	public conforms = []
+	public pratics = []
+	confirmedSave: boolean = false;
+	isDivVisible: boolean = false;
 
-  columns2 = [{ prop: 'name', name: 'Nome do documento' }, { prop: 'dt', name: 'Data de upload' }];
+	columns2 = [{ prop: 'name', name: 'Nome do documento' }, { prop: 'dt', name: 'Data de upload' }];
 
-  auditAttachments = [];
-  currentUser:any;
-  roles = roles;
-  profile = profile;
+	auditAttachments = [];
+	currentUser: any;
+	roles = roles;
+	profile = profile;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any,
-  public dialogRef: MatDialogRef<CustomersFormsComponent>,
-  private loader: AppLoaderService,
-  private crudService: CRUDService,
-  private snackBar: MatSnackBar,
-  private confirm: AppConfirmService,
-  public dialog: MatDialog) {  }
+	constructor(@Inject(MAT_DIALOG_DATA) public data: any,
+		public dialogRef: MatDialogRef<CustomersFormsComponent>,
+		private loader: AppLoaderService,
+		private crudService: CRUDService,
+		private snackBar: MatSnackBar,
+		private confirm: AppConfirmService,
+		public dialog: MatDialog) { }
 
-  ngOnInit() {
-    this.loadDropdowns();
+	ngOnInit() {
+		this.loadDropdowns();
 
-    this.prepareScreen(this.data.payload);    
-  }
+		this.prepareScreen(this.data.payload);
+	}
 
-  async loadDropdowns() {
-    this.conforms = await this.loadConformity();
-    this.pratics = await this.loadPraticalOrder();
-  };
+	async loadDropdowns() {
+		this.conforms = await this.loadConformity();
+		this.pratics = await this.loadPraticalOrder();
+	};
 
-  prepareScreen(record: any) {
+	prepareScreen(record: any) {
     
-    this.auditForm = new FormGroup({
-      audit_id: new FormControl(record.audit_id),
-      audit_practical_order: new FormControl('', [Validators.required]),
-      audit_conformity: new FormControl('', [Validators.required]),
-      audit_evidnece_compliance: new FormControl('', [Validators.required]),
-      audit_control_action: new FormControl('', [Validators.required])
-    });
-    this.getHistorical(record).then((res: any) => {
-      if (res) {
-        this.featuredHistory = {
-          ...res.body[0]
-        }
-        res.body.splice(0, 1);
-        this.historicals = res.body;
+		this.auditForm = new FormGroup({
+			audit_id: new FormControl(record.audit_id),
+			audit_practical_order: new FormControl('', [Validators.required]),
+			audit_conformity: new FormControl('', [Validators.required]),
+			audit_evidnece_compliance: new FormControl('', [Validators.required]),
+			audit_control_action: new FormControl('', [Validators.required])
+		});
+		this.getHistorical(record).then((res: any) => {
+			if (res) {
+				this.featuredHistory = {
+					...res.body[0]
+				}
+				res.body.splice(0, 1);
+				this.historicals = res.body;
 
-        this.auditForm = new FormGroup({
-          audit_id: new FormControl(this.featuredHistory.audit_id || 0),
-          audit_item_id: new FormControl(this.featuredHistory.audit_item_id || 0),
-          audit_practical_order: new FormControl(this.featuredHistory.audit_practical_order || '', [Validators.required]),
-          audit_conformity: new FormControl(this.featuredHistory.audit_conformity || '', [Validators.required]),
-          audit_evidnece_compliance: new FormControl(this.featuredHistory.audit_evidnece_compliance || '', [Validators.required]),
-          audit_control_action: new FormControl(this.featuredHistory.audit_control_action || '', [Validators.required])
-        })
-      }
-    });
-    this.initItems(record);
+				this.auditForm = new FormGroup({
+					audit_id: new FormControl(this.featuredHistory.audit_id || 0),
+					audit_item_id: new FormControl(this.featuredHistory.audit_item_id || 0),
+					audit_practical_order: new FormControl(this.featuredHistory.audit_practical_order || '', [Validators.required]),
+					audit_conformity: new FormControl(this.featuredHistory.audit_conformity || '', [Validators.required]),
+					audit_evidnece_compliance: new FormControl((this.featuredHistory.audit_evidnece_compliance ? this.featuredHistory.audit_evidnece_compliance.toUpperCase() : '') || '', [Validators.required]),
+					audit_control_action: new FormControl((this.featuredHistory.audit_control_action ? this.featuredHistory.audit_control_action.toUpperCase() : '') || '', [Validators.required])
+				})
+			}
+		});
+		this.initItems(record);
     
-    if (record && record.length === 1) {
-      if (record[0].audit_id)
-        this.showAttachment = true;
-      this.getAttachments(record);
-    }
-  }
+		if (record && record.length === 1) {
+			this.getAttachments(record);
+			this.isDivVisible = true;
+		}
+		else
+			this.isDivVisible = false;
+	}
 
-  initItems(record: any) {
-    const documentItemIds = [];
+	initItems(record: any) {
+		const documentItemIds = [];
 
-    this.document_items = [];
+		this.document_items = [];
 
-    record.forEach(r => {      
-      if (!documentItemIds.includes(r.document_item_id)) {        
-        documentItemIds.push(r.document_item_id);
-        this.document_items.push(r);
-      }
-    });   
-  };
+		record.forEach(r => {
+			if (!documentItemIds.includes(r.document_item_id)) {
+				documentItemIds.push(r.document_item_id);
+				this.document_items.push(r);
+			}
+		});
+	};
 
-  saveAudit() {
-    const datas = this.data.payload;
-    const user = this.data.user;
-    let audit = this.auditForm.value;
-    this.loader.open();
-    datas.forEach(d => {
-      let newAudit = {
-        audit_id: d.audit_id,
-        item_area_aspect_id: d.item_area_aspect_id,
-        unit_id: d.customer_unit_id,
-        user_id: user.id,
-        audit_items: {
-          ...audit,
-          user_id: user.id
-        }
-      };
+	saveAudit(close:boolean = true) {
+		const datas = this.data.payload;
+		const user = this.data.user;
+		let audit = this.auditForm.value;
 
-      this.crudService.Save(newAudit, this.data.new, "/audits", newAudit.audit_id).subscribe(res => {
-        if (this.notify) {
-          this.snackBar.open("Audit saved successfully", "", { duration: 3000 });
-          this.notifyResponsibles(datas.map(d => d.area_aspect_id), [
-            {
-              label: 'Ordem prática',
-              desc: this.pratics.find(p => p.id === audit.audit_practical_order_id).audit_practical_order_desc
-            },
-            {
-              label: 'Conformidade',
-              desc: this.conforms.find(c => c.id === audit.audit_conformity_id).audit_conformity_desc
-            },
-            {
-              label: 'Evidência de cumprimento',
-              desc: audit.audit_evidnece_compliance
-            },
-            {
-              label: 'Ação de controle',
-              desc: audit.audit_control_action
-            }
-          ]).then(res => {
-            const data = res.body;
-            if (data.success === true) {
-              this.snackBar.open("Notification has been sent to Responsibles successfully", "", { duration: 3000 });
-              this.loader.close();
-              this.dialogRef.close("OK");
-            } else {
-              this.loader.close();
-              this.snackBar.open("Error in sending notification to Responsibles: " + data.error, "", { duration: 7000 });
-              this.dialogRef.close("OK");
-            }
-            
-          }).catch(err => {
-            this.loader.close();
-            this.snackBar.open("Error in sending notification to Responsibles: " + err, "", { duration: 5000 });
-            this.dialogRef.close("NOK");
-          })
-        } else {
-          this.loader.close();
-          this.dialogRef.close("OK");
-        }
-      }, err => {
-        this.loader.close();
-        this.snackBar.open("Error in saving Audit: " + err, "", { duration: 5000 });
-        this.dialogRef.close("NOK");
-      });
-    }); 
-          
-    
-  }
+		audit.audit_evidnece_compliance = (audit.audit_evidnece_compliance ? audit.audit_evidnece_compliance.toUpperCase() : '');
+		audit.audit_control_action = (audit.audit_control_action ? audit.audit_control_action.toUpperCase() : '');
+
+		this.loader.open();
+		datas.forEach(d => {
+			let newAudit = {
+				audit_id: d.audit_id,
+				item_area_aspect_id: d.item_area_aspect_id,
+				unit_id: d.customer_unit_id,
+				user_id: user.id,
+				audit_items: {
+					...audit,
+					user_id: user.id
+				}
+			};
+
+			this.crudService.Save(newAudit, this.data.new, "/audits", newAudit.audit_id).subscribe(res => {
+				this.data.new = false;
+				this.auditForm.controls.audit_id.setValue(res.body.audits_audit_id);
+				this.auditForm.controls.audit_item_id.setValue(res.body.audit_item_id);
+				this.loader.close();
+				this.snackBar.open("Conformidade atualizada com sucesso!", "", { duration: 3000 });
+				if (close)
+					this.dialogRef.close(res.body.audit_item_id);
+			}, err => {
+				this.loader.close();
+				this.snackBar.open("Erro ao salvar auditoria: " + err, "", { duration: 5000 });
+				if (close)
+					this.dialogRef.close('NOK');
+			});
+
+			if (this.notify)
+			{
+				d = datas.find(d => d.item_area_aspect_id === newAudit.item_area_aspect_id);
+				
+				this.notifyResponsibles(datas.map(d => d.area_aspect_id), [
+					{
+						label: 'Requisito legal',
+						desc: d.document.name,
+					},
+					{
+						label: 'Item do requisito',
+						desc: d.document_item_number,
+					},
+					{
+						label: 'Descrição do item do requisito',
+						desc: d.document_item_description ? d.document_item_description.toUpperCase() : '',
+					},
+					{
+						label: 'Ordem prática',
+						desc: this.pratics.find(p => p.audit_practical_order_id === audit.audit_practical_order).audit_practical_order_desc
+					},
+					{
+						label: 'Conformidade',
+						desc: this.conforms.find(c => c.audit_conformity_id === audit.audit_conformity).audit_conformity_desc
+					},
+					{
+						label: 'Evidência de cumprimento',
+						desc: audit.audit_evidnece_compliance
+					},
+					{
+						label: 'Ação de controle',
+						desc: audit.audit_control_action
+					}
+				]);
+			}
+		});
+	};
 
   getAudits(record: any) {
     let params: any = [];    
@@ -184,18 +192,18 @@ export class AuditFormComponent implements OnInit {
     })
   }
 
-  // notifyResponsibles(aspects: any, auditInfo: any) {
-  //   this.crudService.Save({ aspects, auditInformation: auditInfo }, true, "/audits/responsibles/notify", null).subscribe(res => {
-  //     this.snackBar.open("Notification has been sent to Responsibles successfully", "", { duration: 3000 });
-  //   }, err => {
-  //     this.loader.close();
-  //     this.snackBar.open("Error in sending notification to Responsibles: " + err, "", { duration: 5000 });
-  //   })
-  // }
-
   notifyResponsibles(aspects: any, auditInfo: any) {
-    return this.crudService.Save({ aspects, auditInformation: auditInfo }, true, "/audits/responsibles/notify", null).toPromise()
+    this.crudService.Save({ aspects, auditInformation: auditInfo }, true, "/audits/responsibles/notify", null).subscribe(res => {
+      this.snackBar.open("Notificação enviada com sucesso!", "", { duration: 3000 });
+    }, err => {
+      this.loader.close();
+      this.snackBar.open("Falha ao enviar notificação: " + err, "", { duration: 5000 });
+    })
   }
+
+  // notifyResponsibles(aspects: any, auditInfo: any) {
+  //   return this.crudService.Save({ aspects, auditInformation: auditInfo }, true, "/audits/responsibles/notify", null).toPromise()
+  // }
 
   checkNotify() {
     this.notify = !this.notify;
@@ -236,18 +244,29 @@ export class AuditFormComponent implements OnInit {
 
   //#region attachment stuff
 
-  newAttachment() {
-    let dialogRef: MatDialogRef<any> = this.dialog.open(AuditsAttachmentFormComponent, {
-      width: dialog.small,
-      disableClose: true,
-      data: { title: "Anexar PDF", payload: this.auditForm.value, new: true }
-    });
+	newAttachment() {
+		if (this.auditForm && !this.auditForm.value.audit_id) {
+			this.confirm.openDialog("Salvar o registro?", "Salvar este registro antes de incluir novo item?").then((result) => {
+				if (result === true) {
+					this.data.new = true;
+					this.saveAudit(false);
+				}
+			});
+		}
+		if (this.auditForm.value.audit_id) {
+			let dialogRef: MatDialogRef<any> = this.dialog.open(AuditsAttachmentFormComponent, {
+				width: dialog.small,
+				disableClose: true,
+				data: { title: "Anexar PDF", payload: this.auditForm.value, new: true }
+			});
 
-    dialogRef.afterClosed().subscribe(res => {
-      this.getAttachments(this.data.payload);
-      return;
-    })
-  }
+			dialogRef.afterClosed().subscribe(res => {
+				this.data.payload[0].audit_id = this.auditForm.value.audit_id;
+				this.getAttachments(this.data.payload);
+				return;
+			})
+		}
+	}
 
   getAttachments(record) {
     if (record && record.length > 0)
@@ -305,7 +324,7 @@ export class AuditFormComponent implements OnInit {
   }
 
   downloadAttachment(data) {
-    window.open(`${environment.fileURL}/${data.attachment_src}`);
+    window.open(`${environment.fileURL}/${data.audit_attachment_src}`);
   }
 
   convertData (strData) {

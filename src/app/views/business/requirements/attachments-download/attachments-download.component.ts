@@ -22,7 +22,7 @@ export class AttachmentsDownloadComponent implements OnInit {
   columns2 = [{ prop: 'name', name: 'Nome do documento' }, { prop: 'dt', name: 'Data de upload' }];
 
   documentAttachments = [];
-  auditAttachemnts = [  ];
+  auditAttachemnts = [];
   currentUser:any;
   roles = roles;
   profile = profile;
@@ -45,6 +45,7 @@ export class AttachmentsDownloadComponent implements OnInit {
 
   prepareScreen(record) {
     this.getDocumentAttachments(record.document_id);
+    this.getAuditAttachments(record.audit_id);
   }
 
   getDocumentAttachments(documentId) {
@@ -53,6 +54,22 @@ export class AttachmentsDownloadComponent implements OnInit {
         if (res.status == 200) {
           this.documentAttachments = [];
           this.documentAttachments = res.body.map(att => {
+            const date = moment(att.createdAt);          
+            return {
+              ...att,
+              date: date.format('DD/MM/yyyy')
+            }
+          });                
+        }
+      });
+  }
+
+  getAuditAttachments(auditId) {
+    if (auditId)
+      this.crudService.GetParams({ "orderby": "createdAt", "direction": "asc" }, "/audit-attachment/attachments/" + auditId).subscribe(res => {
+        if (res.status == 200) {
+          this.auditAttachemnts = [];
+          this.auditAttachemnts = res.body.map(att => {
             const date = moment(att.createdAt);          
             return {
               ...att,
@@ -82,7 +99,10 @@ export class AttachmentsDownloadComponent implements OnInit {
   }
 
   downloadAttachment(data) {
-    window.open(`${environment.fileURL}/${data.attachment_src}`);
+    if (!data.attachment_src)
+      window.open(`${environment.fileURL}/${data.audit_attachment_src}`);
+    else
+      window.open(`${environment.fileURL}/${data.attachment_src}`);
   }
 
   convertData (strData) {

@@ -64,17 +64,17 @@ export class AreasFormComponent implements OnInit {
 
   deleteArea(){    
     let area = this.areaForm.value;    
-    this.confirm.confirm("Exclusão - Área", "Tem certeza que deseja excluir a Àrea " + area.area_id).subscribe(result => {
+    this.confirm.confirm("Exclusão de Sistema de Gestão", "Tem certeza que deseja excluir o SG " + area.area_name).subscribe(result => {
       if (result === true) {
-        this.loader.open("Excluindo - Área");
+        this.loader.open("Excluindo Sistema de gestão");
         this.crudService.DeleteParams(area.area_id, "/area").subscribe(res => {          
           if (res.status == 200) {
-            this.snackBar.open("Área excluída com sucesso!", "", { duration: 3000 });
+            this.snackBar.open("Sistema de gestão excluído com sucesso!", "", { duration: 3000 });
             this.dialogRef.close('OK');
             this.loader.close();
           }
           else {
-            this.snackBar.open("Erro ao excluir Área", "", { duration: 5000 });
+            this.snackBar.open("Erro ao excluir SG", "", { duration: 5000 });
           }
           this.loader.close();
         })

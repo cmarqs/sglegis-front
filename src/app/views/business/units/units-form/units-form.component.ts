@@ -42,11 +42,11 @@ export class unitsFormComponent implements OnInit {
   prepareScreen(record) {
     this.unitForm = new FormGroup({
       customer_unit_id: new FormControl(record.customer_unit_id),
-      customer_unit_cnpj: new FormControl(record.customer_unit_cnpj, []),
+      customer_unit_cnpj: new FormControl(record.customer_unit_cnpj, [Validators.required]),
       customer_unit_name: new FormControl(record.customer_unit_name, [Validators.required, Validators.maxLength(50), Validators.minLength(3)]),
       customer_unit_address: new FormControl(record.customer_unit_address, []),
-      customer_unit_city_id: new FormControl(record.customer_unit_city_id, []),
-      customer_unit_uf_id: new FormControl(record.customer_unit_uf_id, []),
+      customer_unit_city_id: new FormControl(record.customer_unit_city_id, [Validators.required]),
+      customer_unit_uf_id: new FormControl(record.customer_unit_uf_id, [Validators.required]),
       customer_unit_cep: new FormControl(record.customer_unit_cep, []),
       customer_group_id: new FormControl(this.currentUser.role === roles.admin ? record.customer_group_id : this.currentUser.customer_group_id, [Validators.required]),
       customer_id: new FormControl(record.customer_id, [Validators.required]),
@@ -216,7 +216,6 @@ export class unitsFormComponent implements OnInit {
   }
 
   getCustomers(group_id) {
-    console.log('123', group_id);
     
     if (group_id != 0) {
       let p: any = new Object();

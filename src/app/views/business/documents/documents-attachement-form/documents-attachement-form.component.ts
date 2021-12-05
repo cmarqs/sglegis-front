@@ -35,7 +35,8 @@ export class DocumentsAttachementFormComponent implements OnInit {
   }
 
   fileChange(event) {
-    this.attachmentForm.controls['attachment_file'].setValue(event.target.files[0]);    
+    this.attachmentForm.controls['attachment_file'].setValue(event.target.files[0]);
+    this.attachmentForm.controls['attachment_description'].setValue(event.target.files[0].name);
   }
 
   saveAttachment() {

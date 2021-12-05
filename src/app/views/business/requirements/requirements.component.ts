@@ -31,9 +31,7 @@ export class RequirementsComponent implements OnInit {
     { Propriedade: 'area_name', Titulo: 'Sis.Gestão', Visivel: true, Largura:100 },
     { Propriedade: 'area_aspect_name', Titulo: 'Aspecto', Visivel: true, Largura:150 },
     { Propriedade: 'document_scope_description', Titulo: 'Âmbito', Visivel: true, Largura:100 },
-    { Propriedade: 'document_name', Titulo: 'Documento', Visivel: true, Largura: 200 },
-    // { Propriedade: 'document_attachment', Titulo: 'Anexo', Visivel: true, Largura: 100 },
-    // { Propriedade: 'document_date_status', Titulo: 'Data/Status', Visivel: true, Largura:200},    
+    { Propriedade: 'document_name', Titulo: 'Documento', Visivel: true, Largura: 200 },    
     { Propriedade: 'document_date_formated', Titulo: 'Data', Visivel: true, Largura: 100 },
     { Propriedade: 'status_description', Titulo: 'Status', Visivel: true, Largura:150 },
     { Propriedade: 'document_item_number', Titulo: 'Número', Visivel: true, Largura:100 },
@@ -65,7 +63,6 @@ export class RequirementsComponent implements OnInit {
     this.loadConformity();
     this.loadPraticalOrder();
     this.setConfigSearch();
-    //this.getAuditRequirements(undefined);
   }
 
   onFilterValueChange(type: string, value: any) {
@@ -289,10 +286,6 @@ export class RequirementsComponent implements OnInit {
         this.syncInit = true;
     })
 }
-
-getAttachments(document_id){
-  return [{'document_src': 'teste'},{'document_src': 'teste2'} ]
-  }
 
   getPraticName(id) {
     let p = this.pratics.find(p => p.audit_practical_order_id === id);
