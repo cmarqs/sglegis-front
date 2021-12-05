@@ -25,7 +25,9 @@ import {
   MatTabsModule,
   MatExpansionModule,
   MatProgressBarModule,
-  MatGridListModule
+  MatGridListModule,
+  MatBadgeModule,
+  MatBadge
 
 } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -118,7 +120,8 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     MatProgressBarModule,
     MatGridListModule,
     // MaterialFileInputModule,
-    HighchartsChartModule
+    HighchartsChartModule,
+    MatBadgeModule,
   ],
   declarations: [
     GradeComponent,
@@ -135,7 +138,7 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     UsersComponent, UsersFormComponent, FileFieldComponent, DocumentsAttachementFormComponent, unitsResponsibleFormComponent, ActionPlanFormComponent, AttachmentsDownloadComponent, AuditsAttachmentFormComponent, DashboardComponent,
     ChartComponent
   ],
-  exports: [MatAutocompleteModule],
+  exports: [MatAutocompleteModule, MatBadgeModule],
   entryComponents: [CustomerGroupFormComponent,
     CustomersFormsComponent, unitsFormComponent, AreasFormComponent, AspectsFormComponent, DocumentsFormComponent, DocumentsAttachementFormComponent,
     DocumentItemComponent, AuditFormComponent, UsersFormComponent, unitsResponsibleFormComponent, ActionPlanFormComponent,AttachmentsDownloadComponent, AuditsAttachmentFormComponent

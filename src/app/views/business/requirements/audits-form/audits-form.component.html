@@ -44,7 +44,7 @@
 
 
       <!-- attach audit -->
-    <div fxFlex="100" class="pr-1">
+    <div fxFlex="100" class="pr-1" [ngStyle]="{'display':isDivVisible ? 'visible' : 'none'}">
         <mat-card class="mat-card-background full-width">
           <!-- <mat-card-header class="mat-card-titulo2">
             <span class="mat-card-titulo">Documentos associados</span><span class="mat-card-titulo" fxFlex></span>

@@ -71,7 +71,7 @@ export class GradeComponent implements OnInit {
     this.buscarForm = new FormGroup({});    
 
     for (let i = 0; i < this.CamposBusca.length; i++) {
-      console.log(`${this.CamposBusca[i].fieldText}: ${this.CamposBusca[i].fieldValue}`);
+      //console.log(`${this.CamposBusca[i].fieldText}: ${this.CamposBusca[i].fieldValue}`);
       
       this.buscarForm.addControl(this.CamposBusca[i].nomeCampo, new FormControl(
         this.CamposBusca[i].tipoCampo === "LIST" && this.CamposBusca[i].fieldValue === this.CamposBusca[i].nomeCampo ? "" : this.CamposBusca[i].fieldValue

@@ -31,6 +31,7 @@ export class AuditFormComponent implements OnInit {
 	public conforms = []
 	public pratics = []
 	confirmedSave: boolean = false;
+	isDivVisible: boolean = false;
 
 	columns2 = [{ prop: 'name', name: 'Nome do documento' }, { prop: 'dt', name: 'Data de upload' }];
 
@@ -89,7 +90,10 @@ export class AuditFormComponent implements OnInit {
     
 		if (record && record.length === 1) {
 			this.getAttachments(record);
+			this.isDivVisible = true;
 		}
+		else
+			this.isDivVisible = false;
 	}
 
 	initItems(record: any) {
