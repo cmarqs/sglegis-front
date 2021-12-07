@@ -63,6 +63,7 @@ export class AuditFormComponent implements OnInit {
     
 		this.auditForm = new FormGroup({
 			audit_id: new FormControl(record.audit_id),
+			audit_item_id: new FormControl(record.audit_item_id),
 			audit_practical_order: new FormControl('', [Validators.required]),
 			audit_conformity: new FormControl('', [Validators.required]),
 			audit_evidnece_compliance: new FormControl('', [Validators.required]),
