@@ -50,7 +50,7 @@ export class CustomerGroupsComponent implements OnInit {
 
   openForm(info: any = {}, newRercord: Boolean) {
     let text;     
-    text = (newRercord) ? "Novo Grupo" : "Editar Grupo: " + info.customer_group_id;    
+    text = (newRercord) ? "Novo Grupo" : "Editar Grupo: " + info.customer_group_name;    
     
     let dialogRef: MatDialogRef<any> = this.dialog.open(CustomerGroupFormComponent, {
       width: '720px',

@@ -61,7 +61,7 @@ export class AspectsComponent implements OnInit {
 
   openForm(info: any = {}, newRercord: Boolean) {
     let text;     
-    text = (newRercord) ? "Novo Aspecto" : "Editar Aspecto: " + info.aspect_id;    
+    text = (newRercord) ? "Novo Aspecto" : "Editar Aspecto: " + info.area_aspect_name;    
     
     let dialogRef: MatDialogRef<any> = this.dialog.open(AspectsFormComponent, {
       width: '720px',
