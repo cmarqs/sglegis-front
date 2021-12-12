@@ -89,7 +89,7 @@
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap" class="mat-dialog-content">
     <div fxFlex="100" class="mt-1">
       <span fxFlex *ngIf="!this.data.new"></span>
-      <button mat-raised-button color="accent" type="button" (click)="deleteItem()"
+      <button mat-raised-button color="accent" type="button" (click)="deleteItem(this.data, $event)"
         *ngIf="!this.data.new">Excluir</button>
       <span fxFlex></span>
       <button mat-raised-button color="warn" type="button" (click)="dialogRef.close('NOK')">Fechar</button>
