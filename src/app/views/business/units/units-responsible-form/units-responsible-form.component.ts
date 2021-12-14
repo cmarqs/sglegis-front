@@ -136,10 +136,16 @@ export class unitsResponsibleFormComponent implements OnInit {
 			tooltip: this.selectedAspects.map(aspect => aspect.area_aspect_name).join(', '),
 			isNew: true
 		}];
-		this.responsibleForm.reset();
-		this.unToggleAll();
-		this.selectedAspects = [];
-		this.aspectInvalid = true;
+		this.editmode = false;
+
+		this.responsibleForm = new FormGroup({
+			unit_aspect_responsible_name: new FormControl('', [Validators.required]),
+			unit_aspect_responsible_email: new FormControl('', [Validators.required, Validators.email]),
+		});
+		// this.responsibleForm.reset();
+		// this.unToggleAll();
+		// this.selectedAspects = [];
+		// this.aspectInvalid = true;
 	}
 
 	removeResponsible(info: any) {
