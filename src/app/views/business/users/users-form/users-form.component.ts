@@ -100,16 +100,16 @@ export class UsersFormComponent implements OnInit {
 
   deleteUser() {
     let user = this.user.value;
-    this.confirm.confirm("Exclusão - User", "Tem certeza que deseja excluir o User " + user.user_id).subscribe(result => {
+    this.confirm.confirm("Exclusão - Usuário", "Tem certeza que deseja excluir o User " + user.user_id).subscribe(result => {
       if (result === true) {
-        this.loader.open("Excluindo - User");
+        this.loader.open("Excluindo - Usuário");
         this.crudService.DeleteParams(user.user_id, "/users").subscribe(res => {
           this.snackBar.open("User excluído com sucesso!", "", { duration: 3000 });
           this.dialogRef.close("OK");
           this.loader.close();
         }, err => {
           this.loader.close();
-          this.snackBar.open("Erro ao excluir User: " + err, "", { duration: 5000 });
+          this.snackBar.open("Erro ao excluir Usuário: " + err, "", { duration: 5000 });
         })
       }
     })
