@@ -12,6 +12,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { DocumentsComponent } from './documents/documents.component';
 import { HomeComponent } from './home/home.component';
 import { RequirementsComponent } from './requirements/requirements.component';
+import { ReportComponent } from './reports/report.component';
 import { unitsComponent } from './units/units.component';
 import { UsersComponent } from './users/users.component';
  
@@ -99,6 +100,14 @@ const routes: Routes = [
       path: 'audit',
       component: RequirementsComponent,
       data: { title: 'Acompanhamento de Conformidade Legal', breadcrumb: 'Conformidade Legal' }
+    }]
+  },
+  {
+    path: '',
+    children: [{
+      path: 'reports',
+      component: ReportComponent,
+      data: { title: 'Relatórios', breadcrumb: 'Relatórios' }
     }]
   },
 ];

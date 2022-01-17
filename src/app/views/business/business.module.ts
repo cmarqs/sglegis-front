@@ -66,6 +66,7 @@ import { unitsResponsibleFormComponent } from './units/units-responsible-form/un
 import { ActionPlanFormComponent } from './requirements/action-plan-form/action-plan-form.component';
 import { AttachmentsDownloadComponent } from './requirements/attachments-download/attachments-download.component';
 import { AuditsAttachmentFormComponent } from './requirements/audits-attachment-form/audits-attachment-form.component';
+import { ReportComponent } from './reports/report.component';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ChartComponent } from 'app/components/common/chart/chart.component';
@@ -131,12 +132,14 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     unitsFormComponent,
     AreasComponent,
     AreasFormComponent, AspectsComponent, AspectsFormComponent, DocumentsComponent, DocumentsFormComponent,
+    ReportComponent,
     HomeComponent,
     DocumentItemComponent,
     RequirementsComponent,
     AuditFormComponent,
     UsersComponent, UsersFormComponent, FileFieldComponent, DocumentsAttachementFormComponent, unitsResponsibleFormComponent, ActionPlanFormComponent, AttachmentsDownloadComponent, AuditsAttachmentFormComponent, DashboardComponent,
-    ChartComponent
+    ChartComponent,
+    ReportComponent
   ],
   exports: [MatAutocompleteModule, MatBadgeModule],
   entryComponents: [CustomerGroupFormComponent,
