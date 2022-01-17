@@ -59,7 +59,7 @@ export class NavigationComponent {
         x.push(l);    
         
         j.Sub = [];
-        j.Sub.push({ "Ativo": "S", "Disable": 0, "Icon": "report", "Name": "Relatório Mensal", "Ordem": 1, "State": "reports/mensal", "Type": "link" })
+        j.Sub.push({ "Ativo": "S", "Disable": 0, "Icon": "report", "Name": "Relatório Mensal", "Ordem": 1, "State": "cadastros/reports", "Type": "link" })
         j.Ativo = "S";
         j.Disable = 0;
         j.Icon = "report";
