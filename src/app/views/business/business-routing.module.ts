@@ -15,6 +15,7 @@ import { RequirementsComponent } from './requirements/requirements.component';
 import { ReportComponent } from './reports/report.component';
 import { unitsComponent } from './units/units.component';
 import { UsersComponent } from './users/users.component';
+import { MontlyComponent } from './reports/montly/montly.component';
  
 const routes: Routes = [  
   {
@@ -105,8 +106,8 @@ const routes: Routes = [
   {
     path: '',
     children: [{
-      path: 'reports',
-      component: ReportComponent,
+      path: 'reports/montly',
+      component: MontlyComponent,
       data: { title: 'Relatórios', breadcrumb: 'Relatórios' }
     }]
   },

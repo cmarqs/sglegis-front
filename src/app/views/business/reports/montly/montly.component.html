@@ -1,0 +1,14 @@
+<app-grade 
+  [Colunas]= "columns"
+  [Linhas] = "rows" 
+  [BtnIncluir]="false"
+  [BtnEditar]="false" 
+  [BtnDeletar]="false"
+  [CamposBusca]="configSearch"
+  (PesquisarRegistro)="getunits($event.parametro)"  
+  [MostrarBarraBusca]="true"
+  (filterValueChange)="onFilterValueChange($event.type, $event.value)"
+  initFilterOpened="true"
+  [syncOnInit]="syncInit"
+  >  
+</app-grade>

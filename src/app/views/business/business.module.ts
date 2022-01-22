@@ -71,6 +71,7 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ChartComponent } from 'app/components/common/chart/chart.component';
 import { HighchartsChartModule } from "highcharts-angular";
+import { MontlyComponent } from './reports/montly/montly.component';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
   align: "right",
@@ -139,7 +140,8 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     AuditFormComponent,
     UsersComponent, UsersFormComponent, FileFieldComponent, DocumentsAttachementFormComponent, unitsResponsibleFormComponent, ActionPlanFormComponent, AttachmentsDownloadComponent, AuditsAttachmentFormComponent, DashboardComponent,
     ChartComponent,
-    ReportComponent
+    ReportComponent,
+    MontlyComponent
   ],
   exports: [MatAutocompleteModule, MatBadgeModule],
   entryComponents: [CustomerGroupFormComponent,
