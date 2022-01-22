@@ -1,3 +1,4 @@
+
 <app-grade 
   [Colunas]= "columns"
   [Linhas] = "rows" 
@@ -5,10 +6,14 @@
   [BtnEditar]="false" 
   [BtnDeletar]="false"
   [CamposBusca]="configSearch"
-  (PesquisarRegistro)="getunits($event.parametro)"  
+  (PesquisarRegistro)="getData($event.parametro)"  
   [MostrarBarraBusca]="true"
   (filterValueChange)="onFilterValueChange($event.type, $event.value)"
-  initFilterOpened="true"
+  initFilterOpened="false"
   [syncOnInit]="syncInit"
+  [actionButton]="true"
+  actionButtonCaption="Exportar Relatório"
+  (actionButtonEvent)="openForm('')" 
+  [ActionButtonStatus]="rows.length > 0"
   >  
 </app-grade>

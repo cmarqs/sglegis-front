@@ -88,10 +88,11 @@
       </mat-chip-list>
   </div>
 
-  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap" style="padding-left: 20px;" *ngIf="(actionButton)">
-    <div fxFlex="20" class="pr-1" style="margin-top: 20px;">
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap" *ngIf="(actionButton)">
+    <div fxFlex="20" class="mt-1" style="padding-left: 10px;">
       <button mat-raised-button class="mat-primary" type="button"
         (click)="actionButtonClick()" [disabled]="!ActionButtonStatus">{{actionButtonCaption}}</button>
+         <span fxFlex></span>
     </div>
   </div>
 

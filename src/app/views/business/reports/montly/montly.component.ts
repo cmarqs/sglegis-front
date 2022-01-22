@@ -23,14 +23,14 @@ export class MontlyComponent implements OnInit {
   roles = roles;
   syncInit = false;
 
-  
   columns = [
-    { Propriedade: 'customer_business_name', Titulo: 'Matriz', Visivel: true, Largura: 70 },
-    { Propriedade: 'customer_unit_name', Titulo: 'Unidade', Visivel: true, Largura: 100 },
-    { Propriedade: 'customer_unit_address', Titulo: 'Endereço', Visivel: true, Largura: 70 },
-    { Propriedade: 'unit_contact_name', Titulo: 'Nome do Contato', Visivel: true, Largura: 70 },
-    { Propriedade: 'unit_contact_email', Titulo: 'Email', Visivel: true, Largura: 100 },
-    { Propriedade: 'unit_contact_phone', Titulo: 'Telefone', Visivel: true, Largura: 50 }
+    { Propriedade: 'area_name', Titulo: 'Sistema de Gestão', Visivel: true, Largura: 70 },
+    { Propriedade: 'area_aspect_name', Titulo: 'Aspecto', Visivel: true, Largura: 70 },
+    { Propriedade: 'document_type', Titulo: 'Tipo', Visivel: true, Largura: 20 },
+    { Propriedade: 'document_number', Titulo: 'Número', Visivel: true, Largura: 30 },
+    { Propriedade: 'document_date', Titulo: 'Data', Visivel: true, Largura: 50 },
+    { Propriedade: 'status_description', Titulo: 'Status', Visivel: true, Largura: 50 },
+    { Propriedade: 'document_summary', Titulo: 'Ementa', Visivel: true, Largura: 200 },
   ]
 
   constructor(
@@ -62,6 +62,8 @@ export class MontlyComponent implements OnInit {
       new CampoBusca("customer_group_id", "Grupo", 50, "", "LIST", groups, "customer_group_name", "customer_group_id"),
       new CampoBusca("customer_id", "Matriz", 50, "", "LIST", [], "customer_business_name", "customer_id"),
       new CampoBusca("customer_unit_id", "Unidade", 50, "", "LIST", [], "customer_unit_name", "customer_unit_id"),
+      new CampoBusca("month", "Mês", 50, "", "string", null, null, null),
+      new CampoBusca("year", "Ano", 50, "", "string", null, null, null),
     ];
 
     if (this.currentUser.role !== roles.admin) {
@@ -133,14 +135,16 @@ export class MontlyComponent implements OnInit {
     }
   }
 
-  getunits(parameter: any) {
+  //{{url}}/api/v1/reports/montly_applicable_report?year=1989&month=7&customer_unit_id=1
+  getData(parameter: any) {
+    
     if (this.currentUser.role !== roles.admin) {
       parameter = {
         customer_id: this.currentUser.customer_id
       }
     }
     this.lastSearch = parameter;
-    this.crud.GetParams(parameter, "/customerunit").subscribe(res => {
+    this.crud.GetParams(parameter, "/reports/montly_applicable_report").subscribe(res => {
       this.rows = [];
       this.rows = res.body;
     })
