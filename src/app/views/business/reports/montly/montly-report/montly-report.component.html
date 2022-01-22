@@ -1,0 +1,54 @@
+<h3 matDialogTitle>
+  {{data.title}}</h3>
+  <mat-dialog-content>
+  <div fxLayout="row" fxLayoutWrap="wrap" class="custom">
+    <h4>1.OBJETIVO </h4>
+    <p>
+      O objetivo deste relat&#243;rio &#233; evidenciar a pesquisa realizada para
+      identificar e atualizar as legisla&#231;&#245;es aplic&#225;veis no
+      &#226;mbito Federal, Estadual e Municipal,da empresa Avon, unidade
+      CABREUVA.
+    </p>
+    <h4>2.DOCUMENTO DE REFER&#202;NCIA </h4>
+    <p>
+      A atualiza&#231;&#227;o &#233; realizada com base no sistema informatizado
+      de banco de dados da legisla&#231;&#227;o ambiental e consultoria
+      especializada e identificada no "Relat&#243;rio de Legisla&#231;&#227;o
+      Aplic&#225;vel".
+    </p>
+    <h4>3.DATA DA PESQUISA </h4>
+    <p>
+      {{  data.date_report }}
+      <br>
+    </p>
+    <h4>4.CONSIDERA&#199;&#213;ES GERAIS </h4>
+    <p>
+      Para as legisla&#231;&#245;es atualizadas no per&#237;odo, foi realizada
+      uma avalia&#231;&#227;o na &#237;ntegra para verificar a sua aplicabilidade
+      aos processos, da {{data.customer_name}}, unidade {{data.unit_name}}.
+    </p>
+
+    <ul *ngFor="let report of data.payload; index as i">
+      <li>
+        <p>ATUALIZAÇÃO DO MÊS - {{report.document_scope_description}}</p>
+        <ul *ngFor="let area of report.areas; index as i">
+          <li>
+            <p>{{ area.area_name }}</p>
+            <ul *ngFor="let d of area.data; index as i">
+              <li>
+                <p *ngIf="d.empty">{{d.empty}}</p>
+                <p *ngIf="!d.empty">{{d.document_type}} Nº {{d.document_number}} - {{d.document_summary}}</p>
+                </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+    <p>
+      Elaborador: Ana Lucia Dem&#233;trio(Consultor) Data:1/9/2022 10:13:51 AM
+      Visto:_________________
+    </p>
+    </div>
+
+</mat-dialog-content>

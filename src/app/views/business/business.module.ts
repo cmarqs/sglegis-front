@@ -72,6 +72,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ChartComponent } from 'app/components/common/chart/chart.component';
 import { HighchartsChartModule } from "highcharts-angular";
 import { MontlyComponent } from './reports/montly/montly.component';
+import { MontlyReportComponent } from './reports/montly/montly-report/montly-report.component';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
   align: "right",
@@ -141,12 +142,14 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     UsersComponent, UsersFormComponent, FileFieldComponent, DocumentsAttachementFormComponent, unitsResponsibleFormComponent, ActionPlanFormComponent, AttachmentsDownloadComponent, AuditsAttachmentFormComponent, DashboardComponent,
     ChartComponent,
     ReportComponent,
-    MontlyComponent
+    MontlyComponent,
+    MontlyReportComponent
   ],
   exports: [MatAutocompleteModule, MatBadgeModule],
   entryComponents: [CustomerGroupFormComponent,
     CustomersFormsComponent, unitsFormComponent, AreasFormComponent, AspectsFormComponent, DocumentsFormComponent, DocumentsAttachementFormComponent,
-    DocumentItemComponent, AuditFormComponent, UsersFormComponent, unitsResponsibleFormComponent, ActionPlanFormComponent,AttachmentsDownloadComponent, AuditsAttachmentFormComponent
+    DocumentItemComponent, AuditFormComponent, UsersFormComponent, unitsResponsibleFormComponent, ActionPlanFormComponent, AttachmentsDownloadComponent, AuditsAttachmentFormComponent,
+    MontlyReportComponent
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }]
