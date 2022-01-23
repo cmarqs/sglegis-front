@@ -46,26 +46,7 @@ export class ReportComponent implements OnInit {
   ];
 
   prepareScreen() {
-    this.currentUser = this.auth.getUser();
-    this.getCustomers(undefined);
-
-    this.buscarForm = new FormGroup({});    
-    this.CamposBusca = this.configSearch;
-
-    for (let i = 0; i < this.CamposBusca.length; i++) {
-      
-      this.buscarForm.addControl(this.CamposBusca[i].nomeCampo, new FormControl(
-        this.CamposBusca[i].tipoCampo === "LIST" && this.CamposBusca[i].fieldValue === this.CamposBusca[i].nomeCampo ? "" : this.CamposBusca[i].fieldValue
-      ));
-      this.buscarForm.controls[this.CamposBusca[i].nomeCampo].valueChanges.subscribe(res => {
-        this.filterValueChange.emit({
-          type: this.CamposBusca[i].nomeCampo,
-          value: res
-        })
-      })
-    }
-    this.AuxColunas = Object.assign([], this.Colunas);
-    this.formReady = true;
+    
     
   }
 
@@ -139,8 +120,7 @@ export class ReportComponent implements OnInit {
   }
 
   ngOnInit() {    
-    this.finderPanel = this.initFilterOpened;
-    this.prepareScreen();
+
   }
 
 }
