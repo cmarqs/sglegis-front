@@ -59,7 +59,7 @@ export class CustomersComponent implements OnInit {
 
   openForm(info: any = {}, newRercord: Boolean) {
     let text;     
-    text = (newRercord) ? "Nova Matriz" : "Editar Matriz: " + info.customer_id;    
+    text = (newRercord) ? "Nova Matriz" : "Editar Matriz: " + info.customer_business_name;    
     
     let dialogRef: MatDialogRef<any> = this.dialog.open(CustomersFormsComponent, {
       width: '720px',

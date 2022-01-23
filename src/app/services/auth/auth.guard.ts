@@ -73,8 +73,11 @@ export class AuthGuard implements CanActivate {
   }
 
   findRoute(route, path, callBack) {
+    
     const { routeConfig } = route;       
     if (routeConfig.path === path) callBack(route);
-    this.findRoute(route.firstChild, path, callBack);
+
+    if (route.firstChild)
+      this.findRoute(route.firstChild, path, callBack);
   }
 }

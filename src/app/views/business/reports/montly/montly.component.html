@@ -1,0 +1,19 @@
+
+<app-grade 
+  [Colunas]= "columns"
+  [Linhas] = "rows" 
+  [BtnIncluir]="false"
+  [BtnEditar]="false" 
+  [BtnDeletar]="false"
+  [CamposBusca]="configSearch"
+  (PesquisarRegistro)="getData($event.parametro)"  
+  [MostrarBarraBusca]="true"
+  (filterValueChange)="onFilterValueChange($event.type, $event.value)"
+  initFilterOpened="false"
+  [syncOnInit]="syncInit"
+  [actionButton]="true"
+  actionButtonCaption="Gerar Relatório"
+  (actionButtonEvent)="showReport()" 
+  [ActionButtonStatus]="rows.length > 0"
+  >  
+</app-grade>

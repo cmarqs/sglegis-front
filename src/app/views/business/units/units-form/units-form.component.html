@@ -68,7 +68,7 @@
 
             <div fxFlex="20" class="pr-1">
               <mat-form-field class="full-width">
-                <mat-select [formControl]="unitForm.controls['customer_unit_uf_id']" placeholder="UF *" (change)="getCities()">
+                <mat-select [formControl]="unitForm.controls['customer_unit_uf_id']" placeholder="UF *" (selectionChange)="getCities()">
                   <mat-option *ngFor="let state of states" [value]="state.state_id">
                     {{state.state_name}} </mat-option>
                 </mat-select>
@@ -177,8 +177,7 @@
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap" class="mat-dialog-content">
     <div fxFlex="100" class="mt-1">
       <span fxFlex *ngIf="!this.data.new"></span>
-      <button mat-raised-button color="accent" type="button" (click)="deleteunit()"
-        *ngIf="!this.data.new" [disabled]="currentUser.role !== roles.admin || currentUser.user_profile_type !== profile.gestor">Excluir</button>
+      <!-- <button mat-raised-button color="accent" type="button" (click)="deleteunit()" *ngIf="!this.data.new" [disabled]="currentUser.role !== roles.admin || currentUser.user_profile_type !== profile.gestor">Excluir</button> -->
       <span fxFlex></span>
       <button mat-raised-button color="warn" type="button" (click)="dialogRef.close('NOK')">Cancelar</button>
       <span fxFlex></span>

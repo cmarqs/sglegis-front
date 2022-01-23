@@ -1,0 +1,431 @@
+<div>
+  <mat-toolbar color="primary" style="height: 40px;">
+    <div fxFlex class="search-bar" style="height: 80%" *ngIf="(MostrarBarraBusca===true)">
+      <form class="top-search-form" [formGroup]="buscarForm" autocomplete="on" #buscadorForm>
+        <mat-icon role="img" style="cursor:pointer;" (click)="showFinderToggle()">search</mat-icon>
+        <input autofocus="true" placeholder="Procurar" type="text" style="height: 95%; padding: 0 0 0 10px;"
+          (click)="showFinderToggle()" class="txtFinder" #txtFinder readonly>
+        <mat-dialog-content class="corpo" style="all:initial">
+          <div *ngIf="(formReady)">
+            <div [ngClass]="finderPanel? 'dropdown-content show': 'dropdown-content'">
+              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap" style="padding: 10px; font-size: 13px">
+                <div fxFlex="33" class="pr-1" *ngFor='let campo of CamposBusca'>
+                  <mat-form-field class="full-width" *ngIf="(campo.tipoCampo =='string')">
+                    <input matInput 
+                        name="campo.nomeCampo" 
+                        [placeholder]="campo.labelCampo"
+                        [maxLength]="campo.maxLengthCampo" 
+                        [mask]="campo.maskCampo" 
+                        upperCase 
+                        type="text"
+                        [formControl]="buscarForm.controls[campo.nomeCampo]" 
+                        [readonly]="campo.disabled">
+                    <button mat-button *ngIf="buscarForm.controls[campo.nomeCampo]" matSuffix mat-icon-button
+                      aria-label="Limpar" (click)="buscarForm.controls[campo.nomeCampo].setValue('')" [disabled]="campo.disabled">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-form-field>
+
+                  <mat-form-field class="full-width" *ngIf="campo.tipoCampo=='DATA' ">
+                    <input matInput [name]="campo.nomeCampo" [placeholder]="campo.labelCampo"
+                      [maxLength]="campo.maxLengthCampo" [mask]="campo.maskCampo" upperCase type="date"
+                      [formControl]="buscarForm.controls[campo.nomeCampo]" [readonly]="campo.disabled">
+                    <button mat-button *ngIf="buscarForm.controls[campo.nomeCampo]" matSuffix mat-icon-button
+                      aria-label="Limpar" (click)="buscarForm.controls[campo.nomeCampo].setValue('')" [disabled]="campo.disabled">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-form-field>
+
+                  <mat-form-field class="full-width" *ngIf="campo.tipoCampo=='LIST' ">
+                    <mat-select [formControl]="buscarForm.controls[campo.nomeCampo]" [placeholder]="campo.labelCampo" [disabled]="campo.disabled">
+                      <mat-option *ngFor="let item of campo.lista" [value]="item[campo.fieldValue]" [disabled]="campo.disabled">
+                        {{item[campo.fieldText]}} </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
+                <div fxFlex="100" class="mt-1">
+                  <span fxFlex></span>
+                  <button mat-raised-button color="warn" type="button"
+                    (click)="finderPanel=!finderPanel">Fechar</button>
+                    <span fxFlex></span>
+                    <button mat-raised-button color="accent" type="button"
+                      (click)="clear()">Limpar filtros</button>                    
+                  <span fxFlex></span>
+                  <button mat-raised-button class="mat-primary" type="button" (click)="Pesquisar()">Procurar</button>
+                  <span fxFlex></span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </mat-dialog-content>
+      </form>
+    </div>
+    <button mat-icon-button [matMenuTriggerFor]="ColunasMenu">
+      <mat-icon>filter_list</mat-icon>
+    </button>
+
+    <mat-menu #ColunasMenu="matMenu">
+      <button mat-menu-item *ngFor='let coluna of AuxColunas' (click)="$event.stopPropagation();">
+        <mat-checkbox [checked]='true' (click)='Alternar(coluna)'></mat-checkbox>{{" "+coluna.Titulo}}
+      </button>
+      <button mat-menu-item>
+        <mat-icon>close</mat-icon>Fechar
+      </button>
+    </mat-menu>
+
+    <button mat-icon-button (click)="Incluir()" *ngIf="(BtnIncluir ===true)">
+      <mat-icon>add</mat-icon>
+    </button>
+  </mat-toolbar>  
+
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap" style="padding-left: 20px;margin-top: 10px;" *ngIf="(showFilter)">
+      <mat-chip-list aria-label="Fish selection" *ngFor='let campo of CamposBusca'>
+        <mat-chip *ngIf="(buscarForm.controls[campo.nomeCampo].value)">{{campo.labelCampo}} : {{ getValue(campo) }}</mat-chip>        
+      </mat-chip-list>
+  </div>
+
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap" style="padding-left: 20px;" *ngIf="(actionButton)">
+    <div fxFlex="20" class="pr-1" style="margin-top: 20px;">
+      <button mat-raised-button class="mat-primary" type="button"
+        (click)="actionButtonClick()" [disabled]="!ActionButtonStatus">{{actionButtonCaption}}</button>
+    </div>
+  </div>
+
+    <div>
+  <p>
+    <strong>1.OBJETIVO </strong>
+  </p>
+  <p title="Heading">
+    O objetivo deste relat&#243;rio &#233; evidenciar a pesquisa realizada para
+    identificar e atualizar as legisla&#231;&#245;es aplic&#225;veis no
+    &#226;mbito Federal, Estadual e Municipal,da empresa Avon, unidade
+    CABREUVA.
+  </p>
+  <p title="Heading">
+    <strong>2.DOCUMENTO DE REFER&#202;NCIA </strong>
+  </p>
+  <p title="Heading">
+    A atualiza&#231;&#227;o &#233; realizada com base no sistema informatizado
+    de banco de dados da legisla&#231;&#227;o ambiental e consultoria
+    especializada e identificada no "Relat&#243;rio de Legisla&#231;&#227;o
+    Aplic&#225;vel".
+  </p>
+  <p title="Heading">
+    <strong>3.DATA DA PESQUISA </strong>
+  </p>
+  <p title="Heading">
+    1/1/0001 12:00:00 AM
+  </p>
+  <p title="Heading">
+    <strong>4.CONSIDERA&#199;&#213;ES GERAIS </strong>
+  </p>
+  <p title="Heading">
+    Para as legisla&#231;&#245;es atualizadas no per&#237;odo, foi realizada
+    uma avalia&#231;&#227;o na &#237;ntegra para verificar a sua aplicabilidade
+    aos processos, da Avon, unidade CABREUVA.
+  </p>
+  <table border="0" cellpadding="0">
+    <tbody>
+      <tr>
+        <td>
+          <p title="Heading">
+            <strong>
+              ATUALIZA&#199;&#195;O DO M&#202;S - &#194;MBITO FEDERAL
+            </strong>
+          </p>
+          <p title="Heading">
+            Aplic&#225;veis: 7
+          </p>
+          <p title="Heading">
+            Descri&#231;&#245;es Aplic&#225;veis: 7
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p title="Heading">
+            <strong>MEIO AMBIENTE</strong>
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p title="Heading">
+            RESOLU&#199;&#195;O ANTT N&#186; 5823, - Disp&#245;e sobre
+            os requisitos e procedimentos para celebra&#231;&#227;o e
+            acompanhamento de Termos de Ajustamento de Conduta a serem
+            firmados no &#226;mbito da ANTT para corre&#231;&#227;o ou
+            compensa&#231;&#227;o de descumprimentos de
+            obriga&#231;&#245;es contratuais, legais ou regulamentares,
+            e d&#225; outras provid&#234;ncias.
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p title="Heading">
+            PORTARIA MMA N&#186; 161, - Institui a Semana Nacional de
+            Conscientiza&#231;&#227;o da Perda e Desperd&#237;cio de
+            Alimentos.
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p title="Heading">
+            DECRETO N&#186; 9414, - Institui o Programa Nacional de
+            Levantamento e Interpreta&#231;&#227;o de Solos do Brasil.
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p title="Heading">
+            DECRETO N&#186; 9398, - Altera o Decreto de 6 de mar&#231;o
+            de 2003, que cria o Comit&#234; Executivo Interministerial
+            para a Prote&#231;&#227;o da Camada de Oz&#244;nio, com a
+            finalidade de estabelecer diretrizes e coordenar as
+            a&#231;&#245;es relativas &#224; prote&#231;&#227;o da
+            camada de oz&#244;nio.
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p title="Heading">
+            INSTRU&#199;&#195;O NORMATIVA IBAMA N&#186; 17, - Altera o
+            Anexo I da Instru&#231;&#227;o Normativa n&#186; 11, de 13
+            de abril de 2018.
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p title="Heading">
+            <strong>SEGURAN&#199;A SA&#218;DE OCUPACIONAL</strong>
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p title="Heading">
+            RESOLU&#199;&#195;O CG-ESOCIAL N&#186; 15, - Regulamenta a
+            forma de divulga&#231;&#227;o de novas vers&#245;es
+            corretivas e evolutivas dos leiautes e manuais do eSocial.
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p title="Heading">
+            INSTRU&#199;&#195;O NORMATIVA TST N&#186; 41, - Disp&#245;e
+            sobre a aplica&#231;&#227;o das normas processuais da
+            Consolida&#231;&#227;o das Leis do Trabalho alteradas pela
+            Lei n&#186; 13.467, de 13 de julho de 2017.
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p title="Heading">
+            <strong>QUALIDADE</strong>
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p title="Heading">
+            N&#227;o houve altera&#231;&#227;o no per&#237;odo
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p title="Heading">
+            <strong>
+              ATUALIZA&#199;&#195;O DO M&#202;S - &#194;MBITO
+              ESTADUAL
+            </strong>
+          </p>
+          <p title="Heading">
+            Aplic&#225;veis: 7
+          </p>
+          <p title="Heading">
+            Descri&#231;&#245;es Aplic&#225;veis: 7
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p title="Heading">
+            <strong>MEIO AMBIENTE</strong>
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p title="Heading">
+            DECRETO N&#186; 63.456, - Regulamenta a Pol&#237;tica
+            Estadual de Educa&#231;&#227;o Ambiental, institu&#237;da
+            pela Lei n&#186; 12.780, de 30 de novembro de 2007,
+            institui a Comiss&#227;o Interinstitucional de
+            Educa&#231;&#227;o Ambiental e d&#225; provid&#234;ncias
+            correlatas.
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p title="Heading">
+            PORTARIA CB SP N&#186; 22, - Aprova a nova
+            regulamenta&#231;&#227;o do processo de
+            autoriza&#231;&#227;o para adequa&#231;&#227;o, conforme o
+            disposto no anexo desta Portaria.
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p title="Heading">
+            PORTARIA CB SP N&#186; 25, - Suspende pelo per&#237;odo de
+            45 dias a vig&#234;ncia e vigor da Parte 2 (Bombeiro Civil)
+            da IT 17/2018, al&#233;m do prazo fixado pela Portaria CB
+            N&#186; 23/2018.
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p title="Heading">
+            PORTARIA CB SP N&#186; 26, - Republica as
+            Instru&#231;&#245;es T&#233;cnicas na &#237;ntegra, em
+            atualiza&#231;&#227;o &#224;s respectivas
+            Instru&#231;&#245;es T&#233;cnicas publicadas no suplemento
+            do D.O.E. de 15 de mar&#231;o de 2018, por terem sido
+            publicadas com incorre&#231;&#245;es.
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p title="Heading">
+            <strong>SEGURAN&#199;A SA&#218;DE OCUPACIONAL</strong>
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p title="Heading">
+            PORTARIA CB SP N&#186; 22, - Aprova a nova
+            regulamenta&#231;&#227;o do processo de
+            autoriza&#231;&#227;o para adequa&#231;&#227;o, conforme o
+            disposto no anexo desta Portaria.
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p title="Heading">
+            PORTARIA CB SP N&#186; 25, - Suspende pelo per&#237;odo de
+            45 dias a vig&#234;ncia e vigor da Parte 2 (Bombeiro Civil)
+            da IT 17/2018, al&#233;m do prazo fixado pela Portaria CB
+            N&#186; 23/2018.
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p title="Heading">
+            PORTARIA CB SP N&#186; 26, - Republica as
+            Instru&#231;&#245;es T&#233;cnicas na &#237;ntegra, em
+            atualiza&#231;&#227;o &#224;s respectivas
+            Instru&#231;&#245;es T&#233;cnicas publicadas no suplemento
+            do D.O.E. de 15 de mar&#231;o de 2018, por terem sido
+            publicadas com incorre&#231;&#245;es.
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p title="Heading">
+            <strong>QUALIDADE</strong>
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p title="Heading">
+            N&#227;o houve altera&#231;&#227;o no per&#237;odo
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p title="Heading">
+            <strong>
+              ATUALIZA&#199;&#195;O DO M&#202;S - &#194;MBITO
+              MUNICIPAL
+            </strong>
+          </p>
+          <p title="Heading">
+            Aplic&#225;veis: 0
+          </p>
+          <p title="Heading">
+            Descri&#231;&#245;es Aplic&#225;veis: 0
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p title="Heading">
+            <strong>MEIO AMBIENTE</strong>
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p title="Heading">
+            N&#227;o houve altera&#231;&#227;o no per&#237;odo
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p title="Heading">
+            <strong>SEGURAN&#199;A SA&#218;DE OCUPACIONAL</strong>
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p title="Heading">
+            N&#227;o houve altera&#231;&#227;o no per&#237;odo
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p title="Heading">
+            <strong>QUALIDADE</strong>
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p title="Heading">
+            N&#227;o houve altera&#231;&#227;o no per&#237;odo
+          </p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <p title="Heading">
+    Elaborador: Ana Lucia Dem&#233;trio(Consultor) Data:1/9/2022 10:13:51 AM
+    Visto:_________________
+  </p>
+  </div>
+</div>

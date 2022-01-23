@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar, MatDialog } from '@angular/material';
+import { AuthGuard } from 'app/services/auth/auth.guard';
 import { AppConfirmService } from 'app/services/dialogs/app-confirm/app-confirm.service';
 import { AppLoaderService } from 'app/services/dialogs/app-loader/app-loader.service';
 import { CRUDService } from 'app/services/negocio/CRUDService/CRUDService';
@@ -17,6 +18,7 @@ export class DocumentItemComponent implements OnInit {
   areas = [];
   aspects = [];
   areasWithAspects = [];
+  currentUser: any = {};
   public documentItemForm: FormGroup;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
@@ -25,6 +27,7 @@ export class DocumentItemComponent implements OnInit {
     private crudService: CRUDService,
     private snackBar: MatSnackBar,
     private confirm: AppConfirmService,
+    private auth: AuthGuard,
     public dialog: MatDialog) { }
 
   prepareScreen(record) {
@@ -95,6 +98,25 @@ export class DocumentItemComponent implements OnInit {
     });
   }
 
+  deleteItem(document_item) {
+
+    if (!document_item.payload)
+      return;
+    
+    this.loader.open();
+    this.crudService.DeleteParams(document_item.payload.document_item_id, "/documentitem").subscribe(res => {
+      if (res.status == 200) {
+        this.loader.close();
+          this.snackBar.open("Registro gravado com sucesso", "", { duration: 3000 });
+          this.dialogRef.close('OK');
+      } else {
+        this.loader.close();
+        this.snackBar.open("Erro ao gravar registro:" + res.Message, "", { duration: 5000 });
+        this.dialogRef.close('NOK');
+      }
+    });
+  }
+
   async saveAreasAspects(document_item_id) {
     
     for (let i = 0; i < this.areasWithAspects.length; i++) {
@@ -119,6 +141,7 @@ export class DocumentItemComponent implements OnInit {
 
   ngOnInit() {
     this.prepareScreen(this.data.payload);
+    this.currentUser = this.auth.getUser();
   }
 
 }

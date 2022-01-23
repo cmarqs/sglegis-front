@@ -50,7 +50,7 @@ export class UsersComponent implements OnInit {
     },
     {
       Propriedade: 'customer_business_name',
-      Titulo: 'Customer business name',
+      Titulo: 'Nome do Cliente',
       Visivel: true,
       Largura: 150
     },
@@ -59,12 +59,12 @@ export class UsersComponent implements OnInit {
       Titulo: 'Status',
       Visivel: true,
       Largura: 50,
-      Render: (value) => value == 1 ? "Disabled" : "Active"
+      Render: (value) => value == 1 ? "Desabilitado" : "Ativo"
     },
   ];
 
   configSearch = [
-    new CampoBusca("user_name", "User", 50, "", "string", null, null, null)
+    new CampoBusca("user_name", "Usuário", 50, "", "string", null, null, null)
   ]
 
   currentUser: any = {};
@@ -92,7 +92,7 @@ export class UsersComponent implements OnInit {
   
   openForm(info: any = {}, newRecord: Boolean) {    
     let text;
-    text = (newRecord) ? "New User" : "Edit User: " + info.user_id;
+    text = (newRecord) ? "Novo Usuário" : "Editar Usuário: " + info.user_name;
     
     let dialogRef: MatDialogRef<any> = this.dialog.open(UsersFormComponent, {
       width: dialog.small,

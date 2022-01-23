@@ -66,10 +66,13 @@ import { unitsResponsibleFormComponent } from './units/units-responsible-form/un
 import { ActionPlanFormComponent } from './requirements/action-plan-form/action-plan-form.component';
 import { AttachmentsDownloadComponent } from './requirements/attachments-download/attachments-download.component';
 import { AuditsAttachmentFormComponent } from './requirements/audits-attachment-form/audits-attachment-form.component';
+import { ReportComponent } from './reports/report.component';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ChartComponent } from 'app/components/common/chart/chart.component';
 import { HighchartsChartModule } from "highcharts-angular";
+import { MontlyComponent } from './reports/montly/montly.component';
+import { MontlyReportComponent } from './reports/montly/montly-report/montly-report.component';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
   align: "right",
@@ -131,17 +134,22 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     unitsFormComponent,
     AreasComponent,
     AreasFormComponent, AspectsComponent, AspectsFormComponent, DocumentsComponent, DocumentsFormComponent,
+    ReportComponent,
     HomeComponent,
     DocumentItemComponent,
     RequirementsComponent,
     AuditFormComponent,
     UsersComponent, UsersFormComponent, FileFieldComponent, DocumentsAttachementFormComponent, unitsResponsibleFormComponent, ActionPlanFormComponent, AttachmentsDownloadComponent, AuditsAttachmentFormComponent, DashboardComponent,
-    ChartComponent
+    ChartComponent,
+    ReportComponent,
+    MontlyComponent,
+    MontlyReportComponent
   ],
   exports: [MatAutocompleteModule, MatBadgeModule],
   entryComponents: [CustomerGroupFormComponent,
     CustomersFormsComponent, unitsFormComponent, AreasFormComponent, AspectsFormComponent, DocumentsFormComponent, DocumentsAttachementFormComponent,
-    DocumentItemComponent, AuditFormComponent, UsersFormComponent, unitsResponsibleFormComponent, ActionPlanFormComponent,AttachmentsDownloadComponent, AuditsAttachmentFormComponent
+    DocumentItemComponent, AuditFormComponent, UsersFormComponent, unitsResponsibleFormComponent, ActionPlanFormComponent, AttachmentsDownloadComponent, AuditsAttachmentFormComponent,
+    MontlyReportComponent
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }]

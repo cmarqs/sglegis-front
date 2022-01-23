@@ -175,7 +175,9 @@ export class RequirementsComponent implements OnInit {
     });
     
     dialogRef.afterClosed().subscribe(res => {
-      
+      this.getAuditRequirements(this.lastSearch);
+      this.selectedRows = [];      
+      return;
     })
   }
 
@@ -192,7 +194,9 @@ export class RequirementsComponent implements OnInit {
     });
     
     dialogRef.afterClosed().subscribe(res => {
-      
+      this.getAuditRequirements(this.lastSearch);
+      this.selectedRows = [];      
+      return;
     })
   }
   

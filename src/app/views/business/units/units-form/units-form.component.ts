@@ -136,8 +136,8 @@ export class unitsFormComponent implements OnInit {
     this.loader.open();
     this.crudService.Save(form, this.data.new, "/customerunit", form.customer_unit_id).subscribe(res => {
       if (res.status == 200) {
-        this.loader.close();
         this.saveAreasAspects(res.body.customer_unit_id || form.customer_unit_id).then(r => {
+          this.loader.close();
           this.snackBar.open("Registro gravado com sucesso", "", { duration: 3000 });
           this.dialogRef.close('OK');
         })
@@ -160,10 +160,10 @@ export class unitsFormComponent implements OnInit {
             o.area_aspect_id = this.areasWithAspects[i].aspects[j].area_aspect_id;
             o.customer_unit_id = unit_id;
             let resp = await this.crudService.Save(o, true, `/customerunit/${unit_id}/aspects`, "0").toPromise();
-            console.log("res ins:" + resp);
+            //console.log("res ins:" + resp);
           } else {
             let resp = await this.crudService.DeleteParams(this.areasWithAspects[i].aspects[j].unit_area_aspect_id, `/customerunit/${unit_id}/aspects`).toPromise();
-            console.log("res del:"+ resp);
+            //console.log("res del:"+ resp);
           }
         }
       }

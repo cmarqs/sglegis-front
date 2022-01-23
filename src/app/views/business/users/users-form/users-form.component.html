@@ -8,13 +8,13 @@
       <div fxFlex="100">
 
         <p class="d-flex flex-wrap">
-          <mat-label class="mb-2">Account type</mat-label>
+          <mat-label class="mb-2">Tipo de conta</mat-label>
           <mat-radio-group 
             class="full-width" 
             [(formControl)]="user.controls['user_role']"
           >
             <mat-radio-button *ngIf="currentUser.role === roles.admin" [value]="roles.admin" >Admin</mat-radio-button>
-            <mat-radio-button [value]="roles.client" class=" pl-1">Client</mat-radio-button>
+            <mat-radio-button [value]="roles.client" class=" pl-1">Cliente</mat-radio-button>
           </mat-radio-group>
         </p>
         
@@ -39,7 +39,7 @@
               [formControl]="user.controls['user_name']">
             <mat-error
               *ngIf="user.controls['user_name'].hasError('required') && user.controls['user_name'].touched" >
-              Name is required
+              Um nome é obrigatório
             </mat-error>
           </mat-form-field>            
         </p>
@@ -90,7 +90,7 @@
       <button mat-raised-button color="accent" type="button" (click)="deleteUser()" *ngIf="!this.data.new" [disabled]="currentUser.role !== roles.admin || currentUser.user_profile_type !== profile.gestor">Excluir</button>    
       <span fxFlex *ngIf="!this.data.new"></span>
       <button mat-raised-button [color]="user.value.is_disabled == 1 ? 'primary' : 'warn'" type="button" (click)="disableUser()" *ngIf="!this.data.new" [disabled]="currentUser.role !== roles.admin || currentUser.user_profile_type !== profile.gestor">
-        {{ user.value.is_disabled == 1 ? "Active" : "Desabilitar" }}
+        {{ user.value.is_disabled == 1 ? "Ativo" : "Desabilitar" }}
       </button>  
       <span fxFlex></span>
       <button mat-raised-button color="warn" type="button" (click)="dialogRef.close('NOK')">Cancelar</button>

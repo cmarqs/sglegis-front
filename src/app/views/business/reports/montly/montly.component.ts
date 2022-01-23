@@ -7,32 +7,37 @@ import { dialog } from 'app/models/size/size';
 import { AuthGuard } from 'app/services/auth/auth.guard';
 import { AppLoaderService } from 'app/services/dialogs/app-loader/app-loader.service';
 import { CRUDService } from 'app/services/negocio/CRUDService/CRUDService';
-import { unitsFormComponent } from './units-form/units-form.component';
-import { unitsResponsibleFormComponent } from './units-responsible-form/units-responsible-form.component';
+import { MontlyReportComponent } from './montly-report/montly-report.component';
+
+
 
 @Component({
-  selector: 'app-units',
-  templateUrl: './units.component.html',
-  styleUrls: ['./units.component.css']
+  selector: 'app-montly',
+  templateUrl: './montly.component.html',
+  styleUrls: ['./montly.component.css']
 })
-export class unitsComponent implements OnInit {
+export class MontlyComponent implements OnInit {
   lastSearch: any;
   configSearch: any = [];
+  areas = [];
+  scopes = [];
   rows = [];
   groups = [];
+  preDataReport: any;
+
   currentUser: any;
   profile = profile;
   roles = roles;
   syncInit = false;
 
-  
   columns = [
-    { Propriedade: 'customer_business_name', Titulo: 'Matriz', Visivel: true, Largura: 70 },
-    { Propriedade: 'customer_unit_name', Titulo: 'Unidade', Visivel: true, Largura: 100 },
-    { Propriedade: 'customer_unit_address', Titulo: 'Endereço', Visivel: true, Largura: 70 },
-    { Propriedade: 'unit_contact_name', Titulo: 'Nome do Contato', Visivel: true, Largura: 70 },
-    { Propriedade: 'unit_contact_email', Titulo: 'Email', Visivel: true, Largura: 100 },
-    { Propriedade: 'unit_contact_phone', Titulo: 'Telefone', Visivel: true, Largura: 50 }
+    { Propriedade: 'area_name', Titulo: 'Sistema de Gestão', Visivel: true, Largura: 70 },
+    { Propriedade: 'area_aspect_name', Titulo: 'Aspecto', Visivel: true, Largura: 70 },
+    { Propriedade: 'document_type', Titulo: 'Tipo', Visivel: true, Largura: 20 },
+    { Propriedade: 'document_number', Titulo: 'Número', Visivel: true, Largura: 30 },
+    { Propriedade: 'document_date', Titulo: 'Data', Visivel: true, Largura: 50 },
+    { Propriedade: 'status_description', Titulo: 'Status', Visivel: true, Largura: 50 },
+    { Propriedade: 'document_summary', Titulo: 'Ementa', Visivel: true, Largura: 200 },
   ]
 
   constructor(
@@ -44,6 +49,9 @@ export class unitsComponent implements OnInit {
   ) { }
 
   prepareScreen() {
+    this.getDocumentScopes();
+    this.getAreas();
+
     this.setConfigSearch();
   }
 
@@ -64,6 +72,8 @@ export class unitsComponent implements OnInit {
       new CampoBusca("customer_group_id", "Grupo", 50, "", "LIST", groups, "customer_group_name", "customer_group_id"),
       new CampoBusca("customer_id", "Matriz", 50, "", "LIST", [], "customer_business_name", "customer_id"),
       new CampoBusca("customer_unit_id", "Unidade", 50, "", "LIST", [], "customer_unit_name", "customer_unit_id"),
+      new CampoBusca("month", "Mês", 50, "", "string", null, null, null),
+      new CampoBusca("year", "Ano", 50, "", "string", null, null, null),
     ];
 
     if (this.currentUser.role !== roles.admin) {
@@ -73,6 +83,50 @@ export class unitsComponent implements OnInit {
 
     this.configSearch = aux;
     this.syncInit = true;
+  }
+
+
+  async showReport() {
+  
+    let title = "Relatório Mensal";
+    
+    let dialogRef: MatDialogRef<any> = this.dialog.open(MontlyReportComponent, {
+      width: dialog.large,
+      disableClose: false,
+      data: {
+        title: title,
+        customer_name: this.configSearch[1].lista[0].customer_business_name,
+        unit_name: this.configSearch[2].lista[0].customer_unit_name,
+        date_report: new Date().toLocaleDateString('pt-Br', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
+        payload: { rows: this.rows, areas: this.areas, scopes: this.scopes },
+        new: false
+      }
+    });
+
+    dialogRef.afterClosed()
+    .subscribe(res => {      
+      console.log('Fechou')
+      return;
+    });
+  }
+
+
+  getDocumentScopes() {
+    this.crud.GetParams(undefined, "/documentscope").subscribe(res => {
+      if (res.status == 200) {
+        this.scopes = [];
+        this.scopes = res.body;
+      }
+    });
+  }
+
+  getAreas() {
+    this.crud.GetParams(undefined, "/area").subscribe(res => {
+      if (res.status == 200) {
+        this.areas = [];
+        this.areas = res.body;
+      }
+    });
   }
 
 
@@ -133,51 +187,30 @@ export class unitsComponent implements OnInit {
       });
     }
   }
+
+
 //#endregion
   
-
-  openForm(info: any = {}, newRercord: Boolean) {
-    let text;     
-    text = (newRercord) ? "Nova Unidade" : "Editar Unidade: " + info.customer_unit_name;    
-    
-    let dialogRef: MatDialogRef<any> = this.dialog.open(unitsFormComponent, {
-      width: '900px',
-      disableClose: true,
-      data: { title: text, payload: info, new: newRercord }
-    });
-
-    dialogRef.afterClosed()
-    .subscribe(res => {      
-      this.getunits(this.lastSearch);
-      return;
-    });
-  }
+  //{{url}}/api/v1/reports/montly_applicable_report?year=1989&month=7&customer_unit_id=1
+  getData(parameter: any) {
   
-  getunits(parameter: any) {
     if (this.currentUser.role !== roles.admin) {
       parameter = {
         customer_id: this.currentUser.customer_id
       }
     }
     this.lastSearch = parameter;
-    this.crud.GetParams(parameter, "/customerunit").subscribe(res => {
+    this.crud.GetParams(parameter, "/reports/montly_applicable_report").subscribe(res => {
       this.rows = [];
       this.rows = res.body;
-    })
-  }
-
-  openResponsibleForm(info: any = {}) {
-    let dialogRef: MatDialogRef<any> = this.dialog.open(unitsResponsibleFormComponent, {
-      width: dialog.medium,
-      disableClose: true,
-      data: { title: "Responsáveis por Aspecto", payload: info }
     });
-  }
 
+    this.getDocumentScopes();
+    this.getAreas();
+  }
+  
   ngOnInit() {
     this.currentUser = this.auth.getUser();
     this.prepareScreen();
   }
-  
-
 }
