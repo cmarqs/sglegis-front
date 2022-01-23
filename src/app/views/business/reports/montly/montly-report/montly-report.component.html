@@ -1,5 +1,5 @@
 <h3 matDialogTitle>
-  {{data.title}}</h3>
+  {{this.dataReport.aux.title}}</h3>
   <mat-dialog-content>
   <div fxLayout="row" fxLayoutWrap="wrap" class="custom">
     <h4>1.OBJETIVO </h4>
@@ -18,19 +18,19 @@
     </p>
     <h4>3.DATA DA PESQUISA </h4>
     <p>
-      {{  data.date_report }}
+      {{  this.dataReport.aux.date_report }}
       <br>
     </p>
     <h4>4.CONSIDERA&#199;&#213;ES GERAIS </h4>
     <p>
       Para as legisla&#231;&#245;es atualizadas no per&#237;odo, foi realizada
       uma avalia&#231;&#227;o na &#237;ntegra para verificar a sua aplicabilidade
-      aos processos, da {{data.customer_name}}, unidade {{data.unit_name}}.
+      aos processos, da {{this.dataReport.aux.customer_name}}, unidade {{this.dataReport.aux.unit_name}}.
     </p>
 
-    <ul *ngFor="let report of data.payload; index as i">
+    <ul *ngFor="let report of this.dataReport.tableData; index as i">
       <li>
-        <p>ATUALIZAÇÃO DO MÊS - {{report.document_scope_description}}</p>
+        <p>ATUALIZAÇÃO DO MÊS - {{report.scope.document_scope_description}}</p>
         <ul *ngFor="let area of report.areas; index as i">
           <li>
             <p>{{ area.area_name }}</p>

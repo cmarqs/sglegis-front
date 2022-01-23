@@ -19,145 +19,12 @@ import { MontlyReportComponent } from './montly-report/montly-report.component';
 export class MontlyComponent implements OnInit {
   lastSearch: any;
   configSearch: any = [];
+  areas = [];
+  scopes = [];
   rows = [];
   groups = [];
-  reportData: any = [
-    {
-    "document_scope_description": "FEDERAL",
-    "areas": [{
-      "area_name": "MEIO AMBIENTE",
-      "data": [{
-        "document_type": "LEI",
-        "document_number": "1",
-        "document_date": "1989-07-11T00:00:00.000Z",
-        "status_description": "EM VIGOR",
-        "document_summary": "MEIO AMBIENTE LEI 1 FEDERAL"
-      },
-      {
-        "document_type": "LEI",
-        "document_number": "2",
-        "document_date": "1989-07-11T00:00:00.000Z",
-        "status_description": "EM VIGOR",
-        "document_summary": "MEIO AMBIENTE LEI 2 FEDERAL"
-      },
-      {
-        "document_type": "LEI",
-        "document_number": "3",
-        "document_date": "1989-07-11T00:00:00.000Z",
-        "status_description": "EM VIGOR",
-        "document_summary": "MEIO AMBIENTE LEI 3 FEDERAL"
-      }
-    ]
-    },
-    {
-      "area_name": "QUALIDADE",
-      "data": [{
-        "document_type": "LEI",
-        "document_number": "7802",
-        "document_date": "1989-07-11T00:00:00.000Z",
-        "status_description": "EM VIGOR",
-        "document_summary": "QUALIDADE LEI 1 FEDERAL"
-      }]
-    },
-    {
-      "area_name": "SEGURANÇA",
-      "data": [{
-        "empty": "Não houve alteração no período"
-      }]
-    }
-    ]
-    },
-    {
-    "document_scope_description": "ESTADUAL",
-    "areas": [{
-      "area_name": "MEIO AMBIENTE",
-      "data": [{
-        "document_type": "LEI",
-        "document_number": "7802",
-        "document_date": "1989-07-11T00:00:00.000Z",
-        "status_description": "EM VIGOR",
-        "document_summary": "MEIO AMBIENTE ESTADUAL 1"
-      },
-      {
-        "document_type": "LEI",
-        "document_number": "7802",
-        "document_date": "1989-07-11T00:00:00.000Z",
-        "status_description": "EM VIGOR",
-        "document_summary": "MEIO AMBIENTE ESTADUAL 2"
-      },
-      {
-        "document_type": "LEI",
-        "document_number": "7802",
-        "document_date": "1989-07-11T00:00:00.000Z",
-        "status_description": "EM VIGOR",
-        "document_summary": "MEIO AMBIENTE ESTADUAL 3"
-      }
-    ]
-    },
-    {
-      "area_name": "QUALIDADE",
-      "data": [{
-        "document_type": "LEI",
-        "document_number": "7802",
-        "document_date": "1989-07-11T00:00:00.000Z",
-        "status_description": "EM VIGOR",
-        "document_summary": "QUALIDADE ESTADUAL 1"
-      }]
-    },
-    {
-      "area_name": "SEGURANÇA",
-      "data": [{
-        "empty": "Não houve alteração no período"
-      }]
-    }
-    ]
-    },
-    {
-    "document_scope_description": "MUNICIPAL",
-    "areas": [{
-      "area_name": "MEIO AMBIENTE",
-      "data": [{
-        "document_type": "LEI",
-        "document_number": "7802",
-        "document_date": "1989-07-11T00:00:00.000Z",
-        "status_description": "EM VIGOR",
-        "document_summary": "MEIO AMBIENTE MUNICIPAL LEI "
-      },
-      {
-        "document_type": "LEI",
-        "document_number": "7802",
-        "document_date": "1989-07-11T00:00:00.000Z",
-        "status_description": "EM VIGOR",
-        "document_summary": "DISPÕE SOBRE A PESQUISA, A EXPERIMENTAÇÃO, A PRODUÇÃO, A EMBALAGEM E ROTULAGEM, O TRANSPORTE, O ARMAZENAMENTO, A COMERCIALIZAÇÃO, A PROPAGANDA COMERCIAL, A UTILIZAÇÃO, A IMPORTAÇÃO, A EXPORTAÇÃO, O DESTINO FINAL DOS RESÍDUOS E EMBALAGENS, O REGISTRO, A CLASSIFICAÇÃO, O CONTROLE, A INSPEÇÃO E A FISCALIZAÇÃO DE AGROTÓXICOS, SEUS COMPONENTES E AFINS, E DÁ OUTRAS PROVIDÊNCIAS."
-      },
-      {
-        "document_type": "LEI",
-        "document_number": "7802",
-        "document_date": "1989-07-11T00:00:00.000Z",
-        "status_description": "EM VIGOR",
-        "document_summary": "DISPÕE SOBRE A PESQUISA, A EXPERIMENTAÇÃO, A PRODUÇÃO, A EMBALAGEM E ROTULAGEM, O TRANSPORTE, O ARMAZENAMENTO, A COMERCIALIZAÇÃO, A PROPAGANDA COMERCIAL, A UTILIZAÇÃO, A IMPORTAÇÃO, A EXPORTAÇÃO, O DESTINO FINAL DOS RESÍDUOS E EMBALAGENS, O REGISTRO, A CLASSIFICAÇÃO, O CONTROLE, A INSPEÇÃO E A FISCALIZAÇÃO DE AGROTÓXICOS, SEUS COMPONENTES E AFINS, E DÁ OUTRAS PROVIDÊNCIAS."
-      }
-    ]
-    },
-    {
-      "area_name": "QUALIDADE",
-      "data": [{
-        "document_type": "LEI",
-        "document_number": "7802",
-        "document_date": "1989-07-11T00:00:00.000Z",
-        "status_description": "EM VIGOR",
-        "document_summary": "DISPÕE SOBRE A PESQUISA, A EXPERIMENTAÇÃO, A PRODUÇÃO, A EMBALAGEM E ROTULAGEM, O TRANSPORTE, O ARMAZENAMENTO, A COMERCIALIZAÇÃO, A PROPAGANDA COMERCIAL, A UTILIZAÇÃO, A IMPORTAÇÃO, A EXPORTAÇÃO, O DESTINO FINAL DOS RESÍDUOS E EMBALAGENS, O REGISTRO, A CLASSIFICAÇÃO, O CONTROLE, A INSPEÇÃO E A FISCALIZAÇÃO DE AGROTÓXICOS, SEUS COMPONENTES E AFINS, E DÁ OUTRAS PROVIDÊNCIAS."
-      }]
-    },
-    {
-      "area_name": "SEGURANÇA",
-      "data": [{
-        "empty": "Não houve alteração no período"
-      }]
-    }
-    ]
-    }
-];
+  preDataReport: any;
+
   currentUser: any;
   profile = profile;
   roles = roles;
@@ -182,6 +49,9 @@ export class MontlyComponent implements OnInit {
   ) { }
 
   prepareScreen() {
+    this.getDocumentScopes();
+    this.getAreas();
+
     this.setConfigSearch();
   }
 
@@ -216,7 +86,8 @@ export class MontlyComponent implements OnInit {
   }
 
 
-  showReport() {
+  async showReport() {
+  
     let title = "Relatório Mensal";
     
     let dialogRef: MatDialogRef<any> = this.dialog.open(MontlyReportComponent, {
@@ -227,7 +98,7 @@ export class MontlyComponent implements OnInit {
         customer_name: this.configSearch[1].lista[0].customer_business_name,
         unit_name: this.configSearch[2].lista[0].customer_unit_name,
         date_report: new Date().toLocaleDateString('pt-Br', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
-        payload: this.reportData,
+        payload: { rows: this.rows, areas: this.areas, scopes: this.scopes },
         new: false
       }
     });
@@ -236,6 +107,25 @@ export class MontlyComponent implements OnInit {
     .subscribe(res => {      
       console.log('Fechou')
       return;
+    });
+  }
+
+
+  getDocumentScopes() {
+    this.crud.GetParams(undefined, "/documentscope").subscribe(res => {
+      if (res.status == 200) {
+        this.scopes = [];
+        this.scopes = res.body;
+      }
+    });
+  }
+
+  getAreas() {
+    this.crud.GetParams(undefined, "/area").subscribe(res => {
+      if (res.status == 200) {
+        this.areas = [];
+        this.areas = res.body;
+      }
     });
   }
 
@@ -298,9 +188,12 @@ export class MontlyComponent implements OnInit {
     }
   }
 
+
+//#endregion
+  
   //{{url}}/api/v1/reports/montly_applicable_report?year=1989&month=7&customer_unit_id=1
   getData(parameter: any) {
-    
+  
     if (this.currentUser.role !== roles.admin) {
       parameter = {
         customer_id: this.currentUser.customer_id
@@ -310,9 +203,11 @@ export class MontlyComponent implements OnInit {
     this.crud.GetParams(parameter, "/reports/montly_applicable_report").subscribe(res => {
       this.rows = [];
       this.rows = res.body;
-    })
+    });
+
+    this.getDocumentScopes();
+    this.getAreas();
   }
-//#endregion
   
   ngOnInit() {
     this.currentUser = this.auth.getUser();
