@@ -3,6 +3,9 @@ import { profile } from 'app/models/auth/profile.types';
 import { roles } from 'app/models/auth/roles';
 import { AuthGuard } from 'app/services/auth/auth.guard';
 import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar, MatDialog } from '@angular/material';
+import { asBlob } from 'html-docx-js-typescript'
+// if you want to save the docx file, you need import 'file-saver'
+import { saveAs } from 'file-saver'
 
 @Component({
   selector: 'app-montly-report',
@@ -62,6 +65,15 @@ export class MontlyReportComponent implements OnInit {
       
     obj["aux"] = { title: data.title, customer_name: data.customer_name, unit_name: data.unit_name, date_report: data.date_report };
     this.dataReport = obj;
+  }
+  
+
+  generatePdf() {
+    let htmlString = document.querySelector('.custom').innerHTML
+    
+      asBlob(htmlString).then(data => {
+        saveAs(data, 'Relatorio_Mensal.docx') // save as docx file
+      }) // asBlob() return Promise<Blob|Buffer>
   }
 
   getKeyByValue(obj, value) {
