@@ -51,13 +51,22 @@ export class GradeComponent implements OnInit {
   @ViewChild('buscadorForm') public buscadorForm: ElementRef;
   @ViewChild('txtFinder') public txtFinder: ElementRef;
   @ViewChild('myTable') table: any;
+  @ViewChild('stickyMenu') menuElement: ElementRef;
+
   public formReady: boolean = false;
   public showFilter: boolean = false;
+
+  sticky: boolean = false;
+  elementPosition: any;
 
 
   constructor(public dialog: MatDialog,
     private mensagem: AppInformationService,
     private eRef: ElementRef) { }
+
+    ngAfterViewInit(){
+      this.elementPosition = this.menuElement.nativeElement.offsetTop;
+    }
 
   ngOnInit() {    
     this.finderPanel = this.initFilterOpened;
@@ -106,6 +115,18 @@ export class GradeComponent implements OnInit {
   }
 
   // ngAfterViewChecked() { window.dispatchEvent(new Event('resize')) }
+
+  @HostListener('document:wheel', ['$event.target']) onScroll(): void {
+    const windowScroll = 150;
+    let scrollPosition = document.querySelector('.mat-drawer-content.mat-sidenav-content').scrollTop;
+    console.log(`Scrolling window: ${windowScroll} - position: ${scrollPosition}`);
+    
+      if(scrollPosition >= windowScroll){
+        this.sticky = true;
+      } else {
+        this.sticky = false;
+    }
+  }
 
   @HostListener('document:click', ['$event'])
   clickout(event) {

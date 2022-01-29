@@ -88,7 +88,7 @@
       </mat-chip-list>
   </div>
 
-  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap" *ngIf="(actionButton)">
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap" *ngIf="(actionButton)" #stickyMenu [class.sticky]="sticky">
     <div fxFlex="20" class="mt-1" style="padding-left: 10px;">
       <button mat-raised-button class="mat-primary" type="button"
         (click)="actionButtonClick()" [disabled]="!ActionButtonStatus">{{actionButtonCaption}}</button>
