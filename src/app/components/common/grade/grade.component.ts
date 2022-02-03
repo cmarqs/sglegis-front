@@ -119,7 +119,7 @@ export class GradeComponent implements OnInit {
   @HostListener('document:wheel', ['$event.target']) onScroll(): void {
     const windowScroll = 150;
     let scrollPosition = document.querySelector('.mat-drawer-content.mat-sidenav-content').scrollTop;
-    console.log(`Scrolling window: ${windowScroll} - position: ${scrollPosition}`);
+    //console.log(`Scrolling window: ${windowScroll} - position: ${scrollPosition}`);
     
       if(scrollPosition >= windowScroll){
         this.sticky = true;

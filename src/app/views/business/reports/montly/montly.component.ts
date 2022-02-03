@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MatSnackBar } from '@angular/material';
 import { profile } from 'app/models/auth/profile.types';
 import { roles } from 'app/models/auth/roles';
+import { months } from 'app/models/base/months/monthNames';
 import { CampoBusca } from 'app/models/base/negocio/CampoBusca';
 import { dialog } from 'app/models/size/size';
 import { AuthGuard } from 'app/services/auth/auth.guard';
@@ -23,6 +24,7 @@ export class MontlyComponent implements OnInit {
   scopes = [];
   rows = [];
   groups = [];
+  months = months
   preDataReport: any;
 
   currentUser: any;
@@ -72,7 +74,7 @@ export class MontlyComponent implements OnInit {
       new CampoBusca("customer_group_id", "Grupo", 50, "", "LIST", groups, "customer_group_name", "customer_group_id"),
       new CampoBusca("customer_id", "Matriz", 50, "", "LIST", [], "customer_business_name", "customer_id"),
       new CampoBusca("customer_unit_id", "Unidade", 50, "", "LIST", [], "customer_unit_name", "customer_unit_id"),
-      new CampoBusca("month", "Mês", 50, "", "string", null, null, null),
+      new CampoBusca("month", "Mês", 50, "", "LIST", months, "name", "month"),
       new CampoBusca("year", "Ano", 50, "", "string", null, null, null),
     ];
 
