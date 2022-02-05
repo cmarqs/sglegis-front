@@ -169,9 +169,16 @@ export class GradeComponent implements OnInit {
     this.CheckRegistro.emit({ registro: registro, status: event.checked })
   }
 
-  isCheckedRow(rowIndex: any) {
-    return this.CheckedRows.find(r => r.rowIndex === rowIndex);
+  isCheckedRow(rowId: any) {
+    const f = (r) => {
+      if (r.item_area_aspect_id == rowId)
+        return r;
+    }
+
+    var reg = this.CheckedRows.find(r => f(r));
+    return reg;
   }
+
 
   Pesquisar() {
     const formulario = this.buscarForm.value;

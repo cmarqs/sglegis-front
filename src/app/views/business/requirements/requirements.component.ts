@@ -26,6 +26,7 @@ export class RequirementsComponent implements OnInit {
   configSearch: any = [];
 
   columns = [
+    { Propriedade: 'item_area_aspect_id', Titulo: 'ID', Visivel: true, Largura:100 },
     { Propriedade: 'customer_business_name', Titulo: 'Matriz', Visivel: true, Largura:100 },
     { Propriedade: 'customer_unit_name', Titulo: 'Unidade', Visivel: true, Largura:100 },
     { Propriedade: 'area_name', Titulo: 'Sis.Gestão', Visivel: true, Largura:100 },
@@ -200,14 +201,14 @@ export class RequirementsComponent implements OnInit {
     })
   }
   
-  handleCheck(rowIndex: any, status: boolean) {    
+  handleCheck(row: any, status: boolean) {    
     if (status) {
       this.selectedRows = [...this.selectedRows, {
-        ...this.rows[rowIndex],
-        rowIndex
+        ...row,
+        row
       }];
     } else {
-      this.selectedRows = this.selectedRows.filter(r => r.rowIndex !== rowIndex);
+      this.selectedRows = this.selectedRows.filter(r => r.rowId !== row.item_area_aspect_id);
     }    
   }
   

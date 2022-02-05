@@ -140,7 +140,7 @@
 
       <ngx-datatable-column [width]="20" *ngIf="(check)">
         <ng-template let-row="row" let-index="rowIndex" ngx-datatable-cell-template>
-          <mat-checkbox (change)="onCheck(index, $event)" [checked]="isCheckedRow(index)"></mat-checkbox>
+          <mat-checkbox (change)="onCheck(row, $event)" [checked]="isCheckedRow(row.item_area_aspect_id)"></mat-checkbox>
         </ng-template>
       </ngx-datatable-column>
 
