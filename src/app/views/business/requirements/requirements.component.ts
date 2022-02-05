@@ -208,7 +208,7 @@ export class RequirementsComponent implements OnInit {
         row
       }];
     } else {
-      this.selectedRows = this.selectedRows.filter(r => r.rowId !== row.item_area_aspect_id);
+      this.selectedRows = this.selectedRows.filter(r => r.item_area_aspect_id !== row.item_area_aspect_id);
     }    
   }
   
