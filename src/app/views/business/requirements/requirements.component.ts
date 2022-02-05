@@ -26,7 +26,7 @@ export class RequirementsComponent implements OnInit {
   configSearch: any = [];
 
   columns = [
-    { Propriedade: 'item_area_aspect_id', Titulo: 'ID', Visivel: true, Largura:100 },
+    //{ Propriedade: 'item_area_aspect_id', Titulo: 'ID', Visivel: true, Largura:100 },
     { Propriedade: 'customer_business_name', Titulo: 'Matriz', Visivel: true, Largura:100 },
     { Propriedade: 'customer_unit_name', Titulo: 'Unidade', Visivel: true, Largura:100 },
     { Propriedade: 'area_name', Titulo: 'Sis.Gestão', Visivel: true, Largura:100 },
