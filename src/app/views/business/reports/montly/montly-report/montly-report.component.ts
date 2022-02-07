@@ -34,32 +34,27 @@ export class MontlyReportComponent implements OnInit {
       obj.tableData.push({ scope: scope, areas: [] });
 
       for (let a = 0; a < areas.length; a++) {
-        let japassou: boolean = false;
 
         const area = areas[a];
         obj.tableData[s].areas.push({ area_name: area.area_name, data: [] });
+
+        let x = dados.filter(dado => dado.area_id == area.area_id && dado.document_scope_id == scope.document_scope_id);
         
-        for (let d = 0; d < dados.length; d++) {
-          const dado = dados[d];
+        if (x.length > 0)
+          for (let d = 0; d < x.length; d++) {
+            const dado = dados[d];
 
-          if (dado.area_id == area.area_id && dado.document_scope_id == scope.document_scope_id){
+              obj.tableData[s].areas[a].data.push({
+                document_type: dado.document_type,
+                document_number: dado.document_number,
+                document_date: dado.document_date,
+                status_description: dado.status_description,
+                document_summary: dado.document_summary
+              });
             
-            obj.tableData[s].areas[a].data.push({
-              document_type: dado.document_type,
-              document_number: dado.document_number,
-              document_date: dado.document_date,
-              status_description: dado.status_description,
-              document_summary: dado.document_summary
-            });
           }
-          else {
-            if (!japassou) {
-              obj.tableData[s].areas[a].data.push({ empty: "Não houve alteração no período" });
-            }
-          }
-
-          japassou = true;
-        }
+        else
+          obj.tableData[s].areas[a].data.push({ empty: "Não houve alteração no período" });
       }
     }
       
