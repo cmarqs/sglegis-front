@@ -93,6 +93,7 @@ export class ActionPlanFormComponent implements OnInit {
     
     const newActivity = {
       ...activity,
+      activity: activity.activity.toUpperCase(),
       deadline: activity.deadline,
       status: 0,
       actionplan_id: this.actionPlan.actionplan_id,
