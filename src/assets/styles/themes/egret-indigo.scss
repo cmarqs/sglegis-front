@@ -269,6 +269,7 @@ $primary-dark: darken(map-get($mat-primary, 500), 8%);
     display: none;
     -webkit-appearance: none;
   }
-
-
+  .mat-select-panel{
+    max-width: initial !important;
+  }
 }
