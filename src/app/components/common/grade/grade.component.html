@@ -88,11 +88,17 @@
       </mat-chip-list>
   </div>
 
-  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap" *ngIf="(actionButton)" #stickyMenu [class.sticky]="sticky">
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap" *ngIf="(actionButton)" class="buttons-action" #stickyMenu [class.sticky]="sticky">
     <div fxFlex="20" class="mt-1" style="padding-left: 10px;">
       <button mat-raised-button class="mat-primary" type="button"
         (click)="actionButtonClick()" [disabled]="!ActionButtonStatus">{{actionButtonCaption}}</button>
          <span fxFlex></span>
+    </div>
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
+      <div fxFlex="100" class="mt-1" style="padding-left: 10px;">
+        <button mat-raised-button class="mat-primary" (click)="Exportar()">Exportar dados</button>
+        <span fxFlex></span>
+      </div>
     </div>
   </div>
 
@@ -233,11 +239,5 @@
       <!-- </div> -->
     </ngx-datatable>
 
-  </div>
-</div>
-<div fxLayout="row" fxLayout.lt-sm="column" fxLayoutWrap="wrap">
-  <div fxFlex="100" class="mt-1" style="padding-left: 10px;">
-    <button mat-raised-button class="mat-primary" (click)="Exportar()">Exportar dados</button>
-    <span fxFlex></span>
   </div>
 </div>

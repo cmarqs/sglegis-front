@@ -272,4 +272,8 @@ $primary-dark: darken(map-get($mat-primary, 500), 8%);
   .mat-select-panel{
     max-width: initial !important;
   }
+
+  .ngx-datatable.material {
+    overflow-wrap: break-word;
+    }
 }
