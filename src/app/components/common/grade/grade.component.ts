@@ -209,25 +209,35 @@ export class GradeComponent implements OnInit {
 
 
   Exportar() {
-    let heads = [];
-    heads = this.Colunas.map(function (x) { return x.Titulo });
+    let data = [];
 
+    this.Linhas.map(l => {
+      let obj = {};
+
+      this.Colunas.map(c => {
+        let d = '';
+        if (l[c.Propriedade])
+          d = l[c.Propriedade].replaceAll(/\\n/g, ' ').replaceAll(';', ',');
+        obj[c.Titulo] = d;
+      });
+
+      data.push(obj);
+    });
+    
     const options = {
       fieldSeparator: ';',
-      quoteStrings: '',
+      quoteStrings: "",
       decimalseparator: ',',
       showLabels: true,
-      showTitle: true,
+      showTitle: false,
       title: 'Relatiorio CSV',
       useBom: true,
-      useKeysAsHeaders: false,
-      headers: heads
+      useKeysAsHeaders: true
     };
 
     const exportToCsv = new ExportToCsv(options);
-
-    exportToCsv.generateCsv(this.Linhas, false);
-  }
+    exportToCsv.generateCsv(data, false);
+  };
 
   openPopup(imagem: string) {
     if ((imagem === undefined) || (imagem === "")) {

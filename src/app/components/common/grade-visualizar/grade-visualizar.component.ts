@@ -64,7 +64,7 @@ export class GradeVisualizarComponent implements OnInit {
 
     const options = {
       fieldSeparator: ';',
-      quoteStrings: '',
+      quoteStrings: "",
       decimalseparator: ',',
       showLabels: true,
       showTitle: true,
@@ -75,7 +75,7 @@ export class GradeVisualizarComponent implements OnInit {
     };
 
     const exportToCsv = new ExportToCsv(options);
-
+    debugger;
     exportToCsv.generateCsv(this.Linhas, false);
   }
 
