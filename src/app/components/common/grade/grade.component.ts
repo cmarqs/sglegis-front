@@ -7,6 +7,9 @@ import { PopupImagemComponent } from '../popup-imagem/popup-imagem.component';
 import { AppInformationService } from '../../../../app/services/dialogs/app-information/app-information.service';
 import { CampoBusca } from 'app/models/base/negocio/CampoBusca';
 import { AttachmentsDownloadComponent } from 'app/views/business/requirements/attachments-download/attachments-download.component';
+import * as XLSX from 'xlsx';
+import { ExcelService } from 'app/services/negocio/FileService/ExcelService';
+
 
 @Component({
   selector: 'app-grade',
@@ -217,7 +220,7 @@ export class GradeComponent implements OnInit {
       this.Colunas.map(c => {
         let d = '';
         if (l[c.Propriedade])
-          d = l[c.Propriedade].replaceAll(/\\n/g, ' ').replaceAll(';', ',');
+          d = l[c.Propriedade];
         obj[c.Titulo] = d;
       });
 
@@ -235,9 +238,13 @@ export class GradeComponent implements OnInit {
       useKeysAsHeaders: true
     };
 
-    const exportToCsv = new ExportToCsv(options);
-    exportToCsv.generateCsv(data, false);
+    const exportToExcel = new ExcelService();
+    exportToExcel.exportAsExcelFile(data, 'relatorio');
+
+    // const exportToCsv = new ExportToCsv(options);
+    // exportToCsv.generateCsv(data, false);
   };
+
 
   openPopup(imagem: string) {
     if ((imagem === undefined) || (imagem === "")) {
