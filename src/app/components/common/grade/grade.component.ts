@@ -239,7 +239,7 @@ export class GradeComponent implements OnInit {
     };
 
     const exportToExcel = new ExcelService();
-    exportToExcel.exportAsExcelFile(data, 'relatorio');
+    exportToExcel.exportAsExcelFile(data, 'RELATORIO');
 
     // const exportToCsv = new ExportToCsv(options);
     // exportToCsv.generateCsv(data, false);
