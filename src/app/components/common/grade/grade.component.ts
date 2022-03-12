@@ -286,6 +286,8 @@ export class GradeComponent implements OnInit {
       return;
     if (field.tipoCampo == "LIST")
       return field.lista.find(p => p[field.nomeCampo] == field.value)[field.fieldText]
+    if (field.tipoCampo == "data")
+      return;
     else
       return field.value;
   }

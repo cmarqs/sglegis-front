@@ -147,8 +147,10 @@ export class DocumentsComponent implements OnInit  {
       new CampoBusca("city_id", "Cidade", 50, "", "LIST", [], "city_name", "city_id"),
 
       new CampoBusca("document_type", "Tipo", 50, "", "string", null, null, null),
+      new CampoBusca("document_type", "Documento", 50, "", "string", null, null, null),
       new CampoBusca("document_number", "Número", 50, "", "string", null, null, null),
       new CampoBusca("document_summary", "Ementa", 50, "", "string", null, null, null),
+      new CampoBusca("document_date", "Data", 8, "", "DATA", null, null, null),
     ];
 
     this.configSearch = aux;

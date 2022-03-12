@@ -95,6 +95,7 @@ export class RequirementsComponent implements OnInit {
       new CampoBusca("document_scope_id", "Âmbito", 50, "", "LIST", scopes, "document_scope_description", "document_scope_id"),
       new CampoBusca("document_type", "Documento", 50, "", "string", null, null, null),
       new CampoBusca("document_number", "Número", 50, "", "string", null, null, null),
+      new CampoBusca("document_date", "Data", 8, "", "DATA", null, null, null),
       new CampoBusca("audit_conformity_id", "Conformidade", 50, "", "LIST", conformity, "audit_conformity_desc", "audit_conformity_id"),
       new CampoBusca("audit_practical_order_id", "Ordem Prática", 50, "", "LIST", praticalorder, "audit_practical_order_desc", "audit_practical_order_id"),
     ];
