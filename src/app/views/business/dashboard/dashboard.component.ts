@@ -78,7 +78,7 @@ export class DashboardComponent implements OnInit {
     let groups = await this.getGroups();    
     let areas = await this.getAreas();    
 
-    this.SearchFields = [      
+    let aux = [      
       new CampoBusca("customer_group_id", "Grupo", 50, "", "LIST", groups.map(g => ({
         ...g,
         disabled: this.currentUser.role !== roles.admin && g.customer_group_id !== this.currentUser.customer_group_id
@@ -87,6 +87,16 @@ export class DashboardComponent implements OnInit {
       new CampoBusca("customer_unit_id", "Unidade", 50, "", "LIST", [], "customer_unit_name", "customer_unit_id"),
       new CampoBusca("area_id", "Sist.Gestão", 50, "", "LIST", areas, "area_name", "area_id"),
     ];
+
+    if (this.currentUser.role !== roles.admin) {
+      this.currentUser = this.auth.getUser();
+      aux[0].disabled = true; //group
+      aux[1].fieldValue = this.currentUser.customer_group_id; 
+
+      
+    }
+
+    this.SearchFields = aux;
     
     this.prepareSearchForm();
   }
@@ -104,6 +114,8 @@ export class DashboardComponent implements OnInit {
     this.AuxColunas = Object.assign([], this.Colunas);
     this.formReady = true;    
   }
+
+  
   handleFilterValueChange(type: string, value: any) {
     if (type === 'customer_group_id') {
       this.getCustomers(value);      

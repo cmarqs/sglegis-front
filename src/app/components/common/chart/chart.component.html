@@ -5,6 +5,8 @@
       *ngIf="options.series[0].data.length > 0 && !noData; else noDataBlock"
       [Highcharts]="highcharts"
       [options]="options"
+      style="width: 1000px; height: 400px; display: block;"
+
     >
     </highcharts-chart>
 

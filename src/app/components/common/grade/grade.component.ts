@@ -7,6 +7,9 @@ import { PopupImagemComponent } from '../popup-imagem/popup-imagem.component';
 import { AppInformationService } from '../../../../app/services/dialogs/app-information/app-information.service';
 import { CampoBusca } from 'app/models/base/negocio/CampoBusca';
 import { AttachmentsDownloadComponent } from 'app/views/business/requirements/attachments-download/attachments-download.component';
+import * as XLSX from 'xlsx';
+import { ExcelService } from 'app/services/negocio/FileService/ExcelService';
+
 
 @Component({
   selector: 'app-grade',
@@ -51,13 +54,22 @@ export class GradeComponent implements OnInit {
   @ViewChild('buscadorForm') public buscadorForm: ElementRef;
   @ViewChild('txtFinder') public txtFinder: ElementRef;
   @ViewChild('myTable') table: any;
+  @ViewChild('stickyMenu') menuElement: ElementRef;
+
   public formReady: boolean = false;
   public showFilter: boolean = false;
+
+  sticky: boolean = false;
+  elementPosition: any;
 
 
   constructor(public dialog: MatDialog,
     private mensagem: AppInformationService,
     private eRef: ElementRef) { }
+
+    ngAfterViewInit(){
+      this.elementPosition = this.menuElement.nativeElement.offsetTop;
+    }
 
   ngOnInit() {    
     this.finderPanel = this.initFilterOpened;
@@ -107,6 +119,18 @@ export class GradeComponent implements OnInit {
 
   // ngAfterViewChecked() { window.dispatchEvent(new Event('resize')) }
 
+  @HostListener('document:wheel', ['$event.target']) onScroll(): void {
+    const windowScroll = 150;
+    let scrollPosition = document.querySelector('.mat-drawer-content.mat-sidenav-content').scrollTop;
+    //console.log(`Scrolling window: ${windowScroll} - position: ${scrollPosition}`);
+    
+      if(scrollPosition >= windowScroll){
+        this.sticky = true;
+      } else {
+        this.sticky = false;
+    }
+  }
+
   @HostListener('document:click', ['$event'])
   clickout(event) {
     if (!this.buscadorForm.nativeElement.contains(event.target)) {
@@ -148,9 +172,16 @@ export class GradeComponent implements OnInit {
     this.CheckRegistro.emit({ registro: registro, status: event.checked })
   }
 
-  isCheckedRow(rowIndex: any) {
-    return this.CheckedRows.find(r => r.rowIndex === rowIndex);
+  isCheckedRow(rowId: any) {
+    const f = (r) => {
+      if (r.item_area_aspect_id == rowId)
+        return r;
+    }
+
+    var reg = this.CheckedRows.find(r => f(r));
+    return reg;
   }
+
 
   Pesquisar() {
     const formulario = this.buscarForm.value;
@@ -181,25 +212,39 @@ export class GradeComponent implements OnInit {
 
 
   Exportar() {
-    let heads = [];
-    heads = this.Colunas.map(function (x) { return x.Titulo });
+    let data = [];
 
+    this.Linhas.map(l => {
+      let obj = {};
+
+      this.Colunas.map(c => {
+        let d = '';
+        if (l[c.Propriedade])
+          d = l[c.Propriedade];
+        obj[c.Titulo] = d;
+      });
+
+      data.push(obj);
+    });
+    
     const options = {
       fieldSeparator: ';',
-      quoteStrings: '',
+      quoteStrings: "",
       decimalseparator: ',',
       showLabels: true,
-      showTitle: true,
+      showTitle: false,
       title: 'Relatiorio CSV',
       useBom: true,
-      useKeysAsHeaders: false,
-      headers: heads
+      useKeysAsHeaders: true
     };
 
-    const exportToCsv = new ExportToCsv(options);
+    const exportToExcel = new ExcelService();
+    exportToExcel.exportAsExcelFile(data, 'RELATORIO');
 
-    exportToCsv.generateCsv(this.Linhas, false);
-  }
+    // const exportToCsv = new ExportToCsv(options);
+    // exportToCsv.generateCsv(data, false);
+  };
+
 
   openPopup(imagem: string) {
     if ((imagem === undefined) || (imagem === "")) {
@@ -241,6 +286,8 @@ export class GradeComponent implements OnInit {
       return;
     if (field.tipoCampo == "LIST")
       return field.lista.find(p => p[field.nomeCampo] == field.value)[field.fieldText]
+    if (field.tipoCampo == "data")
+      return;
     else
       return field.value;
   }

@@ -26,19 +26,20 @@ export class RequirementsComponent implements OnInit {
   configSearch: any = [];
 
   columns = [
-    { Propriedade: 'customer_business_name', Titulo: 'Matriz', Visivel: true, Largura:100 },
+    //{ Propriedade: 'item_area_aspect_id', Titulo: 'ID', Visivel: true, Largura:100 },
+    { Propriedade: 'customer_business_name', Titulo: 'Matriz', Visivel: true, Largura:200 },
     { Propriedade: 'customer_unit_name', Titulo: 'Unidade', Visivel: true, Largura:100 },
-    { Propriedade: 'area_name', Titulo: 'Sis.Gestão', Visivel: true, Largura:100 },
+    { Propriedade: 'area_name', Titulo: 'Sis.Gestão', Visivel: true, Largura:150 },
     { Propriedade: 'area_aspect_name', Titulo: 'Aspecto', Visivel: true, Largura:150 },
-    { Propriedade: 'document_scope_description', Titulo: 'Âmbito', Visivel: true, Largura:100 },
+    { Propriedade: 'document_scope_description', Titulo: 'Âmbito', Visivel: true, Largura:120 },
     { Propriedade: 'document_name', Titulo: 'Documento', Visivel: true, Largura: 200 },    
-    { Propriedade: 'document_date_formated', Titulo: 'Data', Visivel: true, Largura: 100 },
-    { Propriedade: 'status_description', Titulo: 'Status', Visivel: true, Largura:150 },
+    { Propriedade: 'document_date_formated', Titulo: 'Data', Visivel: true, Largura: 120 },
+    { Propriedade: 'status_description', Titulo: 'Status', Visivel: true, Largura:100 },
     { Propriedade: 'document_item_number', Titulo: 'Número', Visivel: true, Largura:100 },
     { Propriedade: 'audit_practical_order_description', Titulo: 'Ordem Prática', Visivel: true, Largura: 100 },
     { Propriedade: 'audit_conformity_description', Titulo: 'Conformidade', Visivel: true, Largura: 100 },
-    { Propriedade: 'audit_evidnece_compliance', Titulo: 'Evidência', Visivel: true, Largura: 300 },
-    { Propriedade: 'audit_control_action', Titulo: 'Controle', Visivel: true, Largura: 300 },
+    { Propriedade: 'audit_evidnece_compliance', Titulo: 'Evidência', Visivel: true, Largura: 400 },
+    { Propriedade: 'audit_control_action', Titulo: 'Controle', Visivel: true, Largura: 400 },
     { Propriedade: 'unit_aspect_responsible_name', Titulo: 'Responsável', Visivel: true, Largura: 100 },
     { Propriedade: 'audit_date', Titulo: 'Avaliação', Visivel: true, Largura: 100 },
     
@@ -94,6 +95,7 @@ export class RequirementsComponent implements OnInit {
       new CampoBusca("document_scope_id", "Âmbito", 50, "", "LIST", scopes, "document_scope_description", "document_scope_id"),
       new CampoBusca("document_type", "Documento", 50, "", "string", null, null, null),
       new CampoBusca("document_number", "Número", 50, "", "string", null, null, null),
+      new CampoBusca("document_date", "Data", 8, "", "DATA", null, null, null),
       new CampoBusca("audit_conformity_id", "Conformidade", 50, "", "LIST", conformity, "audit_conformity_desc", "audit_conformity_id"),
       new CampoBusca("audit_practical_order_id", "Ordem Prática", 50, "", "LIST", praticalorder, "audit_practical_order_desc", "audit_practical_order_id"),
     ];
@@ -200,14 +202,14 @@ export class RequirementsComponent implements OnInit {
     })
   }
   
-  handleCheck(rowIndex: any, status: boolean) {    
+  handleCheck(row: any, status: boolean) {    
     if (status) {
       this.selectedRows = [...this.selectedRows, {
-        ...this.rows[rowIndex],
-        rowIndex
+        ...row,
+        row
       }];
     } else {
-      this.selectedRows = this.selectedRows.filter(r => r.rowIndex !== rowIndex);
+      this.selectedRows = this.selectedRows.filter(r => r.item_area_aspect_id !== row.item_area_aspect_id);
     }    
   }
   
