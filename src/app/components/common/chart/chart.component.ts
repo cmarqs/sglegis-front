@@ -24,6 +24,7 @@ export class ChartComponent implements OnInit {
   configOptions = {
     chart: {
       height: 350,
+      width: '100%',
       parallelAxes: {
         margin: 20
       }
