@@ -5,8 +5,8 @@
 
 export const environment = {
     production: false,  
-    apiURL: "http://localhost:3000/api/v1",
-    fileURL: "http://localhost:3001"
+    apiURL: "https://homolog-sglegis.200.systems/api/v1",
+    fileURL: "https://homolog-sglegis.200.systems"
     
   };
   

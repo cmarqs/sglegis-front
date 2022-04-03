@@ -15,6 +15,7 @@ export class AUTHService extends BaseService {
   }
 
   public login(email: string, password: string): Observable<any> {
+    console.log(this._Url);
     return this._http.post<any>(this._Url + "/users/login", { email, password })
       .map(res => {
         return res;
