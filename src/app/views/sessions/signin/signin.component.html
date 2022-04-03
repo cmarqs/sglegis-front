@@ -4,8 +4,8 @@
     <mat-card>
       <mat-card-content>
         <div class="text-center pb-1">
-          <img src="assets/images/logo_unit.png" alt="" class="mb-05">
-          <!-- <p class="text-muted m-0">Acessar minha conta</p> -->
+          <img src="assets/images/logo_unity.png" alt="" class="mb-05">
+          <!-- <p *ngIf="env != 'production'" class="text-muted m-0">Ambiente Teste</p> -->
         </div>
         <form [formGroup]="signinForm" (ngSubmit)="signin()" autocomplete="off">
           <p class=""> 

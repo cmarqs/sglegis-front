@@ -102,7 +102,8 @@ export class RequirementsComponent implements OnInit {
 
     if (this.currentUser.role !== roles.admin) {
       aux[0].disabled = true; //group
-      aux[1].fieldValue = this.currentUser.customer_id; 
+      this.onFilterValueChange("customer_group_id", this.currentUser.customer_group_id);
+      //aux[1].fieldValue = this.currentUser.customer_id; 
     }
 
     this.configSearch = aux;
@@ -282,8 +283,13 @@ export class RequirementsComponent implements OnInit {
 //#endregion
   
   getAreas() {
-    return this.crud.GetParams({ "orderby": "area_name", "direction": "asc" }, "/area").toPromise().then(res => res.body);
+    let filter = null;
+    if (this.currentUser.role != 'admin'){
+      filter = { "customer_group_id": this.currentUser.customer_group_id, "customer_id": this.currentUser.customer_id };
+    }
+    return this.crud.GetParams(filter, "/area/query").toPromise().then(res => res.body);
   }
+
   getAspects(area_id) {
     return this.crud.GetParams({ "orderby": "area_aspect_name", "direction": "asc", "fields": "area_id", "ops": "eq", "values": area_id }, "/areaaspect/query")
       .subscribe(res => {

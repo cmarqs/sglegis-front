@@ -5,7 +5,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "serveProd": "ng serve --environment=prod",
+    "serveProd": "ng serve --configuration=production",
+    "serveHomolog": "ng serve --configuration=homolog",
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
@@ -60,7 +61,7 @@
     "perfect-scrollbar": "0.7.1",
     "rxjs": "6.2.0",
     "rxjs-compat": "6.2.0",
-    "tslib": "^1.9.0",
+    "tslib": "^1.10.0",
     "xlsx": "^0.18.2",
     "zone.js": "0.8.26"
   },
