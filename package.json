@@ -5,7 +5,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "serveProd": "ng serve --environment=prod",
+    "serveProd": "ng serve --configuration=production",
+    "serveHomolog": "ng serve --configuration=homolog",
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
