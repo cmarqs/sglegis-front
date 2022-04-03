@@ -67,7 +67,8 @@ export class GradeComponent implements OnInit {
     private mensagem: AppInformationService,
     private eRef: ElementRef) { }
 
-    ngAfterViewInit(){
+  ngAfterViewInit() {
+    if (this.menuElement)
       this.elementPosition = this.menuElement.nativeElement.offsetTop;
     }
 

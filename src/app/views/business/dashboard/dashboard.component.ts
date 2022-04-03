@@ -229,7 +229,7 @@ export class DashboardComponent implements OnInit {
     if (this.currentUser.role != 'admin'){
       filter = { "customer_group_id": this.currentUser.customer_group_id, "customer_id": this.currentUser.customer_id };
     }
-    return this.crud.GetParams(filter, "/area").toPromise().then(res => res.body);
+    return this.crud.GetParams(filter, "/area/query").toPromise().then(res => res.body);
   }
 
   // get chart data...
