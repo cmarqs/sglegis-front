@@ -102,7 +102,8 @@ export class RequirementsComponent implements OnInit {
 
     if (this.currentUser.role !== roles.admin) {
       aux[0].disabled = true; //group
-      aux[1].fieldValue = this.currentUser.customer_id; 
+      this.onFilterValueChange("customer_group_id", this.currentUser.customer_group_id);
+      //aux[1].fieldValue = this.currentUser.customer_id; 
     }
 
     this.configSearch = aux;
