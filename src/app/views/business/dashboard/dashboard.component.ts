@@ -91,9 +91,7 @@ export class DashboardComponent implements OnInit {
     if (this.currentUser.role !== roles.admin) {
       this.currentUser = this.auth.getUser();
       aux[0].disabled = true; //group
-      aux[1].fieldValue = this.currentUser.customer_group_id; 
-
-      
+      this.handleFilterValueChange("customer_group_id", this.currentUser.customer_group_id);
     }
 
     this.SearchFields = aux;
@@ -225,8 +223,13 @@ export class DashboardComponent implements OnInit {
       });
     }
   }
+
   getAreas() {
-    return this.crud.GetParams({ "orderby": "area_name", "direction": "asc" }, "/area").toPromise().then(res => res.body);
+    let filter = null;
+    if (this.currentUser.role != 'admin'){
+      filter = { "customer_group_id": this.currentUser.customer_group_id, "customer_id": this.currentUser.customer_id };
+    }
+    return this.crud.GetParams(filter, "/area").toPromise().then(res => res.body);
   }
 
   // get chart data...

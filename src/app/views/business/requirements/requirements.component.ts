@@ -285,7 +285,7 @@ export class RequirementsComponent implements OnInit {
   getAreas() {
     let filter = null;
     if (this.currentUser.role != 'admin'){
-      filter = { "cg.customer_group_id": this.currentUser.customer_group_id, "ctm.customer_id": this.currentUser.customer_id };
+      filter = { "customer_group_id": this.currentUser.customer_group_id, "customer_id": this.currentUser.customer_id };
     }
     return this.crud.GetParams(filter, "/area").toPromise().then(res => res.body);
   }
