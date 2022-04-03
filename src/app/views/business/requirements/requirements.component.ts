@@ -282,8 +282,13 @@ export class RequirementsComponent implements OnInit {
 //#endregion
   
   getAreas() {
-    return this.crud.GetParams({ "orderby": "area_name", "direction": "asc" }, "/area").toPromise().then(res => res.body);
+    let filter = null;
+    if (this.currentUser.role != 'admin'){
+      filter = { "cg.customer_group_id": this.currentUser.customer_group_id, "ctm.customer_id": this.currentUser.customer_id };
+    }
+    return this.crud.GetParams(filter, "/area").toPromise().then(res => res.body);
   }
+
   getAspects(area_id) {
     return this.crud.GetParams({ "orderby": "area_aspect_name", "direction": "asc", "fields": "area_id", "ops": "eq", "values": area_id }, "/areaaspect/query")
       .subscribe(res => {
