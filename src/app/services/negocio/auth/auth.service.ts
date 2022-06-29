@@ -15,7 +15,7 @@ export class AUTHService extends BaseService {
   }
 
   public login(email: string, password: string): Observable<any> {
-    console.log(this._Url);
+    
     return this._http.post<any>(this._Url + "/users/login", { email, password })
       .map(res => {
         return res;
@@ -27,5 +27,13 @@ export class AUTHService extends BaseService {
       .map(res => {
         return res;
       })    
+  }
+
+  public resetPassword(user_email: string): Observable<any>{
+    
+    return this._http.post<any>(`${this._Url}/users/forgot`, { user_email })
+      .map(res => {
+        return res;
+      });
   }
 }

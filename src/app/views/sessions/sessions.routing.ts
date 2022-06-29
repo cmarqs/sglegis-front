@@ -19,7 +19,7 @@ export const SessionsRoutes: Routes = [
       component: SigninComponent,
       data: { title: 'Entrar' }
     }, {
-      path: 'esqueci-senha',
+      path: 'esqueci',
       component: ForgotPasswordComponent,
       data: { title: 'Esqueci minha senha' }
     }, {
