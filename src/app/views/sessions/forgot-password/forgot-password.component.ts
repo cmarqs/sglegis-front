@@ -32,8 +32,8 @@ export class ForgotPasswordComponent implements OnInit {
     this.progressBar.mode = 'indeterminate';
 
     const { email } = this.signinForm.value;
-
-    this.auth.resetPassword(email).subscribe(res => {
+    let user_email = email;
+    this.auth.resetPassword(user_email).subscribe(res => {
       this._router.navigate(['/sessao/entrar'])
     }, ({ error: err }) => {
       this.progressBar.mode = "determinate"

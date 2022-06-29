@@ -29,9 +29,9 @@ export class AUTHService extends BaseService {
       })    
   }
 
-  public resetPassword(email: string): Observable<any>{
+  public resetPassword(user_email: string): Observable<any>{
     
-    return this._http.post<any>(`${this._Url}/users/reset-password`, { email })
+    return this._http.post<any>(`${this._Url}/users/forgot`, { user_email })
       .map(res => {
         return res;
       });
