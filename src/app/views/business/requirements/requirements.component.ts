@@ -26,7 +26,7 @@ export class RequirementsComponent implements OnInit {
   configSearch: any = [];
 
   columns = [
-    //{ Propriedade: 'item_area_aspect_id', Titulo: 'ID', Visivel: true, Largura:100 },
+    // { Propriedade: 'item_area_aspect_id', Titulo: 'ID', Visivel: false, Largura:50 },
     { Propriedade: 'customer_business_name', Titulo: 'Matriz', Visivel: true, Largura:200 },
     { Propriedade: 'customer_unit_name', Titulo: 'Unidade', Visivel: true, Largura:100 },
     { Propriedade: 'area_name', Titulo: 'Sis.Gestão', Visivel: true, Largura:150 },
@@ -34,7 +34,8 @@ export class RequirementsComponent implements OnInit {
     { Propriedade: 'document_scope_description', Titulo: 'Âmbito', Visivel: true, Largura:120 },
     { Propriedade: 'document_name', Titulo: 'Documento', Visivel: true, Largura: 200 },    
     { Propriedade: 'document_date_formated', Titulo: 'Data', Visivel: true, Largura: 120 },
-    { Propriedade: 'status_description', Titulo: 'Status', Visivel: true, Largura:100 },
+    { Propriedade: 'status_description', Titulo: 'Status', Visivel: true, Largura: 100 },
+    { Propriedade: 'document_item_description', Titulo: 'Descrição', Visivel: false, Largura: 0 },
     { Propriedade: 'document_item_number', Titulo: 'Número', Visivel: true, Largura:100 },
     { Propriedade: 'audit_practical_order_description', Titulo: 'Ordem Prática', Visivel: true, Largura: 100 },
     { Propriedade: 'audit_conformity_description', Titulo: 'Conformidade', Visivel: true, Largura: 100 },

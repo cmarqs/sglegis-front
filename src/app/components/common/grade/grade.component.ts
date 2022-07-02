@@ -96,7 +96,7 @@ export class GradeComponent implements OnInit {
         })
       })
     }
-    this.AuxColunas = Object.assign([], this.Colunas);
+    this.AuxColunas = Object.assign([], this.Colunas.filter(c=> c.Visivel === true));
     this.formReady = true;
   }
 
@@ -202,7 +202,7 @@ export class GradeComponent implements OnInit {
 
   Alternar(col) {
     col.Visivel = !col.Visivel;
-    this.Colunas = this.AuxColunas.filter(c => {
+    this.AuxColunas = this.Colunas.filter(c => {
       return c.Visivel === true;
     });
   }
@@ -214,7 +214,6 @@ export class GradeComponent implements OnInit {
 
   Exportar() {
     let data = [];
-
     this.Linhas.map(l => {
       let obj = {};
 
