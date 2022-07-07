@@ -46,6 +46,7 @@ export class GradeComponent implements OnInit {
   @Output() ActionRegistro: EventEmitter<any> = new EventEmitter();
   @Output() AttachementRegistro: EventEmitter<any> = new EventEmitter();
   @Output() CheckRegistro: EventEmitter<any> = new EventEmitter();
+  @Output() CheckAllRegistro: EventEmitter<any> = new EventEmitter();
   @Output() filterValueChange: EventEmitter<any> = new EventEmitter();
 
   AuxColunas = [];
@@ -171,6 +172,10 @@ export class GradeComponent implements OnInit {
 
   onCheck(registro: any, event) {    
     this.CheckRegistro.emit({ registro: registro, status: event.checked })
+  }
+
+  onCheckAll(column: any, event, curPage:number) {    
+    this.CheckAllRegistro.emit({ column: column, status: event.checked })
   }
 
   isCheckedRow(rowId: any) {

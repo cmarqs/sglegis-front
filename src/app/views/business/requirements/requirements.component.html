@@ -21,6 +21,7 @@
   [BtnAttachment]="true"
   (AttachementRegistro)="handleAttachmentDownload($event.registro)"
   (CheckRegistro)="handleCheck($event.registro, $event.status)"
+  (CheckAllRegistro)="handleCheckAll($event.column, $event.status)"
   [MostrarBarraBusca]="true" 
   [syncOnInit]="syncInit"
   (filterValueChange)="onFilterValueChange($event.type, $event.value)"

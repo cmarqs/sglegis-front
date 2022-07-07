@@ -27,8 +27,8 @@ export class RequirementsComponent implements OnInit {
 
   columns = [
     // { Propriedade: 'item_area_aspect_id', Titulo: 'ID', Visivel: false, Largura:50 },
-    { Propriedade: 'customer_business_name', Titulo: 'Matriz', Visivel: true, Largura:200 },
-    { Propriedade: 'customer_unit_name', Titulo: 'Unidade', Visivel: true, Largura:100 },
+    { Propriedade: 'customer_business_name', Titulo: 'Matriz', Visivel: true, Largura:150 },
+    { Propriedade: 'customer_unit_name', Titulo: 'Unidade', Visivel: true, Largura:200 },
     { Propriedade: 'area_name', Titulo: 'Sis.Gestão', Visivel: true, Largura:150 },
     { Propriedade: 'area_aspect_name', Titulo: 'Aspecto', Visivel: true, Largura:150 },
     { Propriedade: 'document_scope_description', Titulo: 'Âmbito', Visivel: true, Largura:120 },
@@ -213,6 +213,14 @@ export class RequirementsComponent implements OnInit {
     } else {
       this.selectedRows = this.selectedRows.filter(r => r.item_area_aspect_id !== row.item_area_aspect_id);
     }    
+  }
+
+  handleCheckAll(column: any, status: boolean) {
+    if (status) {
+      this.selectedRows = [...this.rows];
+    } else {
+      this.selectedRows = [];
+    }
   }
   
   ngOnInit() {

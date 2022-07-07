@@ -89,6 +89,7 @@
 	<div style="margin-top: 10px;">
 		<ngx-datatable class="material fullscreen" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'" [limit]="50" [rows]="Linhas" [messages]="{emptyMessage: 'Nenhuma informação encontrada'}" [scrollbarH]="true" #myTable>
 
+
 			<!-- Row Detail Template -->
 			<ngx-datatable-row-detail [rowHeight]="'auto'">
 				<ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
@@ -103,14 +104,19 @@
 			</ngx-datatable-row-detail>
 
 			<!-- Column Templates -->
-			<ngx-datatable-column [width]="50" [resizeable]="false" [sortable]="false" [draggable]="false" [canAutoResize]="false" *ngIf="(Expansible)">
+			<ngx-datatable-column [width]="20" [resizeable]="false" [sortable]="false" [draggable]="false" [canAutoResize]="false" *ngIf="(Expansible)">
 				<ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
 					<a href="javascript:void(0)" [class.datatable-icon-right]="!expanded" [class.datatable-icon-down]="expanded" title="Expand/Collapse Row" (click)="toggleExpandRow(row)">
 					</a>
 				</ng-template>
 			</ngx-datatable-column>
 
-			<ngx-datatable-column [width]="20" *ngIf="(check)">
+			<ngx-datatable-column [width]="50" [resizeable]="false" [sortable]="false" [draggable]="false" [canAutoResize]="false" *ngIf="(check)">
+				<ng-template let-column="column" let-index="rowIndex" ngx-datatable-header-template> 
+					<div>
+					  <mat-checkbox (change)="onCheckAll(column, $event)"></mat-checkbox>
+					</div>
+				  </ng-template>
 				<ng-template let-row="row" let-index="rowIndex" ngx-datatable-cell-template>
 					<mat-checkbox (change)="onCheck(row, $event)" [checked]="isCheckedRow(row.item_area_aspect_id)"></mat-checkbox>
 				</ng-template>
@@ -191,6 +197,36 @@
 				</ng-template>
 			</ngx-datatable-column>
 			<!-- </div> -->
+
+
+			<ngx-datatable-footer>
+				<ng-template 
+				  ngx-datatable-footer-template 
+				  let-rowCount="rowCount"
+				  let-pageSize="pageSize"
+				  let-selectedCount="selectedCount"
+				  let-curPage="curPage"
+				  let-offset="offset">
+				  <div style="padding: 5px 10px">
+					<div>
+					  Mostrando de {{(offset * pageSize)+1}} até {{(rowCount> 
+						(curPage*pageSize))?(curPage*pageSize):(rowCount)}} de 
+						{{(rowCount)}} registros
+					</div>
+				  </div>
+				  <datatable-pager
+				  [pagerLeftArrowIcon]="'datatable-icon-left'"
+				  [pagerRightArrowIcon]="'datatable-icon-right'"
+				  [pagerPreviousIcon]="'datatable-icon-prev'"
+				  [pagerNextIcon]="'datatable-icon-skip'"
+				  [page]="curPage"
+				  [size]="pageSize"
+				  [count]="rowCount"
+				  [hidden]="!((rowCount / pageSize) > 1)"
+				  (change)="table.onFooterPage($event)">
+				   </datatable-pager>
+				</ng-template>
+			  </ngx-datatable-footer>
 
 		</ngx-datatable>
 
